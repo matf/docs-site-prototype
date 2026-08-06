@@ -1,0 +1,56 @@
+---
+title: 6. Runtime View
+sidebar_label: 6. Runtime View
+description: Runtime scenarios of Example System B.
+---
+
+# 6. Runtime View
+
+<DocHeader system="example-system-b" section="runtime-view" status="custom"
+  custom={{owner: 'Team Beta — Public Information Services (fictional)', lastReviewed: '2026-07-11'}} />
+
+## Scenario — unplanned lane closure
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant OPS as Border post operations
+  participant CON as Operations Console
+  participant TSS as Transit Status Service
+  participant PUB as Static Publisher
+  participant CC as Example Component C
+  participant T as Traveller
+
+  OPS->>CON: announce closure
+  CON-->>TSS: SendOperationalBroadcast
+  TSS->>TSS: validate, translate into 4 languages
+  TSS->>PUB: publish status change
+  PUB->>PUB: rebuild affected pages, invalidate cache
+  TSS-->>CC: NotificationRequested
+  CC->>T: e-mail / push, per subscription language
+  CC-->>TSS: NotificationDelivered (per channel)
+```
+
+## Scenario — measurement goes stale
+
+```mermaid
+flowchart LR
+  classDef step fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef warn fill:#fdf4e5,stroke:#8a5a00,color:#12161a
+
+  M["Last measurement received"]:::step
+  A{"Older than<br/>10 minutes?"}:::step
+  S["Show the figure"]:::step
+  W["Mark as 'no current data'<br/>and keep the last time shown"]:::warn
+
+  M --> A
+  A -->|no| S
+  A -->|yes| W
+```
+
+Showing "no current data" rather than the last known value is the first quality goal in action.
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/example-component-c/runtime-view/', label: 'Example Component C — 6. Runtime View', status: 'mixed'},
+  {to: '/systems/example-system-b/quality-requirements/', label: '10. Quality Requirements', status: 'custom'},
+]} />

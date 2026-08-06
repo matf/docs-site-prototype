@@ -1,0 +1,21 @@
+---
+title: 10. Quality Requirements
+sidebar_label: 10. Quality Requirements
+description: Quality scenarios for Example Component C.
+---
+
+# 10. Quality Requirements
+
+<DocHeader system="example-system-b" component="example-component-c" section="quality-requirements" status="custom"
+  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+
+| # | Quality | Stimulus | Response | Measure |
+| --- | --- | --- | --- | --- |
+| CC-1 | Reach | A broadcast to 40 000 subscribers. | All are attempted. | 95 % delivered within 2 minutes. |
+| CC-2 | No duplicates | The same request is delivered twice by the broker. | No subscriber receives a second message. | Unique constraint on (notification, subscriber, channel); verified in an integration test. |
+| CC-3 | Honesty | The provider accepts but later bounces. | The delivery record is corrected and `NotificationFailed` is raised. | Bounce webhook processed within 5 minutes. |
+| CC-4 | Rate compliance | Fan-out at full speed. | The provider never throttles the sender. | Zero throttling responses in production over the last two quarters. |
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/quality-requirements/', label: 'Example System B — 10. Quality Requirements', status: 'custom'},
+]} />

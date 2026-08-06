@@ -1,4 +1,87 @@
 ---
 title: Stakeholder Goals
+sidebar_label: Stakeholder Goals
+sidebar_position: 1
+description: Custom detail page below arc42 section 1 — per-stakeholder goals and explicit non-goals of Example System A.
 ---
-# SG
+
+# Stakeholder Goals
+
+<DocHeader
+  system="example-system-a"
+  section="introduction-and-goals"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-06-18',
+    reviewStatus: 'Review due',
+  }}
+/>
+
+:::note[Example of a custom page below a system arc42 section]
+This page exists to demonstrate the insertion model: it is a hand-written document filed under
+*1. Introduction and Goals* because that is where it semantically belongs. Adding the file
+`docs/systems/example-system-a/01-introduction-and-goals/stakeholder-goals.mdx` was enough to
+make it appear here, directly after its parent section.
+
+:::
+
+## Goals per stakeholder
+
+### Declarants and freight forwarders
+
+They carry the cost of a rejected declaration, so feedback quality is a product feature, not a
+nicety.
+
+- A rejected declaration names the violated rule, the offending field and the accepted value
+  range — not an internal error code.
+- A correction can be submitted for an accepted declaration until the moment it is cleared.
+- The submission interface stays stable across rule set changes.
+
+### Customs officers
+
+- A withheld consignment arrives with the reasons attached: which rules fired, which score band,
+  which historical cases were similar.
+- The officer's decision is recorded and fed back into the risk case.
+
+### Risk analysts
+
+- Rule sets and scoring models are deployed as data, not as code, and are versioned.
+- Every past decision remains reproducible against the exact rule set and model version that
+  produced it. This is what forces
+  [ADR-0001](/systems/example-system-a/architecture-decisions/adr-0001-event-driven-integration/)
+  to keep the full event history.
+
+### Operations
+
+- Every asynchronous flow has a documented dead-letter path and a documented replay procedure —
+  see [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/).
+
+## Explicit non-goals
+
+Recording what the system deliberately does **not** do has prevented more scope discussions than
+any requirement document.
+
+| Non-goal | Reason |
+| --- | --- |
+| Duty and tax calculation | Owned by a separate assessment system; Example System A only references the outcome. |
+| Long-term archiving | Handed to the audit trail service after the retention period. |
+| Traveller-facing information | Belongs to [Example System B](/systems/example-system-b/). |
+| Offline operation at border posts | Border posts have redundant connectivity; an offline mode was judged too expensive against the residual risk. |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/introduction-and-goals/',
+      label: '1. Introduction and Goals',
+      note: 'The parent arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/risks-and-technical-debt/',
+      label: '11. Risks and Technical Debt',
+      note: 'Where the residual risk of the non-goals is tracked.',
+      status: 'custom',
+    },
+  ]}
+/>

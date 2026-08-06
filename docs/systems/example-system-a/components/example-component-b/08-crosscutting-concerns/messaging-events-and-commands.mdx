@@ -1,0 +1,76 @@
+---
+title: Messaging Events and Commands
+sidebar_label: Messaging Events and Commands
+sidebar_position: 1
+description: Generated catalogue of every command and event consumed and published by Example Component B.
+---
+
+# Messaging Events and Commands
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-b"
+  section="crosscutting-concerns"
+  status="generated"
+  generated={{
+    generator: 'bazg-msgdoc 0.4.1',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
+    revision: '3fd8b52',
+    generatedAt: '2026-08-04 03:14 UTC',
+    scope: 'Whole page — extracted from the message contracts and handler annotations',
+  }}
+/>
+
+:::info[Fully generated page]
+The conventions that apply to all of these messages are written by hand in
+[Integration Conventions](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/)
+and are shared across the whole system.
+
+:::
+
+## Catalogue
+
+This component consumes two events and one command, and publishes two events and one command.
+`OrderInspection` is the only imperative message it sends — it asks another system to do
+something, and that system may refuse.
+
+<MessagingCatalogue system="example-system-a" component="example-component-b" />
+
+## Where these messages appear
+
+| Message | Runtime documentation |
+| --- | --- |
+| <Msg system="example-system-a" component="example-component-b" name="DeclarationAccepted" /> | [Reaction graph — assessment path](/systems/example-system-a/components/example-component-b/runtime-view/) |
+| <Msg system="example-system-a" component="example-component-b" name="DeclarationAmended" /> | [Reaction graph — re-assessment path](/systems/example-system-a/components/example-component-b/runtime-view/) |
+| <Msg system="example-system-a" component="example-component-b" name="RecalculateRisk" /> | [Rule Set Rollout](/systems/example-system-a/components/example-component-b/runtime-view/rule-set-rollout/) |
+| <Msg system="example-system-a" component="example-component-b" name="RiskAssessmentCompleted" /> | [Example Component A — reaction graph](/systems/example-system-a/components/example-component-a/runtime-view/) |
+| <Msg system="example-system-a" component="example-component-b" name="OrderInspection" /> | [Example System A — 6. Runtime View](/systems/example-system-a/runtime-view/) |
+| <Msg system="example-system-a" component="example-component-b" name="RiskModelDeployed" /> | [Rule Set Rollout](/systems/example-system-a/components/example-component-b/runtime-view/rule-set-rollout/) |
+
+## Payload highlights
+
+<Diagram
+  title="RiskAssessmentCompleted — fields that carry the traceability guarantee"
+  status="generated"
+  source="bazg-msgdoc 0.4.1 · schema registry"
+  caption="These five fields are what make a decision reproducible ten years later.">
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `declarationId` | string | Partition key; guarantees per-declaration ordering |
+| `revision` | integer | The revision this decision belongs to |
+| `band` | enum | `low` \| `elevated` \| `high` |
+| `firedRules[]` | string[] | Rule identifiers that contributed |
+| `ruleSetVersion` | string | Immutable rule set version, e.g. `2026.07` |
+| `modelVersion` | string | Immutable model version, e.g. `v14` |
+| `fallback` | boolean | True when the model was unavailable |
+
+</Diagram>
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/', label: 'Integration Conventions', note: 'The hand-written rules behind this catalogue.', status: 'custom'},
+    {to: '/systems/example-system-a/components/example-component-b/runtime-view/', label: '6. Runtime View', note: 'These messages in the reaction graph.', status: 'mixed'},
+    {to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/', label: 'Example Component A — Messaging Events and Commands', note: 'The counterpart catalogue.', status: 'generated'},
+  ]}
+/>

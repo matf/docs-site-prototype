@@ -1,0 +1,205 @@
+.summary {
+  font-size: 0.875rem;
+  color: var(--bazg-muted);
+  margin-bottom: 1.25rem;
+}
+
+.block {
+  margin: 1.5rem 0;
+}
+
+.blockTitle {
+  margin: 0 0 0.6rem;
+  font-size: 1.0625rem;
+}
+
+.count {
+  color: var(--bazg-muted);
+  font-weight: 400;
+}
+
+.scroller {
+  overflow-x: auto;
+  border: 1px solid var(--bazg-border);
+  border-radius: var(--ifm-global-radius);
+}
+
+.table {
+  width: 100%;
+  min-width: 60rem;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--bazg-border);
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bazg-surface);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--bazg-border-strong);
+  white-space: nowrap;
+}
+
+.row {
+  /* Deep links from the runtime views land on a row, not under the navbar. */
+  scroll-margin-top: 5rem;
+}
+
+.row:target {
+  background: var(--bazg-accent-soft);
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: -2px;
+}
+
+.row:last-child th,
+.row:last-child td {
+  border-bottom: none;
+}
+
+.nameCell {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.nameCell code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.95em;
+}
+
+.permalink {
+  margin-left: 0.35rem;
+  color: var(--bazg-muted);
+  opacity: 0;
+  text-decoration: none;
+}
+
+.row:hover .permalink,
+.permalink:focus {
+  opacity: 1;
+}
+
+.kind,
+.direction {
+  display: inline-block;
+  padding: 0.05em 0.5em 0.1em;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.command {
+  color: #7a3ca8;
+  background: #f4eefa;
+  border-color: #ddc9ee;
+}
+
+.event {
+  color: #0a5c8a;
+  background: var(--bazg-generated-bg);
+  border-color: var(--bazg-generated-border);
+}
+
+[data-theme='dark'] .command {
+  color: #d2aef0;
+  background: #241a2e;
+  border-color: #443055;
+}
+
+[data-theme='dark'] .event {
+  color: var(--bazg-generated);
+  background: var(--bazg-generated-bg);
+  border-color: var(--bazg-generated-border);
+}
+
+.inbound,
+.outbound {
+  border: none;
+  background: transparent;
+  color: var(--bazg-muted);
+  padding-left: 0;
+  font-weight: 600;
+}
+
+.channel,
+.schema {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+.version {
+  display: block;
+  color: var(--bazg-muted);
+  font-size: 0.75rem;
+}
+
+.description {
+  min-width: 18rem;
+}
+
+/* Inline message reference used in prose and runtime steps. */
+
+.ref {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  padding: 0.05em 0.45em 0.1em;
+  border: 1px solid var(--bazg-border);
+  border-radius: 4px;
+  background: var(--bazg-surface-alt);
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.ref:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.ref code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.85em;
+  color: var(--ifm-color-content);
+}
+
+.ref:hover code {
+  color: var(--ifm-color-primary);
+}
+
+.refKind {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.ref_command .refKind {
+  color: #7a3ca8;
+}
+
+.ref_event .refKind {
+  color: var(--bazg-generated);
+}
+
+[data-theme='dark'] .ref_command .refKind {
+  color: #d2aef0;
+}

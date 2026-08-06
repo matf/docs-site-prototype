@@ -1,0 +1,70 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 0.5rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--bazg-border);
+  border-radius: var(--ifm-global-radius);
+  color: var(--ifm-color-content);
+  text-decoration: none;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.item:hover {
+  border-color: var(--ifm-color-primary);
+  background: var(--bazg-surface-alt);
+  text-decoration: none;
+  color: var(--ifm-color-content);
+}
+
+.num {
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: var(--bazg-surface);
+  border: 1px solid var(--bazg-border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--bazg-muted);
+}
+
+.item:hover .num {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+
+.purpose {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--bazg-muted);
+}
+
+.badge {
+  margin-top: 0.15rem;
+}

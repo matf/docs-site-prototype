@@ -1,0 +1,61 @@
+---
+title: 3. Context and Scope
+sidebar_label: 3. Context and Scope
+description: Generated context diagram of Example Component C.
+---
+
+# 3. Context and Scope
+
+<DocHeader system="example-system-b" component="example-component-c" section="context-and-scope" status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
+    revision: 'd52c118',
+    generatedAt: '2026-08-03 03:10 UTC',
+    scope: 'Context diagram',
+  }}
+  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+
+<Diagram
+  title="Component context — Example Component C"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · notification-gateway@d52c118"
+  caption="Solid arrows are broker messages, dashed arrows are synchronous calls.">
+
+```mermaid
+flowchart LR
+  classDef comp fill:#fbeef0,stroke:#c8102e,stroke-width:2px,color:#12161a
+  classDef peer fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef ext fill:#f6f7f9,stroke:#9aa4ae,stroke-dasharray:4 3,color:#12161a
+  classDef actor fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+
+  SUB["Subscriber"]:::actor
+  OPSU["Operations"]:::actor
+
+  TSS["Transit Status Service<br/>(upstream, same system)"]:::peer
+  CONSOLE["Operations Console<br/>(caller, external)"]:::peer
+  AUDIT["Audit Trail Service<br/>(downstream, external)"]:::peer
+  ALERT["Operations Alerting<br/>(downstream, external)"]:::peer
+
+  PROV["E-mail / push provider<br/>(dependency, external)"]:::ext
+  DB[("Subscription and<br/>delivery store")]:::ext
+
+  CC["Example Component C<br/>Notification Gateway"]:::comp
+
+  TSS -->|"NotificationRequested"| CC
+  OPSU --> CONSOLE -->|"SendOperationalBroadcast"| CC
+  CC -.->|"send"| PROV --> SUB
+  CC -->|"NotificationDelivered"| AUDIT
+  CC -->|"NotificationFailed"| ALERT
+  CC --- DB
+```
+
+</Diagram>
+
+The provider is the only hard external dependency, and it is also the only rate-limited one —
+constraint CC-1.
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', status: 'generated'},
+  {to: '/systems/example-system-b/components/example-component-c/building-block-view/', label: '5. Building Block View', status: 'mixed'},
+]} />

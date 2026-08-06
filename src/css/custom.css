@@ -1,30 +1,295 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * BAZG System Documentation — prototype theme.
+ *
+ * Restrained federal-administration look: light surfaces, dark neutral type,
+ * a single red accent, subtle borders instead of shadows.
+ * No official BAZG branding assets are used.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* Restrained red accent, inspired by Swiss federal visual language. */
+  --ifm-color-primary: #c8102e;
+  --ifm-color-primary-dark: #b40e29;
+  --ifm-color-primary-darker: #aa0e27;
+  --ifm-color-primary-darkest: #8c0b20;
+  --ifm-color-primary-light: #e51235;
+  --ifm-color-primary-lighter: #ef1839;
+  --ifm-color-primary-lightest: #f4415e;
+
+  --ifm-color-content: #1b1f24;
+  --ifm-color-content-secondary: #55606c;
+  --ifm-heading-color: #12161a;
+
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #ffffff;
+
+  --ifm-font-family-base:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --ifm-font-family-monospace:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --ifm-code-font-size: 88%;
+  --ifm-line-height-base: 1.65;
+  --ifm-heading-font-weight: 650;
+  --ifm-h1-font-size: 2.1rem;
+  --ifm-spacing-horizontal: 1.25rem;
+
+  --ifm-navbar-height: 3.75rem;
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-navbar-shadow: none;
+
+  --ifm-toc-border-color: var(--bazg-border);
+  --ifm-global-radius: 6px;
+
+  --docusaurus-highlighted-code-line-bg: rgba(200, 16, 46, 0.1);
+
+  /* Prototype design tokens */
+  --bazg-border: #dde1e6;
+  --bazg-border-strong: #c3c9d0;
+  --bazg-surface: #f6f7f9;
+  --bazg-surface-alt: #fbfbfc;
+  --bazg-muted: #55606c;
+
+  --bazg-generated: #0a5c8a;
+  --bazg-generated-bg: #eaf3f9;
+  --bazg-generated-border: #b9d6e8;
+
+  --bazg-custom: #1f6f43;
+  --bazg-custom-bg: #ecf5f0;
+  --bazg-custom-border: #bcdcca;
+
+  --bazg-mixed: #8a5a00;
+  --bazg-mixed-bg: #fdf4e5;
+  --bazg-mixed-border: #ecd6a8;
+
+  --bazg-accent-soft: #fbeef0;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #ff6178;
+  --ifm-color-primary-dark: #ff4462;
+  --ifm-color-primary-darker: #ff3555;
+  --ifm-color-primary-darkest: #ef0733;
+  --ifm-color-primary-light: #ff7e8e;
+  --ifm-color-primary-lighter: #ff8d9b;
+  --ifm-color-primary-lightest: #ffbcc5;
+
+  --ifm-color-content: #dfe3e8;
+  --ifm-color-content-secondary: #a4aeb9;
+  --ifm-heading-color: #f2f4f6;
+
+  --ifm-background-color: #15181c;
+  --ifm-background-surface-color: #15181c;
+  --ifm-navbar-background-color: #15181c;
+
+  --docusaurus-highlighted-code-line-bg: rgba(255, 97, 120, 0.16);
+
+  --bazg-border: #2c3238;
+  --bazg-border-strong: #3d454d;
+  --bazg-surface: #1c2025;
+  --bazg-surface-alt: #191d21;
+  --bazg-muted: #a4aeb9;
+
+  --bazg-generated: #7ec2e8;
+  --bazg-generated-bg: #14252f;
+  --bazg-generated-border: #2b4a5e;
+
+  --bazg-custom: #86cea5;
+  --bazg-custom-bg: #16261d;
+  --bazg-custom-border: #2c4d39;
+
+  --bazg-mixed: #e8c078;
+  --bazg-mixed-bg: #2a2312;
+  --bazg-mixed-border: #55462a;
+
+  --bazg-accent-soft: #2a1a1e;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Navbar / footer ---------------------------------------------------- */
+
+.navbar {
+  border-bottom: 1px solid var(--bazg-border);
+}
+
+.navbar__title {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.navbar__brand::after {
+  /* Thin red rule under the wordmark instead of a logo lockup. */
+  content: '';
+}
+
+.footer {
+  border-top: 1px solid var(--bazg-border);
+  background-color: var(--bazg-surface-alt);
+  --ifm-footer-background-color: var(--bazg-surface-alt);
+  --ifm-footer-color: var(--bazg-muted);
+  --ifm-footer-link-color: var(--ifm-color-content);
+  --ifm-footer-title-color: var(--ifm-heading-color);
+}
+
+.footer__copyright {
+  margin-top: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--bazg-muted);
+  max-width: 70ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* --- Sidebar ------------------------------------------------------------ */
+
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--bazg-border) !important;
+}
+
+.menu {
+  padding: 1rem 0.75rem 3rem !important;
+  font-size: 0.875rem;
+}
+
+.menu__link {
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background-color: var(--bazg-accent-soft);
+  font-weight: 600;
+}
+
+.menu__list-item-collapsible:hover,
+.menu__link:hover {
+  background-color: var(--bazg-surface);
+}
+
+/* The root "Systems" node reads as a section title, not a clickable row. */
+.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible > .menu__link,
+.menu > .menu__list > .menu__list-item > .menu__link {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bazg-muted);
+}
+
+.menu__list .menu__list {
+  border-left: 1px solid var(--bazg-border);
+  margin-left: 0.6rem;
+  padding-left: 0.35rem;
+}
+
+/* --- Content ------------------------------------------------------------ */
+
+.markdown h1:first-child {
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.markdown > h2 {
+  margin-top: 2.5rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--bazg-border);
+  font-size: 1.4rem;
+}
+
+.markdown > h3 {
+  margin-top: 1.9rem;
+  font-size: 1.125rem;
+}
+
+.markdown table {
+  display: table;
+  width: 100%;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+}
+
+.markdown table thead tr {
+  border-bottom: 2px solid var(--bazg-border-strong);
+}
+
+.markdown table th,
+.markdown table td {
+  border: 1px solid var(--bazg-border);
+  padding: 0.5rem 0.7rem;
+}
+
+.markdown table thead th {
+  background-color: var(--bazg-surface);
+  text-align: left;
+}
+
+.markdown blockquote {
+  border-left: 3px solid var(--bazg-border-strong);
+  background: var(--bazg-surface-alt);
+  color: var(--bazg-muted);
+  padding: 0.75rem 1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.theme-doc-markdown table {
+  overflow-x: auto;
+  display: block;
+}
+
+@media (min-width: 997px) {
+  .theme-doc-markdown table {
+    display: table;
+  }
+}
+
+/* Breadcrumbs */
+
+.breadcrumbs {
+  font-size: 0.8125rem;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: var(--bazg-surface);
+  font-weight: 600;
+}
+
+/* Pagination (previous / next) */
+
+.pagination-nav__link {
+  border: 1px solid var(--bazg-border);
+  border-radius: var(--ifm-global-radius);
+  transition: border-color 150ms ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.pagination-nav__sublabel {
+  color: var(--bazg-muted);
+}
+
+/* Mermaid diagrams sit inside <Diagram>, which owns the frame. */
+.docusaurus-mermaid-container {
+  overflow-x: auto;
+  text-align: center;
+}
+
+/* Focus visibility for keyboard users. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+.menu__link:focus-visible,
+.card:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Skip-to-content is provided by Docusaurus; make it visible when focused. */
+.skipToContent_fXgn:focus {
+  outline: 2px solid var(--ifm-color-primary);
 }

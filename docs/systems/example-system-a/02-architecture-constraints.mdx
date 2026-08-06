@@ -1,4 +1,70 @@
 ---
 title: 2. Architecture Constraints
+sidebar_label: 2. Architecture Constraints
+description: Technical, organisational and regulatory constraints that were fixed before any design decision for Example System A.
 ---
-# AC
+
+# 2. Architecture Constraints
+
+<DocHeader
+  system="example-system-a"
+  section="architecture-constraints"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+Constraints are not decisions. Everything on this page was fixed before the team started, and
+changing any of it requires a decision outside the project.
+
+## Regulatory and organisational constraints
+
+| # | Constraint | Consequence |
+| --- | --- | --- |
+| O-1 | Personal and commercially sensitive data must be stored and processed in Switzerland. | Hosting is limited to the two federal data centres; see [ADR-0002](/systems/example-system-a/architecture-decisions/adr-0002-hosting-and-data-residency/). |
+| O-2 | Every clearance decision is subject to legal review for ten years. | Decisions and their inputs are recorded as immutable events. |
+| O-3 | Rule sets are owned by the specialist unit, not by the engineering team. | Rule sets are deployed as versioned data, without a software release. |
+| O-4 | Interfaces to trade participants follow the published national message specification. | The inbound contract is externally fixed and versioned independently of the system. |
+| O-5 | Documentation follows arc42 and is published in this portal. | Each system and component maintains the same twelve sections. |
+
+## Technical constraints
+
+| # | Constraint | Consequence |
+| --- | --- | --- |
+| T-1 | Container platform operated centrally; no direct machine access. | No local file state; everything observable through the platform's logging and metrics stack. |
+| T-2 | The central message broker is the only approved asynchronous transport. | Inter-component communication is broker-based, not point-to-point HTTP. |
+| T-3 | Approved persistent store is the managed relational database service. | No document or graph store, even where one would fit better. |
+| T-4 | Identity comes from the federal identity provider (OIDC). | No local user store, no local password handling. |
+| T-5 | Outbound internet access only through the audited egress proxy. | External calls are explicit, allow-listed and logged. |
+
+## Consequences for the documentation
+
+Constraint **O-5** is what this prototype demonstrates: identical arc42 structure for the system
+and for each of its components, one tree, generated and manually maintained content clearly
+distinguished.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/solution-strategy/',
+      label: '4. Solution Strategy',
+      note: 'How the constraints were turned into an approach.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/deployment-view/',
+      label: '7. Deployment View',
+      note: 'Where constraints T-1 and O-1 become concrete.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/crosscutting-concerns/development-guidelines/',
+      label: 'Development Guidelines',
+      note: 'The engineering rules derived from these constraints.',
+      status: 'custom',
+    },
+  ]}
+/>

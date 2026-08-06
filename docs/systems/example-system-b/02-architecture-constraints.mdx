@@ -1,0 +1,23 @@
+---
+title: 2. Architecture Constraints
+sidebar_label: 2. Architecture Constraints
+description: Constraints that apply to Example System B.
+---
+
+# 2. Architecture Constraints
+
+<DocHeader system="example-system-b" section="architecture-constraints" status="custom"
+  custom={{owner: 'Team Beta — Public Information Services (fictional)', lastReviewed: '2026-07-11'}} />
+
+| # | Constraint | Consequence |
+| --- | --- | --- |
+| B-1 | Public content must meet the federal accessibility standard. | Semantic markup and keyboard operability are acceptance criteria, not nice-to-haves. |
+| B-2 | Content is published in German, French, Italian and English. | Every notification template exists in four languages before it can be sent. |
+| B-3 | No personal data beyond the subscription address may be stored. | Subscriptions hold a channel address and a language, nothing else. |
+| B-4 | The public site must survive a 20× traffic spike. | Static rendering with a cache in front; no per-request database access on the public path. |
+| B-5 | The central message broker is the only approved asynchronous transport. | Same as [Example System A](/systems/example-system-a/architecture-constraints/). |
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/solution-strategy/', label: '4. Solution Strategy', status: 'custom'},
+  {to: '/systems/example-system-b/crosscutting-concerns/', label: '8. Crosscutting Concerns', status: 'mixed'},
+]} />

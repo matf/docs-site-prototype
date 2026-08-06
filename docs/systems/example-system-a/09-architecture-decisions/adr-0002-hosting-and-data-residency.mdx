@@ -1,0 +1,89 @@
+---
+title: ADR-0002 — Hosting and data residency
+sidebar_label: ADR-0002 Hosting and data residency
+sidebar_position: 2
+description: Custom architecture decision record below arc42 section 9 — two Swiss data centres with warm standby.
+---
+
+# ADR-0002 — Two Swiss data centres, warm standby
+
+<DocHeader
+  system="example-system-a"
+  section="architecture-decisions"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha with Platform Operations (fictional)',
+    lastReviewed: '2026-07-22',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | Accepted |
+| **Date** | 2025-12-02 |
+| **Deciders** | Lead architect, Platform Operations, Information Security Officer |
+
+## Context
+
+Declaration data is commercially sensitive and contains personal data, so it must remain in
+Switzerland (constraint **O-1** in
+[2. Architecture Constraints](/systems/example-system-a/architecture-constraints/)). The
+availability goal is 99.8 % during opening hours, with a recovery time objective of 30 minutes
+and a recovery point objective of zero for accepted declarations.
+
+## Decision
+
+The system runs in **two Swiss federal data centres in an active/warm-standby configuration**:
+one site serves all traffic, the second holds a synchronously replicated database and mirrored
+broker topics with the workloads scaled to zero.
+
+## Consequences
+
+**Positive**
+
+- Data residency is satisfied without any contractual construct.
+- Synchronous replication gives a recovery point objective of zero for accepted declarations.
+- A single writing site keeps the broker's ordering guarantees simple to reason about, which
+  matters because the whole system is event-ordered —
+  [ADR-0001](/systems/example-system-a/architecture-decisions/adr-0001-event-driven-integration/).
+
+**Negative**
+
+- Failover is not instantaneous: workloads must be scaled up at the standby site, which is why the
+  recovery time objective is 30 minutes rather than minutes.
+- The standby capacity is paid for and idle.
+- Synchronous replication couples write latency to the inter-site link. The link is monitored,
+  and `replication-broken` is one of the four paging alerts in
+  [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/).
+
+## Alternatives considered
+
+| Alternative | Why not |
+| --- | --- |
+| Active/active across both sites | Cross-site event ordering and conflict handling were judged more expensive than a 30-minute recovery time objective. |
+| Single data centre with backups | Recovery point objective of zero unreachable; a site failure would lose accepted declarations. |
+| Public cloud in the EU | Fails constraint O-1. |
+
+## Affected documentation
+
+- [7. Deployment View](/systems/example-system-a/deployment-view/) — the topology this decision produces
+- [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/) — failover procedure and alerts
+- [10. Quality Requirements](/systems/example-system-a/quality-requirements/) — the availability scenario
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/architecture-decisions/',
+      label: '9. Architecture Decisions',
+      note: 'The parent arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/deployment-view/',
+      label: '7. Deployment View',
+      note: 'What this decision looks like in production.',
+      status: 'mixed',
+    },
+  ]}
+/>

@@ -1,0 +1,25 @@
+---
+title: 12. Glossary
+sidebar_label: 12. Glossary
+description: Terms specific to Example Component C.
+---
+
+# 12. Glossary
+
+<DocHeader system="example-system-b" component="example-component-c" section="glossary" status="custom"
+  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+
+The system glossary in
+[Example System B — 12. Glossary](/systems/example-system-b/glossary/) applies.
+
+| Term | Meaning |
+| --- | --- |
+| `Notification` | A finished, translated message ready for delivery. This component never edits one. |
+| `DeliveryAttempt` | One record per (notification, subscriber, channel). The unit of idempotency and of reporting. |
+| **Accepted** | The provider took responsibility for the message. Not the same as delivered. |
+| **Delivered** | No bounce was reported within the bounce window. |
+| **Batch** | A group of attempts sent together within the rate limit. Sizing is `BATCH_SIZE`. |
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/glossary/', label: 'Example System B — 12. Glossary', status: 'custom'},
+]} />

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="BAZG System Documentation prototype">
+  <title>BAZG System Documentation — prototype</title>
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#c8102e"/>
+  <g transform="translate(80,150)">
+    <rect x="0" y="0" width="72" height="72" rx="12" fill="#c8102e"/>
+    <rect x="18" y="18" width="24" height="38" rx="3" fill="#ffffff"/>
+    <rect x="44" y="27" width="14" height="29" rx="3" fill="#ffffff" opacity="0.62"/>
+  </g>
+  <text x="80" y="300" font-family="Helvetica, Arial, sans-serif" font-size="62" font-weight="700" fill="#12161a">BAZG System Documentation</text>
+  <text x="80" y="360" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#55606c">One arc42 documentation tree for systems and components</text>
+  <text x="80" y="410" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#55606c">Generated and manually maintained content, side by side</text>
+  <text x="80" y="540" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#c8102e" font-weight="700">Prototype — fictional sample content</text>
+</svg>

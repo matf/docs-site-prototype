@@ -1,0 +1,48 @@
+---
+title: Accessibility and Multilingualism
+sidebar_label: Accessibility and Multilingualism
+sidebar_position: 2
+description: Custom crosscutting concept — accessibility and four-language publication in Example System B.
+---
+
+# Accessibility and Multilingualism
+
+<DocHeader system="example-system-b" section="crosscutting-concerns" status="custom"
+  custom={{owner: 'Team Beta with Communications (fictional)', lastReviewed: '2026-06-30', reviewStatus: 'Review due'}} />
+
+## Accessibility
+
+Constraint **B-1** makes the federal accessibility standard an acceptance criterion. What that
+means concretely for every building block:
+
+- Information is available as text before it is available as colour or icon. A red lane marker is
+  always accompanied by a word.
+- The status page is fully operable by keyboard, and the reading order matches the visual order.
+- Live regions announce status changes without stealing focus.
+- Contrast is verified automatically in the build; a failure blocks the release.
+
+## Multilingualism
+
+Every published item exists in German, French, Italian and English before it can be published —
+constraint **B-2**, decided in B-ADR-0002.
+
+| Item | Translation source |
+| --- | --- |
+| Status labels | Versioned template set, reviewed by Communications |
+| Operational broadcasts | Authored in one language, translated before approval |
+| Error and empty states | Versioned template set |
+
+A missing translation blocks publication rather than falling back. This has delayed announcements
+by minutes and has never yet been regretted: a German-only closure notice in a French-speaking
+region is a worse outcome than a slightly later one.
+
+## Where it is verified
+
+Scenarios **BS-4** and **BS-5** in
+[10. Quality Requirements](/systems/example-system-b/quality-requirements/) are the acceptance
+criteria; both are automated.
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/architecture-constraints/', label: '2. Architecture Constraints', note: 'Constraints B-1 and B-2.', status: 'custom'},
+  {to: '/systems/example-system-b/crosscutting-concerns/', label: '8. Crosscutting Concerns', note: 'The parent arc42 section.', status: 'mixed'},
+]} />

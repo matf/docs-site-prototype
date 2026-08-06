@@ -1,0 +1,54 @@
+---
+title: 11. Risks and Technical Debt
+sidebar_label: 11. Risks and Technical Debt
+description: Known risks and accepted technical debt of Example Component A.
+---
+
+# 11. Risks and Technical Debt
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-a"
+  section="risks-and-technical-debt"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Risks
+
+| # | Risk | Impact | Likelihood | Mitigation |
+| --- | --- | --- | --- | --- |
+| CA-R1 | The outbox relay stalls unnoticed. | High — the system goes quiet without any component reporting an error | Low | `outbox_pending_rows` gauge and the `outbox.relay.stalled` warning; both feed the *Declaration flow* dashboard. |
+| CA-R2 | The 24-hour rule cache expires during a long tariff service outage. | High — validation is no longer trustworthy | Low | `rules.cache.expired` at ERROR; the component then rejects nothing and holds submissions rather than validating against stale rules. |
+| CA-R3 | The national message specification changes with short notice. | Medium — intake cannot accept new submissions | Medium | The anti-corruption mapping is isolated in one adapter; contract tests run nightly against the published specification. |
+| CA-R4 | Portal signing key compromise. | High — forged declarations | Very low | Signature verification plus mTLS; single-key rotation is open point S-1 in [Security](/systems/example-system-a/components/example-component-a/crosscutting-concerns/security/). |
+
+## Technical debt
+
+| # | Debt | Why | Cost | Plan |
+| --- | --- | --- | --- | --- |
+| CA-D1 | Single portal signing key; rotation needs a coordinated deployment. | Multi-key verification was not needed at launch. | A rotation is a planned outage window. | Multi-key support in the next increment. |
+| CA-D2 | The outbox is polled rather than change-data-captured. | The platform capability is unavailable — see [ADR-0001](/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0001-transactional-outbox/). | 0.5 s of latency and a second workload. | Reconsider when change data capture becomes available. |
+| CA-D3 | The notification projection is part of this component. | Avoided a deployable without an ownership boundary. | Notification changes require an intake deployment. | Extract if a third channel appears — system debt item D-1. |
+| CA-D4 | Admin API access is logged but not alerted. | Prioritised behind the paging alerts. | An unusual operator access is only found in review. | Open point S-2. |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/risks-and-technical-debt/',
+      label: 'Example System A — 11. Risks and Technical Debt',
+      note: 'System-level risks and debt.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/security/',
+      label: 'Security',
+      note: 'Open points S-1 and S-2.',
+      status: 'custom',
+    },
+  ]}
+/>

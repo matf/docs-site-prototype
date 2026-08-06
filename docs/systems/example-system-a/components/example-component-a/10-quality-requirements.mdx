@@ -1,0 +1,60 @@
+---
+title: 10. Quality Requirements
+sidebar_label: 10. Quality Requirements
+description: Measurable quality scenarios for Example Component A.
+---
+
+# 10. Quality Requirements
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-a"
+  section="quality-requirements"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+Component-level refinements of the system scenarios in
+[Example System A — 10. Quality Requirements](/systems/example-system-a/quality-requirements/).
+
+| # | Quality | Stimulus | Response | Measure |
+| --- | --- | --- | --- | --- |
+| CA-1 | Durability | The component is killed between the database commit and the broker publish. | The event is published after restart. | Zero lost events across 100 injected kills in the release test. |
+| CA-2 | Durability | The same command is delivered twice. | The second delivery has no business effect. | `message_duplicate_total` increases; declaration revision count unchanged. |
+| CA-3 | Latency | A `SubmitDeclaration` arrives under normal load. | Validated, persisted and acknowledged. | p95 below 400 ms, p99 below 1.2 s. |
+| CA-4 | Latency | An event is written to the outbox. | It reaches the broker. | p95 below 1 s, including the poll interval. |
+| CA-5 | Robustness | The Tariff and Rules Service is unavailable. | Validation continues from the cache; a warning is emitted. | Decisions continue for 24 h; `rules.cache.stale` at 12 h, `rules.cache.expired` at 24 h. |
+| CA-6 | Comprehensibility | A declaration violates a customs rule. | The rejection names the rule, the field and the accepted values. | Every `DeclarationRejected` carries a rule identifier resolvable in the rule catalogue. |
+| CA-7 | Data protection | An operator inspects a dead-lettered message. | Only technical metadata is returned. | Verified by an automated test on the admin API. |
+| CA-8 | Throughput | 250 commands arrive within one minute. | All are handled. | No dead-lettering; `outbox_pending_rows` returns to zero within 60 s. |
+
+## Verification
+
+| Scenario | Verified by |
+| --- | --- |
+| CA-1, CA-2 | Integration test with a real broker and database, with injected failures |
+| CA-3, CA-4, CA-8 | Load test against `staging` before each release |
+| CA-5 | Chaos test — the tariff service is blocked at the egress proxy |
+| CA-6 | Contract test over the rejection catalogue |
+| CA-7 | Automated API test in the build |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0001-transactional-outbox/',
+      label: 'ADR-0001 — Transactional outbox',
+      note: 'The decision that makes CA-1 and CA-2 achievable.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/quality-requirements/',
+      label: 'Example System A — 10. Quality Requirements',
+      note: 'The system scenarios these refine.',
+      status: 'custom',
+    },
+  ]}
+/>

@@ -1,0 +1,74 @@
+---
+title: 12. Glossary
+sidebar_label: 12. Glossary
+description: Terms specific to Example Component A.
+---
+
+# 12. Glossary
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-a"
+  section="glossary"
+  status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
+    revision: '9c1e40d',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Aggregate, state and table names extracted from the domain model',
+  }}
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+  }}
+/>
+
+The system glossary in
+[Example System A — 12. Glossary](/systems/example-system-a/glossary/) applies. Only terms that
+are specific to this component are listed here.
+
+<Diagram
+  title="Domain model terms"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · declaration-intake-service@9c1e40d"
+  caption="Extracted from the aggregate, state machine and table definitions.">
+
+| Term | Meaning |
+| --- | --- |
+| `Declaration` | The aggregate root. Owns its revisions and its state. |
+| `Revision` | An immutable snapshot of the declaration content. Numbered from 1. |
+| `ACCEPTED` | State after successful validation, before a risk decision exists. |
+| `CLEARED` | Terminal state — the consignment may proceed. |
+| `HELD` | State while an inspection decision is pending. |
+| `REJECTED` | Terminal state — the declaration was not accepted. No revision is created. |
+| `outbox` | Table holding events written inside the business transaction, awaiting publication. |
+| `processed_message` | Table of handled `messageId` values; the idempotency check. |
+| Outbox relay | The workload that publishes rows from `outbox` to the broker. |
+
+</Diagram>
+
+## Terms used carefully
+
+| Term | Note |
+| --- | --- |
+| **Accepted** | Means "formally valid and stored". It says nothing about risk and nothing about clearance. Declarants read it as "done", which is why the portal wording was reviewed with the specialist unit. |
+| **Superseded** | A decision that arrived for a revision that is no longer current. Superseded decisions are discarded, not queued — see [6. Runtime View](/systems/example-system-a/components/example-component-a/runtime-view/). |
+| **Rejected** | A business outcome, never a technical failure. A message that cannot be processed is dead-lettered, not rejected. |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/glossary/',
+      label: 'Example System A — 12. Glossary',
+      note: 'The shared domain vocabulary.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/',
+      label: 'Integration Conventions',
+      note: 'Where the rejected/dead-lettered distinction is defined.',
+      status: 'custom',
+    },
+  ]}
+/>

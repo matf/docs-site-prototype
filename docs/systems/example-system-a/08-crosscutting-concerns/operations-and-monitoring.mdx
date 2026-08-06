@@ -1,0 +1,94 @@
+---
+title: Operations and Monitoring
+sidebar_label: Operations and Monitoring
+sidebar_position: 2
+description: Custom crosscutting concept — service levels, alerting, dashboards and recovery procedures for Example System A.
+---
+
+# Operations and Monitoring
+
+<DocHeader
+  system="example-system-a"
+  section="crosscutting-concerns"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha with Platform Operations (fictional)',
+    lastReviewed: '2026-07-24',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Service level objectives
+
+| Indicator | Objective | Measured as |
+| --- | --- | --- |
+| Intake availability | 99.8 % between 05:00 and 23:00 CET | Successful `SubmitDeclaration` acknowledgements / attempts |
+| Decision latency | p95 below 8 s, p99 below 30 s | `DeclarationAccepted` → `RiskAssessmentCompleted` |
+| Message loss | 0 | Dead-letter count reconciled daily against published events |
+| Backlog | Consumer lag below 5 minutes during opening hours | Broker consumer group lag |
+
+## Alerts that page someone
+
+Only four. Every other signal is a dashboard, not an alert — an alert nobody acts on trains
+people to ignore alerts.
+
+| Alert | Trigger | First action |
+| --- | --- | --- |
+| `intake-unavailable` | Acknowledgement rate below 95 % for 5 min | Check platform and broker health; declare a service message if confirmed |
+| `risk-backlog-critical` | Consumer lag above 20 min | Scale the risk consumer group (up to 16 without approval) |
+| `dead-letter-growth` | More than 10 messages in 15 min | Inspect the failure class; do not replay before the cause is known |
+| `replication-broken` | Standby replication lag above 60 s | Platform escalation; recovery point objective is at risk |
+
+## Dashboards
+
+| Dashboard | Answers |
+| --- | --- |
+| *Declaration flow* | How many declarations are in each state right now, and for how long? |
+| *Broker health* | Is the problem producer-side, broker-side or consumer-side? |
+| *Risk decisions* | Score band distribution over time; a sudden shift usually means a rule set change |
+| *External dependencies* | Tariff service latency and cache hit rate |
+
+The *Risk decisions* dashboard has caught more real problems than any technical alert: a rule set
+that fires on everything is invisible in infrastructure metrics and obvious in the band
+distribution.
+
+## Recovery procedures
+
+1. **Consumer backlog** — scale out; see
+   [Peak Load and Degradation](/systems/example-system-a/runtime-view/peak-load-and-degradation/).
+2. **Dead-lettered messages** — classify first, replay second. The replay procedure and its
+   idempotency guarantees are documented in
+   [Failover and Replay](/systems/example-system-a/components/example-component-a/runtime-view/failover-and-replay/).
+3. **Site failure** — the platform team declares it; the application team confirms data
+   consistency after the switch. Recovery time objective 30 minutes.
+4. **Bad rule set** — the risk analyst re-publishes the previous rule set version; no software
+   deployment is involved. Affected declarations are re-assessed with `RecalculateRisk`.
+
+## What operations may not do
+
+Operators work on message identifiers and technical state, never on declaration payloads. This is
+not a courtesy — it is part of the data protection concept in
+[Security and Data Protection](/systems/example-system-a/crosscutting-concerns/security-and-data-protection/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/observability/',
+      label: 'Example Component A — Observability',
+      note: 'Generated metric, log and trace inventory.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/deployment-view/',
+      label: '7. Deployment View',
+      note: 'The topology these procedures operate on.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/quality-requirements/',
+      label: '10. Quality Requirements',
+      note: 'Where these objectives come from.',
+      status: 'custom',
+    },
+  ]}
+/>

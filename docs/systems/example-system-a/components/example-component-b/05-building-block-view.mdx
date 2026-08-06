@@ -1,0 +1,123 @@
+---
+title: 5. Building Block View
+sidebar_label: 5. Building Block View
+description: Generated internal decomposition of Example Component B — messaging adapters, assessment service, scoring domain, registry client and persistence.
+---
+
+# 5. Building Block View
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-b"
+  section="building-block-view"
+  status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
+    revision: '3fd8b52',
+    generatedAt: '2026-08-04 03:14 UTC',
+    scope: 'Internal component view and the building block table',
+  }}
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Internal structure
+
+The same hexagonal structure as every component in this system, with one addition worth noticing:
+the **Rule Set Cache** and the **Model Cache** are separate building blocks, because rule sets and
+models have different lifecycles — rules change weekly, models quarterly.
+
+<Diagram
+  title="Internal component view — Example Component B"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52"
+  caption="Building blocks and their dependencies. Arrows point in the direction of the dependency.">
+
+```mermaid
+flowchart TB
+  classDef adapter fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+  classDef app fill:#fdf4e5,stroke:#8a5a00,color:#12161a
+  classDef domain fill:#fbeef0,stroke:#c8102e,stroke-width:2px,color:#12161a
+  classDef ext fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+
+  subgraph CB["Example Component B"]
+    direction TB
+
+    MIN["Messaging Adapter (inbound)<br/>event and command listeners"]:::adapter
+    APP["Assessment Service<br/>risk case lifecycle,<br/>idempotency, transaction boundary"]:::app
+    DOM["Scoring Domain<br/>RiskCase, rule evaluation,<br/>score → band, deterministic"]:::domain
+    RSC["Rule Set Cache"]:::adapter
+    MC["Model Cache"]:::adapter
+    HC["History Client<br/>aggregated features"]:::adapter
+    PERS["Persistence Adapter<br/>risk case + decision + outbox"]:::adapter
+    MOUT["Messaging Adapter (outbound)<br/>outbox relay"]:::adapter
+  end
+
+  BROKER["Broker"]:::ext
+  REG["Model Registry"]:::ext
+  HIST["Declarant History Store"]:::ext
+  DB[("Risk case store")]:::ext
+
+  BROKER --> MIN --> APP
+  APP --> DOM
+  APP --> RSC
+  APP --> MC
+  APP --> HC
+  APP --> PERS
+  DOM -.->|"pure functions only"| DOM
+  RSC --> REG
+  MC --> REG
+  HC --> HIST
+  PERS --> DB
+  PERS -.->|"outbox row in the<br/>same transaction"| MOUT
+  MOUT --> BROKER
+```
+
+</Diagram>
+
+## Building blocks
+
+<Diagram
+  title="Building blocks and responsibilities"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52">
+
+| Building block | Responsibility | Depends on | Notes |
+| --- | --- | --- | --- |
+| **Messaging Adapter (inbound)** | Deserialises events and commands, rejects unknown versions. | Assessment Service | No business logic. |
+| **Assessment Service** | Opens and closes risk cases, enforces one decision per revision, owns the transaction. | Scoring Domain, caches, History Client, Persistence Adapter | Idempotency via the processed-message table. |
+| **Scoring Domain** | Rule evaluation, feature assembly, score, band. Pure functions, no clock, no I/O. | — | Determinism is enforced by an architecture test that forbids clock and random access. |
+| **Rule Set Cache** | Holds published rule set versions; refreshes on `RiskModelDeployed` and on a timer. | Model Registry | A version, once loaded, is never mutated. |
+| **Model Cache** | Holds scoring model versions. | Model Registry | Falls back to the deterministic fallback rule set if a model cannot be loaded. |
+| **History Client** | Aggregated declarant history features. | Declarant History Store | Feature-level only — never identity attributes (constraint CB-2). |
+| **Persistence Adapter** | Risk case, decision and outbox tables. | Risk case store | Decisions are append-only. |
+| **Messaging Adapter (outbound)** | Outbox relay. | Broker | Same pattern as Example Component A. |
+
+</Diagram>
+
+## Why the domain is pure
+
+The `Scoring Domain` block has no outgoing dependencies at all. Every input — rule set version,
+model version, declaration content, history features — is passed in, and the same inputs always
+produce the same band. That is what makes a three-year-old decision reproducible, and it is why
+the build fails if the domain touches the clock.
+
+## Messaging and runtime behaviour
+
+The messages these blocks exchange are catalogued in
+[Messaging Events and Commands](/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/),
+and their behaviour over time is in
+[6. Runtime View](/systems/example-system-a/components/example-component-b/runtime-view/).
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', note: 'The contracts these blocks produce and consume.', status: 'generated'},
+    {to: '/systems/example-system-a/components/example-component-b/runtime-view/', label: '6. Runtime View', note: 'These blocks in motion.', status: 'mixed'},
+    {to: '/systems/example-system-a/components/example-component-b/architecture-decisions/adr-0001-versioned-rule-sets/', label: 'ADR-0001 — Versioned rule sets and models', note: 'Why the caches are separate.', status: 'custom'},
+    {to: '/systems/example-system-a/building-block-view/', label: 'Example System A — 5. Building Block View', note: 'This component in its system context.', status: 'mixed'},
+  ]}
+/>

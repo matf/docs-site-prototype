@@ -1,0 +1,69 @@
+---
+title: 8. Crosscutting Concerns
+sidebar_label: 8. Crosscutting Concerns
+sidebar_position: 0
+description: Crosscutting concepts of Example Component A — messaging catalogue, integration conventions, observability and security.
+---
+
+# 8. Crosscutting Concerns
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-a"
+  section="crosscutting-concerns"
+  status="mixed"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+Concepts that cut across every building block of this component. Two of these pages are
+generated, two are written by hand, and they are interleaved in the navigation in the order that
+makes sense to read them — not grouped by origin.
+
+| Page | Content | Maintained by |
+| --- | --- | --- |
+| [Messaging Events and Commands](/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/) | <StatusBadge status="generated" small /> | `bazg-msgdoc 0.4.1` |
+| [Integration Conventions](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/) | <StatusBadge status="custom" small /> | Team Alpha |
+| [Observability](/systems/example-system-a/components/example-component-a/crosscutting-concerns/observability/) | <StatusBadge status="generated" small /> | `bazg-obsdoc 0.2.0` |
+| [Security](/systems/example-system-a/components/example-component-a/crosscutting-concerns/security/) | <StatusBadge status="custom" small /> | Team Alpha with the Information Security Officer |
+
+:::tip[Custom pages between generated pages]
+*Integration Conventions* sits **between** two generated pages. It is a hand-written page with
+`sidebar_position: 2`, dropped into the same folder as the generated ones. Nothing else was
+configured — this is the insertion model described in
+[Documentation conventions](/conventions/).
+
+:::
+
+## Concepts inherited from the system
+
+These are documented once at system level and are not repeated here:
+
+- [Security and Data Protection](/systems/example-system-a/crosscutting-concerns/security-and-data-protection/) —
+  classification, retention and the authorisation model
+- [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/) —
+  service levels, alerts and procedures
+- [Development Guidelines](/systems/example-system-a/crosscutting-concerns/development-guidelines/) —
+  layering, logging and testing rules
+
+The component pages describe only what is specific to this component.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/crosscutting-concerns/',
+      label: 'Example System A — 8. Crosscutting Concerns',
+      note: 'The system-level concepts this component inherits.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/building-block-view/',
+      label: '5. Building Block View',
+      note: 'The building blocks these concepts cut across.',
+      status: 'mixed',
+    },
+  ]}
+/>

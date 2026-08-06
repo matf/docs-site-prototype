@@ -1,0 +1,48 @@
+---
+title: 7. Deployment View
+sidebar_label: 7. Deployment View
+description: Generated deployment detail for Example Component C.
+---
+
+# 7. Deployment View
+
+<DocHeader system="example-system-b" component="example-component-c" section="deployment-view" status="generated"
+  generated={{
+    generator: 'bazg-deploydoc 0.3.5',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-b-deployment',
+    revision: 'c19a40e',
+    generatedAt: '2026-08-03 03:11 UTC',
+    scope: 'Whole page',
+  }} />
+
+:::info[Fully generated page]
+Produced from the deployment descriptors.
+
+:::
+
+<Diagram title="Deployed workloads (production)" status="generated" source="bazg-deploydoc 0.3.5 · example-system-b-deployment@c19a40e">
+
+| Workload | Kind | Replicas | CPU request / limit | Memory request / limit |
+| --- | --- | --- | --- | --- |
+| `notification-gateway` | Deployment | 3 | 300 m / 1500 m | 512 Mi / 1024 Mi |
+| `notification-outbox-relay` | Deployment | 2 | 100 m / 500 m | 256 Mi / 512 Mi |
+
+</Diagram>
+
+<Diagram title="Configuration surface" status="generated" source="bazg-deploydoc 0.3.5 · example-system-b-deployment@c19a40e" caption="Secret values are never rendered.">
+
+| Key | Source | Purpose |
+| --- | --- | --- |
+| `BROKER_BOOTSTRAP` | ConfigMap | Broker endpoints |
+| `PROVIDER_BASE_URL` | ConfigMap | E-mail / push provider |
+| `PROVIDER_API_KEY` | Secret (platform-managed) | Provider credential |
+| `SEND_RATE_PER_SECOND` | ConfigMap | Token bucket size, below the provider limit |
+| `BATCH_SIZE` | ConfigMap | `500` |
+| `RETRY_MAX_ATTEMPTS` | ConfigMap | `5` |
+
+</Diagram>
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/deployment-view/', label: 'Example System B — 7. Deployment View', status: 'custom'},
+  {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/observability/', label: 'Observability', status: 'generated'},
+]} />

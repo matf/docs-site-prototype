@@ -1,0 +1,43 @@
+---
+title: 11. Risks and Technical Debt
+sidebar_label: 11. Risks and Technical Debt
+description: Known risks and accepted technical debt of Example Component B.
+---
+
+# 11. Risks and Technical Debt
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-b"
+  section="risks-and-technical-debt"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Risks
+
+| # | Risk | Impact | Likelihood | Mitigation |
+| --- | --- | --- | --- | --- |
+| CB-R1 | A rule set passes simulation but behaves differently in production. | High — mass holds or mass clearances | Medium | 60-minute observation window and one-step rollback — [Rule Set Rollout](/systems/example-system-a/components/example-component-b/runtime-view/rule-set-rollout/). |
+| CB-R2 | Prolonged fallback operation goes unnoticed. | Medium — decisions are conservative but not model-based | Low | `risk_fallback_ratio` on the *Risk decisions* dashboard; warning above 5 %. |
+| CB-R3 | History features drift as the upstream store changes its aggregation. | Medium — silent score drift | Medium | Feature schema versioned and asserted; drift monitor on the feature distributions. |
+| CB-R4 | The evaluator code changes behaviour, breaking reproducibility of old decisions. | High — audit exposure | Low | Debt item D-2 at system level: the evaluator version is not yet stamped into the decision. |
+
+## Technical debt
+
+| # | Debt | Why | Cost | Plan |
+| --- | --- | --- | --- | --- |
+| CB-D1 | The evaluator version is not part of the decision event. | Not foreseen at launch — system debt item D-2. | Reproducibility assumes the evaluator is unchanged. | Add `evaluatorVersion` to `RiskAssessmentCompleted` 1.5.0. |
+| CB-D2 | Shadow scoring runs in the same workload as production scoring. | Simpler deployment. | A slow shadow model adds latency to real decisions. | Separate workload once a second model family is introduced. |
+| CB-D3 | Simulation uses 30 days of cases regardless of seasonality. | The window was chosen for simulation runtime. | A rule set validated in July may behave differently in December. | Seasonal window selection; specialist unit is aware. |
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/risks-and-technical-debt/', label: 'Example System A — 11. Risks and Technical Debt', note: 'System-level risks and debt.', status: 'custom'},
+    {to: '/systems/example-system-a/components/example-component-b/quality-requirements/', label: '10. Quality Requirements', note: 'The scenarios these risks threaten.', status: 'custom'},
+  ]}
+/>

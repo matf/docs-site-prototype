@@ -1,0 +1,119 @@
+---
+title: Integration Conventions
+sidebar_label: Integration Conventions
+sidebar_position: 2
+description: Custom crosscutting page inserted between two generated pages — message headers, idempotency and versioning rules for Example Component A.
+---
+
+# Integration Conventions
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-a"
+  section="crosscutting-concerns"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-02',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+:::note[A custom page between two generated pages]
+This page sits between the generated
+[Messaging Events and Commands](/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/)
+and the generated
+[Observability](/systems/example-system-a/components/example-component-a/crosscutting-concerns/observability/)
+page. It was placed there with `sidebar_position: 2` in the frontmatter — no navigation
+configuration was changed, and the generator that owns its neighbours does not touch it.
+
+:::
+
+## Message headers
+
+Every message this component publishes carries the same envelope. The generated catalogue lists
+*which* messages exist; this page says what is true of *all* of them.
+
+| Header | Required | Meaning |
+| --- | --- | --- |
+| `messageId` | yes | Unique per message. The idempotency key on the consumer side. |
+| `correlationId` | yes | Constant for the whole life of one declaration. This is the field you search for during an incident. |
+| `causationId` | yes | `messageId` of the message that caused this one. Lets a chain be reconstructed backwards. |
+| `occurredAt` | yes | When the fact happened, not when it was published. |
+| `schemaVersion` | yes | Semantic version of the payload contract. |
+| `declarationId` | events only | Partition key — guarantees per-declaration ordering. |
+| `revision` | events only | Which revision the statement refers to. |
+
+`occurredAt` and the publication time differ whenever the outbox relay is behind. Consumers that
+need to reason about business time must use `occurredAt`; consumers reasoning about delivery use
+the broker timestamp.
+
+## Idempotency
+
+Delivery is at-least-once, so every consumer must be idempotent —
+[ADR-0001 of the system](/systems/example-system-a/architecture-decisions/adr-0001-event-driven-integration/).
+This component implements it with a `processed_message` table:
+
+1. Begin transaction.
+2. Insert `messageId` into `processed_message`; a unique-constraint violation means "already
+   handled" — commit nothing and acknowledge.
+3. Apply the business change and write the outbox row.
+4. Commit.
+
+The check is inside the business transaction, not before it. Checking first and applying second
+leaves a window in which a crash marks a message processed that never was.
+
+## Ordering
+
+Ordering is guaranteed **per declaration**, not globally, because `declarationId` is the
+partition key. Two declarations may be processed in any order relative to each other; two events
+about the same declaration never are. Every consumer is expected to rely on this and on nothing
+stronger.
+
+## Versioning
+
+| Change | Allowed within a major version | How |
+| --- | --- | --- |
+| Add an optional field | yes | Minor bump; consumers ignore what they do not know |
+| Add a required field | no | New major version on a new channel |
+| Remove or rename a field | no | New major version on a new channel |
+| Widen an enumeration | yes, with care | Consumers must treat unknown values as "unhandled", never crash |
+| Change the meaning of a field | no | This is the change that silently breaks everybody |
+
+A new major version publishes to a new channel (`…events.v2`); both channels run in parallel
+until every consumer has migrated, and the retirement date is announced with the first v2
+message. The `DeclarationAccepted` 1.x → 2.0 migration in the generated
+[version history](/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/)
+followed exactly this path and took four months.
+
+## Rejections are not errors
+
+A rejected declaration is a business outcome, published as
+<Msg system="example-system-a" component="example-component-a" name="DeclarationRejected" />.
+A message that cannot be parsed is a technical failure and is dead-lettered. Conflating the two
+is the mistake this convention exists to prevent: business rejections must never reach the
+dead-letter topic, and technical failures must never look like a business answer to the
+declarant.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
+      label: 'Messaging Events and Commands',
+      note: 'The generated catalogue these rules apply to.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/runtime-view/failover-and-replay/',
+      label: 'Failover and Replay',
+      note: 'Why replay is safe given the idempotency rule above.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/crosscutting-concerns/development-guidelines/',
+      label: 'Development Guidelines',
+      note: 'The system-wide rules this page refines.',
+      status: 'custom',
+    },
+  ]}
+/>

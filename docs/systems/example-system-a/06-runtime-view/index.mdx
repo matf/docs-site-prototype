@@ -1,0 +1,133 @@
+---
+title: 6. Runtime View
+sidebar_label: 6. Runtime View
+sidebar_position: 0
+description: End-to-end runtime scenarios of Example System A, from declaration submission to clearance.
+---
+
+# 6. Runtime View
+
+<DocHeader
+  system="example-system-a"
+  section="runtime-view"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+This section shows the system-level flows across both components. The component-internal
+behaviour is documented in each component's own runtime view, linked at the bottom of the page.
+
+## Scenario 1 — declaration cleared without control
+
+The normal case, and the one that dominates the volume.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant P as Trade Portal
+  participant A as Example Component A
+  participant B as Example Component B
+  participant BC as Border Control Operations
+
+  P->>A: SubmitDeclaration
+  A->>A: structural and customs rule validation
+  A->>A: persist declaration (revision 1)
+  A-->>P: DeclarationAccepted
+  A-->>B: DeclarationAccepted
+  B->>B: evaluate rule set 2026.07, score with model v14
+  B-->>A: RiskAssessmentCompleted (band = low)
+  A->>A: transition declaration to CLEARED
+  A-->>BC: DeclarationCleared
+  A-->>P: DeclarationCleared
+```
+
+The two components never call each other. Every arrow marked `-->>` is a durable message on the
+central broker, which is what keeps intake available when the risk engine is not.
+
+## Scenario 2 — consignment withheld for inspection
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant A as Example Component A
+  participant B as Example Component B
+  participant I as Inspection Planning
+  participant O as Customs officer
+
+  A-->>B: DeclarationAccepted
+  B->>B: evaluate rule set, score with model v14
+  B-->>A: RiskAssessmentCompleted (band = high)
+  B-->>I: OrderInspection
+  A->>A: transition declaration to HELD
+  A-->>I: DeclarationHeld
+  I->>O: schedule control
+  O->>I: record control outcome
+  I-->>B: control outcome feedback
+  B->>B: attach outcome to the risk case
+```
+
+The control outcome flows back to the risk engine rather than to intake: the risk case owns the
+evidence, and the declaration only needs to know that it was held.
+
+## Scenario 3 — correction of an accepted declaration
+
+A correction resets the risk decision. This is the scenario that makes the eventual consistency
+of the declaration state visible to the business.
+
+```mermaid
+flowchart LR
+  classDef step fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef msg fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+
+  C1["CorrectDeclaration received"]:::msg
+  C2{"Declaration already<br/>CLEARED?"}:::step
+  C3["Reject correction"]:::step
+  C4["Persist revision n+1"]:::step
+  C5["DeclarationAmended"]:::msg
+  C6["Invalidate previous risk decision"]:::step
+  C7["Re-assess, RiskAssessmentCompleted"]:::msg
+  C8["State follows the new decision"]:::step
+
+  C1 --> C2
+  C2 -->|yes| C3
+  C2 -->|no| C4 --> C5 --> C6 --> C7 --> C8
+```
+
+## Failure and load behaviour
+
+The behaviour under an unavailable downstream and under peak load is a separate custom page, so
+that the happy-path scenarios above stay readable:
+[Peak Load and Degradation](/systems/example-system-a/runtime-view/peak-load-and-degradation/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/runtime-view/peak-load-and-degradation/',
+      label: 'Peak Load and Degradation',
+      note: 'Custom operational scenario below this arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/runtime-view/',
+      label: 'Example Component A — 6. Runtime View',
+      note: 'Generated reaction graph for the intake component.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/runtime-view/',
+      label: 'Example Component B — 6. Runtime View',
+      note: 'Generated reaction graph for the risk engine.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
+      label: 'Messaging Events and Commands (Component A)',
+      note: 'Contracts of the messages used above.',
+      status: 'generated',
+    },
+  ]}
+/>

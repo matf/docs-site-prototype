@@ -1,0 +1,58 @@
+---
+title: 12. Glossary
+sidebar_label: 12. Glossary
+description: Terms specific to Example Component B.
+---
+
+# 12. Glossary
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-b"
+  section="glossary"
+  status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
+    revision: '3fd8b52',
+    generatedAt: '2026-08-04 03:14 UTC',
+    scope: 'Aggregate and table names extracted from the domain model',
+  }}
+  custom={{owner: 'Team Alpha — Risk Squad (fictional)', lastReviewed: '2026-07-28'}}
+/>
+
+The system glossary in [Example System A — 12. Glossary](/systems/example-system-a/glossary/)
+applies. Only component-specific terms are listed here.
+
+<Diagram
+  title="Domain model terms"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52">
+
+| Term | Meaning |
+| --- | --- |
+| `RiskCase` | The aggregate root. One case per declaration revision. |
+| `Decision` | An immutable record: score, band, fired rules, rule set version, model version. |
+| `band` | `low`, `elevated` or `high`. The decision that downstream systems act on. |
+| `firedRules[]` | Identifiers of the rules that contributed to the score. The officer-facing explanation. |
+| `ruleSetVersion` | Immutable version of the rule set, e.g. `2026.07`. |
+| `modelVersion` | Immutable version of the scoring model, e.g. `v14`. |
+| `fallback` | Flag marking a decision taken without the scoring model. |
+| `shadow` | Flag marking a decision computed for evaluation only; never published. |
+
+</Diagram>
+
+## Terms used carefully
+
+| Term | Note |
+| --- | --- |
+| **Score** | A number without meaning on its own. Only the **band** is a decision. Officers are shown the band and the fired rules, never the raw score. |
+| **Invalidated** | A case whose revision was superseded. Invalidated cases keep their decision for the record; they are not deleted. |
+| **Recalculation** | Produces a *new* decision with a new identifier. It never overwrites an existing one. |
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/glossary/', label: 'Example System A — 12. Glossary', note: 'The shared domain vocabulary.', status: 'mixed'},
+    {to: '/systems/example-system-a/components/example-component-b/runtime-view/rule-set-rollout/', label: 'Rule Set Rollout', note: 'Where versions and recalculation are used.', status: 'custom'},
+  ]}
+/>

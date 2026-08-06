@@ -1,0 +1,71 @@
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.stat {
+  border: 1px solid var(--bazg-border);
+  border-radius: var(--ifm-global-radius);
+  padding: 0.85rem 1rem 0.9rem;
+  background: var(--bazg-surface-alt);
+}
+
+.statValue {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ifm-heading-color);
+}
+
+.statLabel {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--bazg-muted);
+}
+
+.legend {
+  list-style: none;
+  margin: 1.25rem 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.legendItem {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--bazg-border);
+  border-radius: var(--ifm-global-radius);
+}
+
+.legendText {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .legendItem {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+}

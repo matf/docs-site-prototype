@@ -1,0 +1,86 @@
+---
+title: 12. Glossary
+sidebar_label: 12. Glossary
+description: Domain and technical terms used across the documentation of Example System A.
+---
+
+# 12. Glossary
+
+<DocHeader
+  system="example-system-a"
+  section="glossary"
+  status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
+    revision: 'a41f7c9',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Technical terms extracted from the domain model and message schemas',
+  }}
+  custom={{
+    owner: 'Team Alpha with the specialist unit (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Domain terms
+
+Agreed with the specialist unit. Where the everyday word and the system's word differ, the
+difference is stated — that is the whole point of this table.
+
+| Term | Meaning in this system |
+| --- | --- |
+| **Declaration** | The formal statement about a consignment crossing the border. The unit of work of the whole system. |
+| **Revision** | An immutable version of a declaration. A correction creates a new revision; nothing is ever overwritten. |
+| **Consignment** | The goods covered by one declaration, moving from one consignor to one consignee. |
+| **Declarant** | The party legally responsible for the declaration. Not necessarily the party that submitted it. |
+| **Clearance** | The decision that a consignment may proceed. Terminal state of the happy path. |
+| **Hold** | The decision that a consignment must not proceed until a control decision exists. |
+| **Risk case** | The assessment record for one declaration revision. Owned by the risk engine, not by the declaration. |
+| **Score band** | `low`, `elevated` or `high`. The band, not the raw score, drives the decision. |
+| **Rule set** | A versioned collection of customs and risk rules, deployed as data. |
+
+## Technical terms
+
+<Diagram
+  title="Technical terms from the domain model"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
+  caption="Extracted from the aggregate names and message schemas in the component repositories.">
+
+| Term | Meaning | Appears in |
+| --- | --- | --- |
+| `correlationId` | Identifier that ties every message and log line of one declaration together. | All messages |
+| `causationId` | Identifier of the message that caused this one. | All messages |
+| Outbox | Table written in the same transaction as the state change, from which events are published. | [Example Component A](/systems/example-system-a/components/example-component-a/building-block-view/) |
+| Dead-letter topic | Where a message goes after its retries are exhausted. | [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/) |
+| Consumer lag | Distance between the newest message and the one the consumer is processing. | [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/) |
+| Idempotent consumer | A consumer for which processing the same message twice has the same effect as once. | [Development Guidelines](/systems/example-system-a/crosscutting-concerns/development-guidelines/) |
+
+</Diagram>
+
+## Terms deliberately not used
+
+| Avoided | Use instead | Reason |
+| --- | --- | --- |
+| "Customer" | Declarant | The declarant has a legal role, not a commercial one. |
+| "Order" | Declaration | "Order" means an inspection order in this domain. |
+| "Approved" | Cleared | Approval suggests discretion; clearance is a rule-based outcome. |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/glossary/',
+      label: 'Example Component A — 12. Glossary',
+      note: 'Component-specific terms.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/introduction-and-goals/',
+      label: '1. Introduction and Goals',
+      note: 'Where these terms are first used.',
+      status: 'custom',
+    },
+  ]}
+/>

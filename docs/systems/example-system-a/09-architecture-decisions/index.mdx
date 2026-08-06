@@ -1,0 +1,59 @@
+---
+title: 9. Architecture Decisions
+sidebar_label: 9. Architecture Decisions
+sidebar_position: 0
+description: Architecture decision records for Example System A.
+---
+
+# 9. Architecture Decisions
+
+<DocHeader
+  system="example-system-a"
+  section="architecture-decisions"
+  status="custom"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+System-level decisions — the ones that constrain more than one component. Decisions that only
+affect a single component are recorded on that component, for example
+[ADR-0001 of Example Component A](/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0001-transactional-outbox/).
+
+| ID | Decision | Status | Date | Affects |
+| --- | --- | --- | --- | --- |
+| [ADR-0001](/systems/example-system-a/architecture-decisions/adr-0001-event-driven-integration/) | Event-driven integration between components | Accepted | 2025-11-14 | [5. Building Block View](/systems/example-system-a/building-block-view/), [6. Runtime View](/systems/example-system-a/runtime-view/), both components |
+| [ADR-0002](/systems/example-system-a/architecture-decisions/adr-0002-hosting-and-data-residency/) | Two Swiss data centres, warm standby | Accepted | 2025-12-02 | [7. Deployment View](/systems/example-system-a/deployment-view/), [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/) |
+
+## Recording a decision
+
+An ADR is a custom page. Add a file to
+`docs/systems/example-system-a/09-architecture-decisions/` following the naming pattern
+`adr-NNNN-short-title.mdx`, give it a `sidebar_position`, and add a row to the table above. Each
+ADR names the arc42 sections and components it affects, so the decision and its consequences stay
+connected.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/solution-strategy/',
+      label: '4. Solution Strategy',
+      note: 'The decisions in their context.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/architecture-decisions/',
+      label: 'Example Component A — 9. Architecture Decisions',
+      note: 'Component-level decisions.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/risks-and-technical-debt/',
+      label: '11. Risks and Technical Debt',
+      note: 'The consequences the team is living with.',
+      status: 'custom',
+    },
+  ]}
+/>

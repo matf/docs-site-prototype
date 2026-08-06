@@ -1,5 +1,113 @@
 ---
 slug: /
-title: Home
+id: index
+title: BAZG System Documentation
+sidebar_label: Start page
+displayed_sidebar: docsSidebar
+description: Prototype of the BAZG architecture documentation portal — one arc42 documentation tree for systems and components, mixing generated and manually maintained content.
+hide_table_of_contents: false
 ---
-# Home
+
+# BAZG System Documentation
+
+One documentation tree for every BAZG system and every component inside it, structured
+directly according to **arc42**, with generated and manually maintained documentation shown
+side by side.
+
+<PrototypeNotice />
+
+This site is a **navigation and information-architecture prototype**. It demonstrates how
+architecture documentation could be organised, cross-linked and labelled once parts of it are
+produced by a generator. It is not a documentation-generation backend: the "generated" pages
+here are realistic samples with the structure a generator would produce.
+
+<StatsRow />
+
+## Systems
+
+<CardGrid>
+  <SystemCard id="example-system-a" />
+  <SystemCard id="example-system-b" />
+</CardGrid>
+
+[Browse all systems →](/systems/)
+
+## How this documentation is organised
+
+Every system and every component is documented with the same twelve arc42 sections, and those
+sections start **directly** beneath the system or the component. There is no intermediate
+`Overview`, `arc42` or `Other Topics` node in the navigation — the numbered arc42 sections are
+the first thing you see when you open a system.
+
+```text
+Systems
+└── Example System A
+    ├── 1. Introduction and Goals
+    ├── 2. Architecture Constraints
+    ├── …
+    ├── 12. Glossary
+    └── Components
+        ├── Example Component A
+        │   ├── 1. Introduction and Goals
+        │   ├── …
+        │   └── 12. Glossary
+        └── Example Component B
+```
+
+Components are a sibling of the system's arc42 sections, not a sub-tree of the system's
+*5. Building Block View*. The system's building block view **describes and links** its
+components; the component documentation itself lives one level down, under `Components`, where
+it has room for its own twelve sections.
+
+Additional documentation — security, operations, messaging, development guidelines,
+observability — is never collected in a generic catch-all category. It is filed under the arc42
+section it belongs to, which in most cases is *8. Crosscutting Concerns*.
+
+## Generated, custom and mixed content
+
+Every page says where its content comes from, and every page that carries generated content
+shows the generator, the source repository, the source revision and the generation timestamp.
+
+<ContentLegend />
+
+Generated blocks are always framed, so a page can combine a hand-written explanation with a
+generated diagram or table without the reader having to guess which is which. See
+[Documentation conventions](/conventions/) for the rules and the folder layout behind this.
+
+## Where to start
+
+<RelatedDocs
+  title="Suggested entry points"
+  items={[
+    {
+      to: '/systems/example-system-a/',
+      label: 'Example System A',
+      note: 'The fully documented sample system with two components.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Example System A — 5. Building Block View',
+      note: 'How a system links to its components.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/runtime-view/',
+      label: 'Example Component A — 6. Runtime View',
+      note: 'Generated reaction graph linked to the message catalogue.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
+      label: 'Example Component A — Messaging Events and Commands',
+      note: 'Generated catalogue of commands and events.',
+      status: 'generated',
+    },
+    {
+      to: '/conventions/',
+      label: 'Documentation conventions',
+      note: 'Where to put a new page so it appears in the right place.',
+      status: 'custom',
+    },
+  ]}
+/>

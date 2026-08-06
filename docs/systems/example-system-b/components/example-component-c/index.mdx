@@ -1,0 +1,51 @@
+---
+title: Example Component C
+sidebar_label: Example Component C
+description: Landing page of Example Component C (fictional Notification Gateway) — arc42 sections and documentation status.
+---
+
+# Example Component C
+
+**Notification Gateway (fictional).** Fans operational notifications out to e-mail, push and the
+public status page, and records what was delivered.
+
+<DocHeader
+  system="example-system-b"
+  component="example-component-c"
+  status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
+    revision: 'd52c118',
+    generatedAt: '2026-08-03 03:10 UTC',
+    scope: 'Context diagram, component view, reaction graph, messaging catalogue',
+  }}
+  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09', reviewStatus: 'Reviewed'}}
+/>
+
+<PrototypeNotice />
+
+:::info[Reduced sample]
+All twelve arc42 sections are present with concise content, to show that the structure is the
+same at every level. The in-depth examples are
+[Example Component A](/systems/example-system-a/components/example-component-a/) and
+[Example Component B](/systems/example-system-a/components/example-component-b/).
+
+:::
+
+| Property | Value |
+| --- | --- |
+| **Part of** | [Example System B](/systems/example-system-b/) |
+| **Responsible team** | Team Beta — Channels Squad (fictional) |
+| **Role in the system** | Outbound channel adapter |
+| **Source repository** | `git.example.admin.ch/bazg-proto/notification-gateway` |
+| **Last generation run** | 2026-08-03 03:10 UTC from revision `d52c118` |
+
+## arc42 sections
+
+<Arc42SectionNav system="example-system-b" component="example-component-c" />
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/', label: 'All components of Example System B', note: 'Back one level.'},
+  {to: '/systems/example-system-b/building-block-view/', label: 'Example System B — 5. Building Block View', status: 'mixed'},
+]} />

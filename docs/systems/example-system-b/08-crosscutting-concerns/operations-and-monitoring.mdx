@@ -1,0 +1,41 @@
+---
+title: Operations and Monitoring
+sidebar_label: Operations and Monitoring
+sidebar_position: 1
+description: Custom crosscutting concept — service levels, alerts and procedures for Example System B.
+---
+
+# Operations and Monitoring
+
+<DocHeader system="example-system-b" section="crosscutting-concerns" status="custom"
+  custom={{owner: 'Team Beta with Platform Operations (fictional)', lastReviewed: '2026-07-11', reviewStatus: 'Reviewed'}} />
+
+## Service level objectives
+
+| Indicator | Objective |
+| --- | --- |
+| Public site availability | 99.9 % (cached path) |
+| Freshness | Waiting times marked stale within 10 minutes of the last measurement |
+| Notification delivery | 95 % within 2 minutes |
+| Cache hit ratio during a spike | Above 98 % |
+
+## Alerts
+
+| Alert | Trigger | First action |
+| --- | --- | --- |
+| `sensor-feed-stale` | No measurement for 10 minutes | Confirm with the sensor platform team; the site self-marks as stale meanwhile |
+| `notification-backlog` | Undelivered notifications older than 5 minutes | Check the provider status; batching is rate-aware and will catch up |
+| `cache-miss-spike` | Hit ratio below 90 % for 5 minutes | Verify that invalidation is not looping |
+
+## Correcting a wrong announcement
+
+Risk **BR-1** in
+[11. Risks and Technical Debt](/systems/example-system-b/risks-and-technical-debt/) has no
+technical mitigation — a delivered notification cannot be recalled. The procedure is a correction
+broadcast that references the original message identifier, sent on the same channels, in all four
+languages.
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/observability/', label: 'Example Component C — Observability', status: 'generated'},
+  {to: '/systems/example-system-b/quality-requirements/', label: '10. Quality Requirements', status: 'custom'},
+]} />

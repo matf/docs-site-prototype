@@ -1,0 +1,25 @@
+---
+title: 4. Solution Strategy
+sidebar_label: 4. Solution Strategy
+description: The approach chosen inside Example Component C.
+---
+
+# 4. Solution Strategy
+
+<DocHeader system="example-system-b" component="example-component-c" section="solution-strategy" status="custom"
+  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+
+| Approach | Addresses |
+| --- | --- |
+| **One delivery attempt record per (notification, subscriber, channel).** The record is the idempotency key. | No duplicate delivery |
+| **Rate-aware batching** with a token bucket sized below the provider limit. | Constraint CC-1, reach |
+| **Retry with exponential backoff, then dead-letter.** A dead-lettered delivery raises `NotificationFailed`. | Honest delivery records |
+| **Channel adapters behind one port.** Adding a channel means adding an adapter. | B-ADR-0003, changeability |
+
+The delivery attempt record is written *before* the provider call and updated after, so a crash
+mid-call leaves an attempt in `IN_FLIGHT` that the retry path reconciles — never a silent second
+send.
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/example-component-c/runtime-view/', label: '6. Runtime View', status: 'mixed'},
+]} />

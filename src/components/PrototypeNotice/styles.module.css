@@ -1,0 +1,27 @@
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.6rem;
+  margin: 1.25rem 0 1.75rem;
+  padding: 0.6rem 0.9rem 0.7rem;
+  border: 1px solid var(--bazg-border);
+  border-left: 3px solid var(--ifm-color-primary);
+  border-radius: var(--ifm-global-radius);
+  background: var(--bazg-accent-soft);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary-darkest);
+  flex: none;
+}
+
+[data-theme='dark'] .label {
+  color: var(--ifm-color-primary-lighter);
+}

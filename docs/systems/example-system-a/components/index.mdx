@@ -1,0 +1,44 @@
+---
+title: Components
+sidebar_label: Components
+description: Components of Example System A, each documented with its own twelve arc42 sections.
+---
+
+# Components of Example System A
+
+Each component below is documented with the same twelve arc42 sections as the system itself.
+`Components` is a sibling of the system's arc42 sections, not a sub-tree of
+[5. Building Block View](/systems/example-system-a/building-block-view/) — the building block view
+*describes and links* the components, the documentation itself lives here.
+
+<CardGrid>
+  <ComponentCard system="example-system-a" component="example-component-a" />
+  <ComponentCard system="example-system-a" component="example-component-b" />
+</CardGrid>
+
+## What every component documents
+
+| arc42 section | Content | Produced by |
+| --- | --- | --- |
+| 3. Context and Scope | Context diagram with callers, upstream and downstream systems | <StatusBadge status="generated" small /> plus explanation |
+| 5. Building Block View | Internal decomposition — adapters, application service, domain, persistence | <StatusBadge status="generated" small /> plus explanation |
+| 6. Runtime View | Reaction graph and sequence diagrams for the asynchronous flows | <StatusBadge status="generated" small /> plus custom scenarios |
+| 8. Crosscutting Concerns → Messaging Events and Commands | Catalogue of consumed and published messages | <StatusBadge status="generated" small /> |
+| Everything else | Written by the owning team | <StatusBadge status="custom" small /> |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/',
+      label: 'Example System A',
+      note: 'Back to the system landing page.',
+      status: 'mixed',
+    },
+    {
+      to: '/systems/example-system-a/building-block-view/',
+      label: '5. Building Block View',
+      note: 'How these components fit together.',
+      status: 'mixed',
+    },
+  ]}
+/>

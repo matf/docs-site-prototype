@@ -1,0 +1,127 @@
+---
+title: 3. Context and Scope
+sidebar_label: 3. Context and Scope
+description: Generated context diagram of Example Component B — callers, upstream and downstream systems, external dependencies and message flows.
+---
+
+# 3. Context and Scope
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-b"
+  section="context-and-scope"
+  status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
+    revision: '3fd8b52',
+    generatedAt: '2026-08-04 03:14 UTC',
+    scope: 'Context diagram and the inbound/outbound relationship tables',
+  }}
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Reading this page
+
+This component has no business API — everything it does starts with a message. That is visible in
+the generated diagram below: the only synchronous arrows are to the model registry and the
+history store, and both are dependencies rather than callers.
+
+## Generated context diagram
+
+<Diagram
+  title="Component context — Example Component B"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52"
+  caption="Solid arrows are message flows on the broker, dashed arrows are synchronous calls. Direction is from producer to consumer.">
+
+```mermaid
+flowchart LR
+  classDef comp fill:#fbeef0,stroke:#c8102e,stroke-width:2px,color:#12161a
+  classDef peer fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef ext fill:#f6f7f9,stroke:#9aa4ae,stroke-dasharray:4 3,color:#12161a
+  classDef actor fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+
+  ANA["Risk analyst"]:::actor
+  OFF["Customs officer"]:::actor
+
+  CA["Example Component A<br/>Declaration Intake Service<br/>(upstream, same system)"]:::peer
+  CONSOLE["Risk Operations Console<br/>(caller, external)"]:::peer
+  INSP["Inspection Planning<br/>(downstream, external)"]:::peer
+  AUDIT["Audit Trail Service<br/>(downstream, external)"]:::peer
+
+  REG["Model Registry<br/>(dependency, external)"]:::ext
+  HIST["Declarant History Store<br/>(dependency, external)"]:::ext
+  DB[("Risk case store")]:::ext
+
+  CB["Example Component B<br/>Risk Assessment Engine"]:::comp
+
+  ANA --> CONSOLE
+  OFF --> INSP
+  CA -->|"DeclarationAccepted<br/>DeclarationAmended"| CB
+  CONSOLE -->|"RecalculateRisk"| CB
+  CB -->|"RiskAssessmentCompleted"| CA
+  CB -->|"OrderInspection"| INSP
+  CB -->|"RiskAssessmentCompleted<br/>RiskModelDeployed"| AUDIT
+  CB -.->|"load rule set and model version"| REG
+  CB -.->|"aggregated history features"| HIST
+  CB --- DB
+```
+
+</Diagram>
+
+## Inbound relationships
+
+<Diagram
+  title="Inbound"
+  status="generated"
+  source="bazg-msgdoc 0.4.1 · risk-assessment-engine@3fd8b52">
+
+| From | What | Transport | Contract |
+| --- | --- | --- | --- |
+| Example Component A | <Msg system="example-system-a" component="example-component-b" name="DeclarationAccepted" /> | Broker | `declaration/DeclarationAccepted.avsc` 2.0.0 |
+| Example Component A | <Msg system="example-system-a" component="example-component-b" name="DeclarationAmended" /> | Broker | `declaration/DeclarationAmended.avsc` 1.2.0 |
+| Risk Operations Console | <Msg system="example-system-a" component="example-component-b" name="RecalculateRisk" /> | Broker | `risk/RecalculateRisk.avsc` 1.0.0 |
+
+</Diagram>
+
+## Outbound relationships
+
+<Diagram
+  title="Outbound"
+  status="generated"
+  source="bazg-msgdoc 0.4.1 · risk-assessment-engine@3fd8b52">
+
+| To | What | Transport | Contract |
+| --- | --- | --- | --- |
+| Example Component A, Audit | <Msg system="example-system-a" component="example-component-b" name="RiskAssessmentCompleted" /> | Broker | `risk/RiskAssessmentCompleted.avsc` 1.4.0 |
+| Inspection Planning | <Msg system="example-system-a" component="example-component-b" name="OrderInspection" /> | Broker | `inspection/OrderInspection.avsc` 2.1.0 |
+| Model Registry, Audit | <Msg system="example-system-a" component="example-component-b" name="RiskModelDeployed" /> | Broker | `risk/RiskModelDeployed.avsc` 1.0.0 |
+| Model Registry | Rule set and model retrieval | HTTPS | `registry-api 2.0`, read-only |
+| Declarant History Store | Aggregated history features | HTTPS | `history-api 1.4`, read-only |
+
+</Diagram>
+
+## What the diagram does not say
+
+- **The Declarant History Store is read-only and feature-level.** It never returns identity
+  attributes — constraint CB-2 in
+  [2. Architecture Constraints](/systems/example-system-a/components/example-component-b/architecture-constraints/).
+  Fairness review depends on this boundary holding.
+- **The Model Registry is a hard dependency at case start and a soft one afterwards.** Versions
+  are cached, so a registry outage does not stop assessment of cases that use an already-loaded
+  version; only a newly published version cannot be picked up.
+- **`OrderInspection` is a command, not an event.** It is the only imperative message this
+  component sends, and it goes to a system that may refuse it.
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', note: 'Full contract details.', status: 'generated'},
+    {to: '/systems/example-system-a/components/example-component-b/building-block-view/', label: '5. Building Block View', note: 'What is inside the red box.', status: 'mixed'},
+    {to: '/systems/example-system-a/components/example-component-a/context-and-scope/', label: 'Example Component A — 3. Context and Scope', note: 'The other side of the conversation.', status: 'mixed'},
+  ]}
+/>

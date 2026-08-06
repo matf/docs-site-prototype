@@ -1,0 +1,22 @@
+---
+title: 4. Solution Strategy
+sidebar_label: 4. Solution Strategy
+description: The fundamental approach chosen for Example System B.
+---
+
+# 4. Solution Strategy
+
+<DocHeader system="example-system-b" section="solution-strategy" status="custom"
+  custom={{owner: 'Team Beta — Public Information Services (fictional)', lastReviewed: '2026-07-11'}} />
+
+| Approach | Addresses | Note |
+| --- | --- | --- |
+| **Publish statically, cache aggressively.** The public path renders pre-built pages served from a cache; no request touches a database. | Constraint B-4, availability | Survives a 20× spike by construction. |
+| **Freshness is part of the content.** Every published figure carries its measurement time and is marked stale after a threshold. | Correctness goal | Better a visible "no current data" than a plausible wrong number. |
+| **Notification fan-out in one component.** Channel handling, retries and delivery records are isolated in [Example Component C](/systems/example-system-b/components/example-component-c/). | Reach goal, changeability | A new channel is a change in one component. |
+| **Translations are content, not code.** Templates in four languages are versioned data. | Constraint B-2 | A missing translation blocks publication rather than falling back to German. |
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/building-block-view/', label: '5. Building Block View', status: 'mixed'},
+  {to: '/systems/example-system-b/architecture-decisions/', label: '9. Architecture Decisions', status: 'custom'},
+]} />

@@ -1,0 +1,41 @@
+---
+title: Messaging Events and Commands
+sidebar_label: Messaging Events and Commands
+sidebar_position: 1
+description: Generated catalogue of every command and event consumed and published by Example Component C.
+---
+
+# Messaging Events and Commands
+
+<DocHeader system="example-system-b" component="example-component-c" section="crosscutting-concerns" status="generated"
+  generated={{
+    generator: 'bazg-msgdoc 0.4.1',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
+    revision: 'd52c118',
+    generatedAt: '2026-08-03 03:10 UTC',
+    scope: 'Whole page',
+  }} />
+
+:::info[Fully generated page]
+Extracted from the message contracts and handler annotations. The system-wide messaging
+conventions are documented in
+[Integration Conventions](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/)
+and apply here too.
+
+:::
+
+<MessagingCatalogue system="example-system-b" component="example-component-c" />
+
+## Where these messages appear
+
+| Message | Runtime documentation |
+| --- | --- |
+| <Msg system="example-system-b" component="example-component-c" name="NotificationRequested" /> | [Reaction graph](/systems/example-system-b/components/example-component-c/runtime-view/) |
+| <Msg system="example-system-b" component="example-component-c" name="SendOperationalBroadcast" /> | [Broadcast scenario](/systems/example-system-b/components/example-component-c/runtime-view/) |
+| <Msg system="example-system-b" component="example-component-c" name="NotificationDelivered" /> | [Example System B — 6. Runtime View](/systems/example-system-b/runtime-view/) |
+| <Msg system="example-system-b" component="example-component-c" name="NotificationFailed" /> | [Operations and Monitoring](/systems/example-system-b/crosscutting-concerns/operations-and-monitoring/) |
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/example-component-c/runtime-view/', label: '6. Runtime View', status: 'mixed'},
+  {to: '/systems/example-system-b/components/example-component-c/building-block-view/', label: '5. Building Block View', status: 'mixed'},
+]} />

@@ -1,0 +1,74 @@
+---
+title: 5. Building Block View
+sidebar_label: 5. Building Block View
+description: Generated internal decomposition of Example Component C.
+---
+
+# 5. Building Block View
+
+<DocHeader system="example-system-b" component="example-component-c" section="building-block-view" status="mixed"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
+    revision: 'd52c118',
+    generatedAt: '2026-08-03 03:10 UTC',
+    scope: 'Internal component view and building block table',
+  }}
+  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+
+<Diagram
+  title="Internal component view — Example Component C"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · notification-gateway@d52c118">
+
+```mermaid
+flowchart TB
+  classDef adapter fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+  classDef app fill:#fdf4e5,stroke:#8a5a00,color:#12161a
+  classDef domain fill:#fbeef0,stroke:#c8102e,stroke-width:2px,color:#12161a
+  classDef ext fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+
+  subgraph CC["Example Component C"]
+    direction TB
+    MIN["Messaging Adapter (inbound)"]:::adapter
+    APP["Delivery Service<br/>fan-out, batching, retry"]:::app
+    DOM["Domain<br/>Notification, DeliveryAttempt,<br/>subscription matching"]:::domain
+    EMAIL["E-mail Channel Adapter"]:::adapter
+    PUSH["Push Channel Adapter"]:::adapter
+    PAGE["Status Page Adapter"]:::adapter
+    PERS["Persistence Adapter<br/>subscriptions, attempts, outbox"]:::adapter
+    MOUT["Messaging Adapter (outbound)"]:::adapter
+  end
+
+  BROKER["Broker"]:::ext
+  PROV["E-mail / push provider"]:::ext
+  DB[("Subscription and delivery store")]:::ext
+
+  BROKER --> MIN --> APP --> DOM
+  APP --> EMAIL --> PROV
+  APP --> PUSH --> PROV
+  APP --> PAGE
+  APP --> PERS --> DB
+  PERS -.-> MOUT --> BROKER
+```
+
+</Diagram>
+
+| Building block | Responsibility |
+| --- | --- |
+| **Messaging Adapter (inbound)** | Deserialises the notification request and the broadcast command. |
+| **Delivery Service** | Matches subscriptions, batches within the rate limit, drives retries. |
+| **Domain** | `Notification`, `DeliveryAttempt`, subscription matching rules. |
+| **Channel adapters** | One per channel, behind a single port. Adding a channel adds an adapter and nothing else. |
+| **Persistence Adapter** | Subscriptions, delivery attempts, outbox. |
+| **Messaging Adapter (outbound)** | Publishes delivery and failure events from the outbox. |
+
+Messages exchanged by these blocks are catalogued in
+[Messaging Events and Commands](/systems/example-system-b/components/example-component-c/crosscutting-concerns/messaging-events-and-commands/);
+their behaviour over time is in
+[6. Runtime View](/systems/example-system-b/components/example-component-c/runtime-view/).
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', status: 'generated'},
+  {to: '/systems/example-system-b/components/example-component-c/runtime-view/', label: '6. Runtime View', status: 'mixed'},
+]} />

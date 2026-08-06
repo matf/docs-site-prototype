@@ -1,0 +1,133 @@
+---
+title: 7. Deployment View
+sidebar_label: 7. Deployment View
+description: Environments, data centres and the mapping of Example System A's components onto infrastructure.
+---
+
+# 7. Deployment View
+
+<DocHeader
+  system="example-system-a"
+  section="deployment-view"
+  status="mixed"
+  generated={{
+    generator: 'bazg-deploydoc 0.3.5',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-deployment',
+    revision: 'ff02b7c',
+    generatedAt: '2026-08-04 03:15 UTC',
+    scope: 'Deployment topology diagram and the environment table',
+  }}
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-22',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Infrastructure
+
+Both data centres are in Switzerland, which is constraint **O-1** from
+[2. Architecture Constraints](/systems/example-system-a/architecture-constraints/) and the
+subject of [ADR-0002](/systems/example-system-a/architecture-decisions/adr-0002-hosting-and-data-residency/).
+The second site is warm standby, not active/active: the broker's ordering guarantees are easier
+to reason about with a single writing site, and the recovery objective allows it.
+
+<Diagram
+  title="Deployment topology — production"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c"
+  caption="Generated from the deployment descriptors. Replica counts are the configured baseline, not the current autoscaled state.">
+
+```mermaid
+flowchart TB
+  classDef dc fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef pod fill:#fbeef0,stroke:#c8102e,color:#12161a
+  classDef svc fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+
+  subgraph DC1["Data centre 1 — active (CH)"]
+    direction TB
+    K1["Container platform namespace<br/>example-system-a"]:::dc
+    CA1["declaration-intake-service<br/>6 replicas"]:::pod
+    CB1["risk-assessment-engine<br/>4 replicas"]:::pod
+    DB1[("Managed PostgreSQL<br/>primary")]:::svc
+    MQ1["Message broker cluster"]:::svc
+    K1 --- CA1
+    K1 --- CB1
+    CA1 --- DB1
+    CB1 --- DB1
+    CA1 --- MQ1
+    CB1 --- MQ1
+  end
+
+  subgraph DC2["Data centre 2 — warm standby (CH)"]
+    direction TB
+    K2["Container platform namespace<br/>example-system-a"]:::dc
+    CA2["declaration-intake-service<br/>0 replicas"]:::pod
+    CB2["risk-assessment-engine<br/>0 replicas"]:::pod
+    DB2[("Managed PostgreSQL<br/>synchronous replica")]:::svc
+    K2 --- CA2
+    K2 --- CB2
+  end
+
+  DB1 -->|"synchronous replication"| DB2
+  MQ1 -->|"mirrored topics"| DC2
+  EG["Audited egress proxy"]:::svc
+  CA1 --> EG
+  EG --> TARIFF["Tariff and Rules Service (external)"]:::dc
+```
+
+</Diagram>
+
+## Environments
+
+<Diagram
+  title="Environments"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c"
+  caption="Extracted from the environment definitions in the deployment repository.">
+
+| Environment | Purpose | Data | Sizing | Deployed from |
+| --- | --- | --- | --- | --- |
+| `dev` | Team integration | Synthetic only | 1 replica each | Every merge to `main` |
+| `test` | Specialist unit acceptance | Anonymised extract | 2 replicas each | Manual promotion |
+| `staging` | Release verification, load tests | Anonymised extract, production volume | Production sizing | Release candidate tag |
+| `prod` | Operation | Production | See topology above | Release tag, four-eyes approval |
+
+</Diagram>
+
+## Operational properties
+
+| Property | Value |
+| --- | --- |
+| Recovery time objective | 30 minutes (site failure) |
+| Recovery point objective | 0 for accepted declarations (synchronous replication) |
+| Deployment strategy | Rolling, one replica at a time, health-gated |
+| Maintenance window | 01:00–03:00 CET, database patching only |
+| Scaling trigger | Broker consumer lag and CPU; documented in the runbook |
+
+The failover procedure itself, including who may declare a site failure, is operational
+documentation and lives in
+[Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/deployment-view/',
+      label: 'Example Component A — 7. Deployment View',
+      note: 'Component-level deployment detail.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/architecture-decisions/adr-0002-hosting-and-data-residency/',
+      label: 'ADR-0002 — Hosting and data residency',
+      note: 'Why both sites are in Switzerland and why standby is warm.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/',
+      label: 'Operations and Monitoring',
+      note: 'Alerting, dashboards and the failover procedure.',
+      status: 'custom',
+    },
+  ]}
+/>
