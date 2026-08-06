@@ -9,6 +9,8 @@
  * ALL DATA BELOW IS FICTIONAL PROTOTYPE CONTENT.
  */
 
+import {docStructure, structureSlug} from './structures';
+
 /**
  * How a page is produced.
  *
@@ -173,9 +175,18 @@ export function systemPath(systemId: string): string {
   return `/systems/${systemId}/`;
 }
 
-/** `/systems/example-system-a/components/example-component-a/` */
+/**
+ * Components live inside the system's building block view: that section
+ * describes the decomposition, and a component *is* one of the building blocks.
+ * There is no separate `Components` node.
+ *
+ * `/systems/example-system-a/system-architecture/building-block-view/example-component-a/`
+ */
+export const COMPONENT_HOME_STRUCTURE = 'system-architecture';
+export const COMPONENT_HOME_SECTION = 'building-block-view';
+
 export function componentPath(systemId: string, componentId: string): string {
-  return `/systems/${systemId}/components/${componentId}/`;
+  return `/systems/${systemId}/${COMPONENT_HOME_STRUCTURE}/${COMPONENT_HOME_SECTION}/${componentId}/`;
 }
 
 /**
@@ -192,11 +203,12 @@ export function structurePath(
   componentId: string | undefined,
   structureId: string,
 ): string {
-  return `${basePath(systemId, componentId)}${structureId}/`;
+  const slug = structureSlug(docStructure(structureId), Boolean(componentId));
+  return `${basePath(systemId, componentId)}${slug}/`;
 }
 
 /**
- * `/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/`
+ * `/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/`
  */
 export function sectionPath(
   systemId: string,

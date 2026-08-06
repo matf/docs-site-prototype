@@ -47,13 +47,13 @@ framework.** It is enforced by an architecture test in the build, not by review 
 - Schema changes are additive within a major version. A breaking change publishes a new major
   channel and both run in parallel until consumers have migrated.
 - The concrete conventions and header set are documented per component — see
-  [Integration Conventions](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/integration-conventions/).
+  [Integration Conventions](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/crosscutting-concerns/integration-conventions/).
 
 ## Persistence
 
 - One database schema per component, no cross-component reads.
 - State changes and outgoing events are written in the same transaction using the outbox pattern —
-  [ADR-0001 of Example Component A](/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/adr-0001-transactional-outbox/).
+  [ADR-0001 of Example Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/architecture-decisions/adr-0001-transactional-outbox/).
 - Migrations are forward-only and must be deployable while the previous version is still running.
 
 ## Logging
@@ -82,7 +82,7 @@ carry the review date. See [Documentation conventions](/conventions/).
 <RelatedDocs
   items={[
     {
-      to: '/systems/example-system-a/components/example-component-a/system-architecture/building-block-view/',
+      to: '/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/building-block-view/',
       label: 'Example Component A — 5. Building Block View',
       note: 'The hexagonal structure above, as built.',
       status: 'generated',

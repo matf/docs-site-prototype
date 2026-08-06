@@ -9,7 +9,7 @@
  *
  *   /systems/<system>/system-architecture/<section>/
  *   /systems/<system>/specs-docs/<section>/
- *   /systems/<system>/components/<component>/system-architecture/<section>/
+ *   /systems/<system>/system-architecture/building-block-view/<component>/component-architecture/<section>/
  *
  * Adding a methodology means adding an entry here and a folder in the content
  * tree. Nothing else in the navigation has to change.
@@ -30,8 +30,14 @@ export type DocSection = {
 
 export type DocStructure = {
   readonly id: DocStructureId;
-  /** URL segment below the system or component. Identical to `id`. */
+  /** URL segment below a system. Identical to `id`. */
   readonly slug: string;
+  /**
+   * URL segment below a component. A component sits inside the system's
+   * building block view, so repeating `system-architecture` there would read as
+   * if the component documented the system.
+   */
+  readonly componentSlug?: string;
   /** Display name in the navigation, for a system. */
   readonly label: string;
   /**
@@ -98,6 +104,7 @@ export const DOC_STRUCTURES: readonly DocStructure[] = [
   {
     id: 'system-architecture',
     slug: 'system-architecture',
+    componentSlug: 'component-architecture',
     label: 'System Architecture',
     componentLabel: 'Component Architecture',
     methodology: 'arc42',
@@ -141,6 +148,11 @@ export function sectionBySlug(structureId: string, slug: string): DocSection {
     );
   }
   return section;
+}
+
+/** URL segment of the structure in the context it is used in. */
+export function structureSlug(structure: DocStructure, isComponent: boolean): string {
+  return isComponent ? (structure.componentSlug ?? structure.slug) : structure.slug;
 }
 
 /**

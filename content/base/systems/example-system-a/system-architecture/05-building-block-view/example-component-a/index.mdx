@@ -1,0 +1,79 @@
+---
+title: Example Component A
+sidebar_label: Example Component A
+description: Landing page of Example Component A (fictional Declaration Intake Service) — arc42 sections, generated documentation and metadata.
+doc_status: generated
+---
+
+# Example Component A
+
+**Declaration Intake Service (fictional).** Single entry point for electronic declarations.
+Validates structure and customs rules, persists the declaration aggregate and publishes the
+declaration lifecycle events that the rest of
+[Example System A](/systems/example-system-a/) reacts to.
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-a"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
+    revision: '9c1e40d',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Context diagram, component view, reaction graph, observability inventory',
+  }}
+/>
+
+<PrototypeNotice />
+
+| Property | Value |
+| --- | --- |
+| **Part of** | [Example System A](/systems/example-system-a/) |
+| **Responsible team** | Team Alpha — Declaration Squad (fictional) |
+| **Role in the system** | Inbound adapter and owner of the declaration lifecycle |
+| **Documentation status** | Complete — all twelve arc42 sections |
+| **Pages** | <DocMix system="example-system-a" component="example-component-a" verbose /> |
+| **Source repository** | `git.example.admin.ch/bazg-proto/declaration-intake-service` |
+| **Last generation run** | 2026-08-04 03:12 UTC from revision `9c1e40d` |
+
+## Documentation
+
+This component is documented with the structures below. Each one is a
+methodology with its own chapters, and each has its own place in the navigation and in the URL.
+
+<StructureCards system="example-system-a" component="example-component-a" />
+
+## Generated documentation for this component
+
+| What | Where | Generator |
+| --- | --- | --- |
+| Context diagram | [3. Context and Scope](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/context-and-scope/) | `bazg-archdoc 0.7.2` |
+| Internal component view | [5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/building-block-view/) | `bazg-archdoc 0.7.2` |
+| Reaction graph | [6. Runtime View](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/) | `bazg-archdoc 0.7.2` |
+| Messages it consumes and publishes | [5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/building-block-view/) | `bazg-archdoc 0.7.2` |
+| Observability inventory | [Observability](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/crosscutting-concerns/observability/) | `bazg-obsdoc 0.2.0` |
+| Deployment detail | [7. Deployment View](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/deployment-view/) | `bazg-deploydoc 0.3.5` |
+
+Everything else on this component is written by the owning team.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/example-component-b/',
+      label: 'Example Component B',
+      note: 'The other component of this system; consumes the events published here.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Example System A — 5. Building Block View',
+      note: 'How this component fits into the system.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'All components of Example System A',
+      note: 'Back one level.',
+    },
+  ]}
+/>

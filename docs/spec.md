@@ -48,14 +48,13 @@ The site is static.
 
 ```text
 Systems
-└── <System>                         a deployable system
-    ├── <Documentation structure>    the methodology (arc42, BMAD, …)
-    │   └── <Section>                a chapter of that methodology
-    │       └── <Child page>         detail filed under that chapter
-    └── Components
-        └── <Component>              a deployable part of the system
-            └── <Documentation structure>
-                └── <Section>
+└── <System>                             a deployable system
+    └── <Documentation structure>        the methodology (arc42, BMAD, …)
+        └── <Section>                    a chapter of that methodology
+            ├── <Child page>             detail filed under that chapter
+            └── <Component>              only below arc42 5. Building Block View
+                └── <Documentation structure>
+                    └── <Section>
 ```
 
 Each level is a URL segment and a sidebar node:
@@ -65,7 +64,7 @@ Each level is a URL segment and a sidebar node:
 /systems/example-system-a/system-architecture/
 /systems/example-system-a/system-architecture/building-block-view/
 /systems/example-system-a/system-architecture/building-block-view/declaration-accepted/
-/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/
+/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/
 /systems/example-system-a/specs-docs/stories/story-1-1-submit-declaration/
 ```
 
@@ -79,14 +78,14 @@ sets, and a system may carry several at once.
 
 | Structure | Methodology | URL segment | Applies to | Displayed as |
 | --- | --- | --- | --- | --- |
-| System Architecture | arc42 | `system-architecture` | systems and components | *System Architecture* below a system, *Component Architecture* below a component |
+| System Architecture | arc42 | `system-architecture` below a system, `component-architecture` below a component | systems and components | *System Architecture* / *Component Architecture* |
 | Specification Docs | BMAD | `specs-docs` | systems | *Specification Docs* |
 
 A structure is named for the thing it describes. The arc42 structure documents a system in one
-place and a component in another, so it is labelled accordingly — in the sidebar, the breadcrumbs,
-the contextual header and the structure cards. The **URL segment is the same in both cases**
-(`system-architecture`), so the label is a presentation concern and can change without breaking a
-single link.
+place and a component in another, so both its label and its URL segment follow the context — in
+the sidebar, the breadcrumbs, the contextual header and the structure cards. Repeating
+`system-architecture` inside a component that already sits below the system's
+`system-architecture/building-block-view/` would read as if the component documented the system.
 
 **System Architecture** (arc42) answers *how the system is built*: introduction and goals,
 architecture constraints, context and scope, solution strategy, building block view, runtime view,
@@ -105,11 +104,29 @@ it.
 Adding a methodology means adding an entry to `src/data/structures.ts` and a folder in the content
 tree. No navigation code changes.
 
-### 2.3 Components are a sibling of the structures
+### 2.3 A component lives inside the building block view
 
-`Components` sits next to the documentation structures, not inside `5. Building Block View`. The
-system's building block view **describes and links** its components; the component documentation
-lives one level down, where it has room for its own structures and sections.
+arc42 *5. Building Block View* describes how a system is decomposed. A component **is** one of
+those blocks, so its documentation sits inside that section — alongside the decomposition
+rationale and the contracts that flow between the blocks:
+
+```text
+System Architecture
+└── 5. Building Block View
+    ├── Decomposition Rationale        custom
+    ├── Example Component A            a building block
+    │   └── Component Architecture
+    │       ├── 1. Introduction and Goals
+    │       └── …
+    ├── Example Component B
+    └── DeclarationAccepted            one page per contract
+```
+
+There is **no separate `Components` node**. Everything about the decomposition — why it is cut
+this way, what the blocks are, and what flows between them — is reachable from one section.
+
+Ordering inside the section: the section index, the decomposition rationale, then the components,
+then the contracts. Blocks before connections.
 
 ### 2.4 A node exists only when it has content
 
@@ -396,7 +413,8 @@ Available in every MDX file without an import:
 | --- | --- |
 | One tree, rooted at `Systems` | Everything is reachable from one place |
 | Structure is a URL segment | Several methodologies coexist per system |
-| A structure is labelled for what it describes | *System Architecture* / *Component Architecture*, one URL segment |
+| A structure is named for what it describes | *System Architecture* / *Component Architecture* |
+| Components live inside `5. Building Block View` | Decomposition, components and contracts in one place |
 | `NN-` prefixes order, and are stripped from URLs | Methodology order preserved without ugly links |
 | `index.mdx` is the category landing page | No `Overview` nodes |
 | A section is a file until it needs children, then a folder | URL unchanged when children are added |
@@ -427,7 +445,7 @@ Available in every MDX file without an import:
 | Term | Meaning here |
 | --- | --- |
 | **System** | A deployable system with its own documentation and components |
-| **Component** | A deployable part of a system, documented in its own right |
+| **Component** | A deployable building block of a system, documented inside the system's *5. Building Block View* |
 | **Documentation structure** | A methodology's chapter set — arc42, BMAD — as a navigation level |
 | **Section** | One chapter of a structure |
 | **Origin** | Whether a page is generated or written by hand |

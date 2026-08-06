@@ -23,7 +23,7 @@ doc_status: custom
 | --- | --- |
 | **Status** | Delivered |
 | **Requirements** | FR-1, FR-2, FR-3, FR-9 |
-| **Realised by** | [Example Component A](/systems/example-system-a/components/example-component-a/) |
+| **Realised by** | [Example Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/) |
 
 ## Goal
 
@@ -44,7 +44,7 @@ which is worse than not shipping.
 - No declaration acknowledged to the portal is ever lost.
 
 The last point is the one that shaped the architecture — it is why
-[ADR-0001 of Component A](/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/adr-0001-transactional-outbox/)
+[ADR-0001 of Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/architecture-decisions/adr-0001-transactional-outbox/)
 exists.
 
 ## Stories
@@ -61,7 +61,7 @@ exists.
       status: 'generated',
     },
     {
-      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/',
+      to: '/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/',
       label: 'Example Component A — 6. Runtime View',
       note: 'How this epic behaves once built.',
       status: 'generated',

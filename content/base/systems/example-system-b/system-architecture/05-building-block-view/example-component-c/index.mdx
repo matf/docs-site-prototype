@@ -1,0 +1,60 @@
+---
+title: Example Component C
+sidebar_label: Example Component C
+description: Landing page of Example Component C (fictional Notification Gateway) — arc42 sections and documentation status.
+doc_status: generated
+---
+
+# Example Component C
+
+**Notification Gateway (fictional).** Fans operational notifications out to e-mail, push and the
+public status page, and records what was delivered.
+
+<DocHeader
+  system="example-system-b"
+  component="example-component-c"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
+    revision: 'd52c118',
+    generatedAt: '2026-08-03 03:10 UTC',
+    scope: 'Context diagram, component view, reaction graph',
+  }}
+/>
+
+<PrototypeNotice />
+
+:::info[Partially documented — on purpose]
+
+A component always has a context view, a building block view and a runtime view — those three say
+what it *is* and what it *does*, and all three are generated. The rest of arc42 is documented only
+when the component actually has something to say: this one has no constraints of its own, no
+separate solution strategy and no component-level decisions, so those sections do not exist and
+are not shown.
+
+Five of twelve sections are documented. The in-depth examples are
+[Example Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/) and
+[Example Component B](/systems/example-system-a/system-architecture/building-block-view/example-component-b/).
+
+:::
+
+| Property | Value |
+| --- | --- |
+| **Part of** | [Example System B](/systems/example-system-b/) |
+| **Responsible team** | Team Beta — Channels Squad (fictional) |
+| **Role in the system** | Outbound channel adapter |
+| **Pages** | <DocMix system="example-system-b" component="example-component-c" verbose /> |
+| **Source repository** | `git.example.admin.ch/bazg-proto/notification-gateway` |
+| **Last generation run** | 2026-08-03 03:10 UTC from revision `d52c118` |
+
+## Documentation
+
+This component is documented with the structures below. Each one is a
+methodology with its own chapters, and each has its own place in the navigation and in the URL.
+
+<StructureCards system="example-system-b" component="example-component-c" />
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/system-architecture/building-block-view/', label: 'All components of Example System B', note: 'Back one level.'},
+  {to: '/systems/example-system-b/system-architecture/building-block-view/', label: 'Example System B — 5. Building Block View', status: 'generated'},
+]} />

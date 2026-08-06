@@ -191,8 +191,17 @@ Systems
 │   │   ├── 3. Context and Scope
 │   │   │   └── Scope and Boundaries               ← custom, next to the generated diagram
 │   │   ├── 4. Solution Strategy
-│   │   ├── 5. Building Block View                 ← components + the contract catalogue
+│   │   ├── 5. Building Block View                 ← the decomposition lives here
 │   │   │   ├── Decomposition Rationale            ← custom
+│   │   │   ├── Example Component A                ← a component is a building block
+│   │   │   │   └── Component Architecture
+│   │   │   │       ├── 1. Introduction and Goals
+│   │   │   │       ├── … (all twelve arc42 sections)
+│   │   │   │       └── 8. Crosscutting Concerns
+│   │   │   │           ├── Integration Conventions    (custom)
+│   │   │   │           ├── Observability              (generated)
+│   │   │   │           └── Security                   (custom)
+│   │   │   ├── Example Component B
 │   │   │   ├── SubmitDeclaration                  ← one generated page per command …
 │   │   │   ├── DeclarationAccepted                ← … and per event
 │   │   │   └── …
@@ -206,35 +215,22 @@ Systems
 │   │   ├── 11. Risks and Technical Debt
 │   │   └── 12. Glossary
 │   │       └── Technical Terms                    ← generated, next to the custom glossary
-│   ├── Specification Docs                         ← BMAD
-│   │   ├── 1. Project Brief
-│   │   ├── 2. Product Requirements
-│   │   │   └── Functional Requirements
-│   │   ├── 3. Architecture                        ← defers to the arc42 description
-│   │   ├── 4. Epics
-│   │   │   ├── Epic 1 — Declaration Intake
-│   │   │   └── Epic 2 — Risk Assessment
-│   │   ├── 5. Stories
-│   │   │   ├── 1.1 Submit a declaration
-│   │   │   └── …
-│   │   └── 6. Quality and Test Strategy
-│   └── Components
-│       ├── Example Component A
-│       │   └── Component Architecture            ← same arc42 structure, component-level name
-│       │       ├── 1. Introduction and Goals
-│       │       ├── … (all twelve arc42 sections)
-│       │       └── 8. Crosscutting Concerns
-│       │           ├── Integration Conventions    (custom)
-│       │           ├── Observability              (generated)
-│       │           └── Security                   (custom)
-│       └── Example Component B
+│   └── Specification Docs                         ← BMAD
+│       ├── 1. Project Brief
+│       ├── 2. Product Requirements
+│       │   └── Functional Requirements
+│       ├── 3. Architecture                        ← defers to the arc42 description
+│       ├── 4. Epics
+│       ├── 5. Stories
+│       └── 6. Quality and Test Strategy
 └── Example System B                               ← System Architecture only
     └── System Architecture                        ← 9 of 12 sections documented
         ├── 1. Introduction and Goals
         ├── 2. Architecture Constraints
         ├── 3. Context and Scope
         ├── 5. Building Block View                 ← 4. Solution Strategy has no content,
-        ├── 6. Runtime View                          so it does not exist and is not shown
+        │   └── Example Component C                  so it does not exist and is not shown
+        ├── 6. Runtime View
         └── …
 ```
 
@@ -243,12 +239,13 @@ Four rules matter:
 - **The documentation structure is a level of its own.** A system or component may carry several
   methodologies at the same time; each gets its own URL segment and its own sidebar node. Adding one
   means adding an entry to `src/data/structures.ts` and a folder — no navigation code changes.
-  A structure can be named for its context: the arc42 structure is *System Architecture* below a
-  system and *Component Architecture* below a component, while the URL segment stays
-  `system-architecture` in both cases so labels can change without breaking links.
-- **`Components` is a sibling of the structures, not a child of `5. Building Block View`.** The
-  system's building block view *describes and links* its components; the component documentation
-  lives one level down, where it has room for its own structures and sections.
+  A structure is named for its context: the arc42 structure is *System Architecture* below a system
+  (`system-architecture/`) and *Component Architecture* below a component
+  (`component-architecture/`).
+- **A component lives inside the system's `5. Building Block View`.** That section describes how
+  the system is decomposed, and a component is one of the blocks — so the block, its documentation
+  and the contracts between the blocks are all in one place. There is no separate `Components`
+  node.
 - **Custom documentation is filed under the arc42 section it belongs to.** There is no generic
   catch-all category. In most cases the right home is `8. Crosscutting Concerns`; an operational
   scenario belongs under `6. Runtime View`, an ADR under `9. Architecture Decisions`.
@@ -294,17 +291,20 @@ content/base/
         │   ├── index.mdx
         │   ├── 01-project-brief.mdx
         │   └── …
-        └── components/
-            ├── _category_.json        label "Components", position 10 (after the structures)
-            ├── index.mdx
-            └── example-component-a/
-                ├── _category_.json
-                ├── index.mdx
-                └── system-architecture/   label "Component Architecture"
-                    ├── _category_.json
-                    ├── index.mdx
-                    ├── 01-introduction-and-goals.mdx
-                    └── …
+        │   ├── 05-building-block-view/
+        │   │   ├── _category_.json
+        │   │   ├── index.mdx          the decomposition and the contract catalogue
+        │   │   ├── decomposition-rationale.mdx
+        │   │   ├── example-component-a/    ← a component is a building block
+        │   │   │   ├── _category_.json     label "Example Component A", position 2
+        │   │   │   ├── index.mdx
+        │   │   │   └── component-architecture/
+        │   │   │       ├── _category_.json label "Component Architecture"
+        │   │   │       ├── index.mdx
+        │   │   │       ├── 01-introduction-and-goals.mdx
+        │   │   │       └── …
+        │   │   └── declaration-accepted.mdx  ← one page per contract, position 20+
+        │   └── …
 ```
 
 Three conventions do the work:
@@ -438,9 +438,11 @@ Nothing else — the sidebar picks it up automatically.
 
 ## How to add a component
 
-1. Create `content/base/systems/<system-id>/components/<component-id>/`.
+1. Create `content/base/systems/<system-id>/system-architecture/05-building-block-view/<component-id>/`
+   — a component is a building block, so it lives inside the section that describes the
+   decomposition.
 2. Add `_category_.json` with the label and position.
-3. Add `index.mdx`, then a `system-architecture/` folder with its own `index.mdx` and section files, exactly as for a system. Its `_category_.json` label is `Component Architecture`.
+3. Add `index.mdx`, then a `component-architecture/` folder with its own `index.mdx` and section files, exactly as for a system. Its `_category_.json` label is `Component Architecture`.
 4. Add the component to the owning system's `components` array in `src/data/catalog.ts`. If it
    publishes or consumes messages, name it as producer or consumer on the relevant contracts in
    `src/data/messaging.ts` — the contracts themselves belong to the system, not to the component.
@@ -520,17 +522,17 @@ content/base/systems/example-system-a/system-architecture/08-crosscutting-concer
 ```
 
 **Beneath a component's Runtime View** →
-`/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/bulk-import-scenario/`
+`/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/bulk-import-scenario/`
 
 ```text
-content/base/systems/example-system-a/components/example-component-a/system-architecture/06-runtime-view/bulk-import-scenario.mdx
+content/base/systems/example-system-a/system-architecture/05-building-block-view/example-component-a/component-architecture/06-runtime-view/bulk-import-scenario.mdx
 ```
 
 **Beneath a component's Architecture Decisions** →
-`/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/adr-0002-schema-registry/`
+`/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/architecture-decisions/adr-0002-schema-registry/`
 
 ```text
-content/base/systems/example-system-a/components/example-component-a/system-architecture/09-architecture-decisions/adr-0002-schema-registry.mdx
+content/base/systems/example-system-a/system-architecture/05-building-block-view/example-component-a/component-architecture/09-architecture-decisions/adr-0002-schema-registry.mdx
 ```
 
 **Beneath a system's Product Requirements (BMAD)** →

@@ -1,0 +1,91 @@
+---
+title: 7. Deployment View
+sidebar_label: 7. Deployment View
+description: Generated deployment detail for Example Component B — runtime units, resources, configuration and health probes.
+doc_status: generated
+---
+
+# 7. Deployment View
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="deployment-view"
+  generated={{
+    generator: 'bazg-deploydoc 0.3.5',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-deployment',
+    revision: 'ff02b7c',
+    generatedAt: '2026-08-04 03:15 UTC',
+    scope: 'Whole page',
+  }}
+/>
+
+:::info[Fully generated page]
+Produced from the deployment descriptors. Manual edits are overwritten by the next generation
+run.
+
+:::
+
+## Runtime units
+
+<Diagram
+  title="Deployed workloads (production)"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c"
+  caption="Baseline configuration. Scoring is CPU-bound, which is why the limits are higher than for the intake component.">
+
+| Workload | Kind | Replicas | CPU request / limit | Memory request / limit |
+| --- | --- | --- | --- | --- |
+| `risk-assessment-engine` | Deployment | 4 | 1000 m / 4000 m | 1536 Mi / 3072 Mi |
+| `risk-outbox-relay` | Deployment | 2 | 200 m / 1000 m | 256 Mi / 512 Mi |
+| `risk-db-migrate` | Job (pre-deploy) | 1 | 100 m / 500 m | 256 Mi / 256 Mi |
+
+</Diagram>
+
+## Configuration
+
+<Diagram
+  title="Configuration surface"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c"
+  caption="Secret values are never rendered.">
+
+| Key | Source | Purpose |
+| --- | --- | --- |
+| `BROKER_BOOTSTRAP` | ConfigMap | Broker cluster endpoints |
+| `BROKER_CONSUMER_GROUP` | ConfigMap | `risk-assessment` |
+| `DB_URL` | ConfigMap | Managed PostgreSQL endpoint |
+| `DB_CREDENTIALS` | Secret (platform-managed) | Database credentials |
+| `MTLS_KEYSTORE` | Secret (platform-managed) | Broker client certificate |
+| `REGISTRY_BASE_URL` | ConfigMap | Model Registry endpoint |
+| `RULESET_REFRESH_INTERVAL` | ConfigMap | `PT5M` |
+| `HISTORY_API_BASE_URL` | ConfigMap | Declarant History Store, via the egress proxy |
+| `FALLBACK_RULESET_VERSION` | ConfigMap | `2026.05-fallback` |
+
+</Diagram>
+
+## Health and lifecycle
+
+<Diagram
+  title="Probes and lifecycle"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c">
+
+| Aspect | Configuration |
+| --- | --- |
+| Liveness probe | `GET /internal/health/live`, 10 s period, 3 failures |
+| Readiness probe | `GET /internal/health/ready`; not ready while no rule set version is loaded |
+| Startup probe | 120 s budget — covers loading the active model |
+| Graceful shutdown | 45 s; in-flight assessments are completed |
+| Update strategy | Rolling, `maxUnavailable: 0`, `maxSurge: 1` |
+| Autoscaling | Consumer lag based, 4 → 16 replicas |
+
+</Diagram>
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/system-architecture/deployment-view/', label: 'Example System A — 7. Deployment View', note: 'The topology this component runs in.', status: 'generated'},
+    {to: '/systems/example-system-a/system-architecture/building-block-view/example-component-b/component-architecture/crosscutting-concerns/observability/', label: 'Observability', note: 'Signals emitted by these workloads.', status: 'generated'},
+  ]}
+/>

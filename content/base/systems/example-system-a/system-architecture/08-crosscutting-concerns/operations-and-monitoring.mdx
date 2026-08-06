@@ -59,7 +59,7 @@ distribution.
    [Peak Load and Degradation](/systems/example-system-a/system-architecture/runtime-view/peak-load-and-degradation/).
 2. **Dead-lettered messages** — classify first, replay second. The replay procedure and its
    idempotency guarantees are documented in
-   [Failover and Replay](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/failover-and-replay/).
+   [Failover and Replay](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/failover-and-replay/).
 3. **Site failure** — the platform team declares it; the application team confirms data
    consistency after the switch. Recovery time objective 30 minutes.
 4. **Bad rule set** — the risk analyst re-publishes the previous rule set version; no software
@@ -74,7 +74,7 @@ not a courtesy — it is part of the data protection concept in
 <RelatedDocs
   items={[
     {
-      to: '/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/observability/',
+      to: '/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/crosscutting-concerns/observability/',
       label: 'Example Component A — Observability',
       note: 'Generated metric, log and trace inventory.',
       status: 'generated',
