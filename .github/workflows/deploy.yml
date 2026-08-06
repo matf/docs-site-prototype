@@ -65,3 +65,8 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
+        with:
+          # The default is 10 minutes. Four environment trees make a larger
+          # artifact, and the Pages backend has been leaving it queued past that
+          # — the upload succeeds and only the wait times out.
+          timeout: 1200000
