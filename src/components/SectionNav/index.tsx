@@ -1,7 +1,7 @@
 import React, {type ReactNode} from 'react';
 import Link from '@site/src/components/EnvLink';
 import {componentById, sectionPath, systemById} from '@site/src/data/catalog';
-import {DEFAULT_STRUCTURE, docStructure} from '@site/src/data/structures';
+import {DEFAULT_STRUCTURE, docStructure, structureLabel} from '@site/src/data/structures';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import StatusBadge from '@site/src/components/StatusBadge';
 import styles from './styles.module.css';
@@ -37,7 +37,9 @@ export default function SectionNav({
 
   return (
     <>
-      <nav className={styles.grid} aria-label={`${entry.label} sections of ${owner.name}`}>
+      <nav
+        className={styles.grid}
+        aria-label={`${structureLabel(entry, Boolean(component))} sections of ${owner.name}`}>
         {documented.map(({section, status}) => (
           <Link
             key={section.slug}

@@ -32,8 +32,14 @@ export type DocStructure = {
   readonly id: DocStructureId;
   /** URL segment below the system or component. Identical to `id`. */
   readonly slug: string;
-  /** Display name in the navigation. */
+  /** Display name in the navigation, for a system. */
   readonly label: string;
+  /**
+   * Display name when the structure documents a component. The same
+   * methodology describes a different thing one level down, and calling it
+   * "System Architecture" under a component is simply wrong.
+   */
+  readonly componentLabel?: string;
   /** The methodology behind it. */
   readonly methodology: string;
   readonly description: string;
@@ -93,6 +99,7 @@ export const DOC_STRUCTURES: readonly DocStructure[] = [
     id: 'system-architecture',
     slug: 'system-architecture',
     label: 'System Architecture',
+    componentLabel: 'Component Architecture',
     methodology: 'arc42',
     description:
       'The architecture description: twelve arc42 sections covering goals, constraints, context, structure, runtime behaviour, deployment, crosscutting concepts, decisions, quality, risks and vocabulary.',
@@ -134,6 +141,14 @@ export function sectionBySlug(structureId: string, slug: string): DocSection {
     );
   }
   return section;
+}
+
+/**
+ * How the structure is called in the context it is used in: a component's arc42
+ * description is a *Component Architecture*, not a *System Architecture*.
+ */
+export function structureLabel(structure: DocStructure, isComponent: boolean): string {
+  return isComponent ? (structure.componentLabel ?? structure.label) : structure.label;
 }
 
 /** `5. Building Block View` — the label form used in navigation and headings. */

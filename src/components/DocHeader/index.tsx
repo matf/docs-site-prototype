@@ -7,6 +7,7 @@ import {
   docStructure,
   sectionBySlug,
   sectionLabel,
+  structureLabel,
 } from '@site/src/data/structures';
 import {sourceState, useEnvironment} from '@site/src/data/environments';
 import {
@@ -108,7 +109,7 @@ export default function DocHeader({
             <Link
               className={styles.name}
               to={structurePath(systemEntry.id, componentEntry?.id, structureEntry.id)}>
-              {structureEntry.label}
+              {structureLabel(structureEntry, Boolean(componentEntry))}
             </Link>
           </span>
           <span className={styles.item}>

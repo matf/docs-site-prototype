@@ -25,8 +25,8 @@ backend. It demonstrates:
   the environment it points at;
 - one coherent documentation tree, rooted at `Systems`;
 - a **documentation structure** level below each system and component — `System Architecture`
-  (arc42) and `Specification Docs` (BMAD) — present in the navigation and in the URL, so a system
-  can carry several methodologies at once;
+  (arc42, shown as `Component Architecture` below a component) and `Specification Docs` (BMAD) —
+  present in the navigation and in the URL, so a system can carry several methodologies at once;
 - the methodology's sections starting **directly** beneath the structure, with no intermediate
   `Overview` or `Other Topics` navigation node;
 - generated documentation (context diagrams, component views, reaction graphs, messaging
@@ -220,7 +220,7 @@ Systems
 │   │   └── 6. Quality and Test Strategy
 │   └── Components
 │       ├── Example Component A
-│       │   └── System Architecture
+│       │   └── Component Architecture            ← same arc42 structure, component-level name
 │       │       ├── 1. Introduction and Goals
 │       │       ├── … (all twelve arc42 sections)
 │       │       └── 8. Crosscutting Concerns
@@ -243,6 +243,9 @@ Four rules matter:
 - **The documentation structure is a level of its own.** A system or component may carry several
   methodologies at the same time; each gets its own URL segment and its own sidebar node. Adding one
   means adding an entry to `src/data/structures.ts` and a folder — no navigation code changes.
+  A structure can be named for its context: the arc42 structure is *System Architecture* below a
+  system and *Component Architecture* below a component, while the URL segment stays
+  `system-architecture` in both cases so labels can change without breaking links.
 - **`Components` is a sibling of the structures, not a child of `5. Building Block View`.** The
   system's building block view *describes and links* its components; the component documentation
   lives one level down, where it has room for its own structures and sections.
@@ -297,7 +300,7 @@ content/base/
             └── example-component-a/
                 ├── _category_.json
                 ├── index.mdx
-                └── system-architecture/
+                └── system-architecture/   label "Component Architecture"
                     ├── _category_.json
                     ├── index.mdx
                     ├── 01-introduction-and-goals.mdx
@@ -437,7 +440,7 @@ Nothing else — the sidebar picks it up automatically.
 
 1. Create `content/base/systems/<system-id>/components/<component-id>/`.
 2. Add `_category_.json` with the label and position.
-3. Add `index.mdx`, then a `system-architecture/` folder with its own `index.mdx` and section files, exactly as for a system.
+3. Add `index.mdx`, then a `system-architecture/` folder with its own `index.mdx` and section files, exactly as for a system. Its `_category_.json` label is `Component Architecture`.
 4. Add the component to the owning system's `components` array in `src/data/catalog.ts`. If it
    publishes or consumes messages, name it as producer or consumer on the relevant contracts in
    `src/data/messaging.ts` — the contracts themselves belong to the system, not to the component.

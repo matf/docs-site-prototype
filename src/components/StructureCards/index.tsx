@@ -1,7 +1,7 @@
 import React, {type ReactNode} from 'react';
 import Link from '@site/src/components/EnvLink';
 import {componentById, structurePath, systemById} from '@site/src/data/catalog';
-import {DOC_STRUCTURES, docStructure} from '@site/src/data/structures';
+import {DOC_STRUCTURES, docStructure, structureLabel} from '@site/src/data/structures';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import DocMix from '@site/src/components/DocMix';
 import styles from './styles.module.css';
@@ -35,6 +35,7 @@ export default function StructureCards({system, component}: StructureCardsProps)
     <div className={styles.grid} role="list" aria-label={`Documentation structures of ${owner.name}`}>
       {available.map((structure) => {
         const path = structurePath(system, component, structure.id);
+        const label = structureLabel(structure, Boolean(component));
         const documented = sectionsOf(system, component, structure.id).length;
         const pages = countUnder(path);
         return (
@@ -42,7 +43,7 @@ export default function StructureCards({system, component}: StructureCardsProps)
             <header className={styles.head}>
               <div>
                 <h3 className={styles.title}>
-                  <Link to={path}>{structure.label}</Link>
+                  <Link to={path}>{label}</Link>
                 </h3>
                 <p className={styles.methodology}>{structure.methodology}</p>
               </div>
@@ -62,7 +63,7 @@ export default function StructureCards({system, component}: StructureCardsProps)
               </div>
             </dl>
             <Link className={styles.action} to={path}>
-              Open {structure.label} →
+              Open {label} →
             </Link>
           </article>
         );
@@ -82,6 +83,8 @@ export function StructureLink({
   structure: string;
 }): ReactNode {
   return (
-    <Link to={structurePath(system, component, structure)}>{docStructure(structure).label}</Link>
+    <Link to={structurePath(system, component, structure)}>
+      {structureLabel(docStructure(structure), Boolean(component))}
+    </Link>
   );
 }

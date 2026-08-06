@@ -77,10 +77,16 @@ category's landing page is reached by clicking the category itself.
 A system is not documented in one fixed way. Different methodologies produce different chapter
 sets, and a system may carry several at once.
 
-| Structure | Methodology | URL segment | Applies to |
-| --- | --- | --- | --- |
-| System Architecture | arc42 | `system-architecture` | systems and components |
-| Specification Docs | BMAD | `specs-docs` | systems |
+| Structure | Methodology | URL segment | Applies to | Displayed as |
+| --- | --- | --- | --- | --- |
+| System Architecture | arc42 | `system-architecture` | systems and components | *System Architecture* below a system, *Component Architecture* below a component |
+| Specification Docs | BMAD | `specs-docs` | systems | *Specification Docs* |
+
+A structure is named for the thing it describes. The arc42 structure documents a system in one
+place and a component in another, so it is labelled accordingly — in the sidebar, the breadcrumbs,
+the contextual header and the structure cards. The **URL segment is the same in both cases**
+(`system-architecture`), so the label is a presentation concern and can change without breaking a
+single link.
 
 **System Architecture** (arc42) answers *how the system is built*: introduction and goals,
 architecture constraints, context and scope, solution strategy, building block view, runtime view,
@@ -390,6 +396,7 @@ Available in every MDX file without an import:
 | --- | --- |
 | One tree, rooted at `Systems` | Everything is reachable from one place |
 | Structure is a URL segment | Several methodologies coexist per system |
+| A structure is labelled for what it describes | *System Architecture* / *Component Architecture*, one URL segment |
 | `NN-` prefixes order, and are stripped from URLs | Methodology order preserved without ugly links |
 | `index.mdx` is the category landing page | No `Overview` nodes |
 | A section is a file until it needs children, then a folder | URL unchanged when children are added |
