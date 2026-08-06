@@ -66,12 +66,14 @@ Systems
     │   ├── …
     │   ├── 5. Building Block View
     │   │   ├── Decomposition Rationale
-    │   │   ├── Example Component A   ← the components live here
-    │   │   │   └── Component Architecture
-    │   │   │       ├── 1. Introduction and Goals
-    │   │   │       └── …
-    │   │   ├── Example Component B
-    │   │   └── DeclarationAccepted   ← and the contracts between them
+    │   │   ├── Components            ← the blocks …
+    │   │   │   ├── Example Component A
+    │   │   │   │   └── Component Architecture
+    │   │   │   └── Example Component B
+    │   │   ├── Events                ← … and what flows between them
+    │   │   │   └── DeclarationAccepted
+    │   │   └── Commands
+    │   │       └── SubmitDeclaration
     │   ├── …
     │   └── 12. Glossary
     └── Specification Docs           ← BMAD
@@ -92,7 +94,7 @@ section it belongs to, which in most cases is *8. Crosscutting Concerns*.
 A section only appears when it has content. A component always has a context view, a building
 block view and a runtime view; the remaining arc42 sections show up only if that component
 actually has something to say. [Example System B](/systems/example-system-b/) and
-[Example Component C](/systems/example-system-b/system-architecture/building-block-view/example-component-c/) are documented
+[Example Component C](/systems/example-system-b/system-architecture/building-block-view/components/example-component-c/) are documented
 that way — nine and five of twelve sections respectively, with no empty placeholder pages.
 
 ## Generated and custom content
@@ -105,9 +107,9 @@ the generation timestamp; a custom page shows its owning team and review date.
 
 Where a generated artefact needs a hand-written explanation, the explanation is its own page,
 filed under the same arc42 section — for example the generated
-[context diagram of Example Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/context-and-scope/)
+[context diagram of Example Component A](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/context-and-scope/)
 and the custom
-[Scope Notes](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/context-and-scope/scope-notes/)
+[Scope Notes](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/context-and-scope/scope-notes/)
 next to it. That keeps regeneration safe: a generator replaces whole files and never has to merge
 into someone's prose. See [Documentation conventions](/conventions/) for the rules and the folder
 layout behind this.
@@ -130,7 +132,7 @@ layout behind this.
       status: 'generated',
     },
     {
-      to: '/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/',
+      to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/runtime-view/',
       label: 'Example Component A — 6. Runtime View',
       note: 'Generated reaction graph linked to the message catalogue.',
       status: 'generated',

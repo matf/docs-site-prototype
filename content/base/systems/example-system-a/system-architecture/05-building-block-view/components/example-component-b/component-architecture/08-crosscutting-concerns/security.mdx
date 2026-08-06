@@ -1,0 +1,72 @@
+---
+title: Security
+sidebar_label: Security
+sidebar_position: 2
+description: Custom crosscutting page — trust boundaries, fairness constraints and data handling in Example Component B.
+doc_status: custom
+---
+
+# Security
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="crosscutting-concerns"
+  custom={{
+    owner: 'Team Alpha — Risk Squad with the Information Security Officer (fictional)',
+    lastReviewed: '2026-07-15',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+The system-level concept in
+[Security and Data Protection](/systems/example-system-a/system-architecture/crosscutting-concerns/security-and-data-protection/)
+applies. This page covers what is specific to a component that makes decisions about people and
+businesses.
+
+## The asset worth protecting here is the rules
+
+For most components the sensitive asset is the data. Here it is also the **decision logic**: a
+declarant who knows which rules fire can arrange a consignment to avoid them. That is why:
+
+- risk scores, bands and rule identifiers never leave the internal boundary — the declarant only
+  ever sees customs rule violations, never risk rules;
+- `RiskAssessmentCompleted` is published on an internal channel that the trade portal cannot
+  subscribe to;
+- the *Risk decisions* dashboard is restricted to the `risk-analyst` and `customs-officer` roles.
+
+## Trust boundaries
+
+| Boundary | What crosses it | Control |
+| --- | --- | --- |
+| Broker → messaging adapter | Declaration events, recalculation commands | mTLS; `RecalculateRisk` additionally requires the analyst identity in the command envelope |
+| Registry client → Model Registry | Rule set and model retrieval | Allow-listed egress; artefact signature verified before activation |
+| History client → Declarant History Store | Aggregated features only | Response schema rejects identity attributes — constraint CB-2 |
+| Persistence adapter → database | Decisions, fired rules | Encrypted at rest; retained ten years |
+
+Artefact signature verification is the control that matters most: an unsigned or wrongly signed
+rule set is refused, so publishing a rule set is not a path into the decision logic.
+
+## Fairness as a security property
+
+Constraint **CB-2** forbids using the declarant's identity as a direct scoring feature. It is
+enforced twice: the history store's response schema does not carry identity attributes, and an
+architecture test fails the build if the feature set references one. Scenario **CB-6** in
+[10. Quality Requirements](/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/quality-requirements/)
+is the acceptance criterion.
+
+## Open points
+
+| # | Point | Status |
+| --- | --- | --- |
+| SB-1 | Shadow decisions are stored in the same table as production decisions, distinguished only by a flag. | A query mistake could expose shadow results as real. Separate table planned. |
+| SB-2 | Rule set artefact signatures use a single registry key. | Same rotation limitation as the portal key; tracked with the platform team. |
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/system-architecture/crosscutting-concerns/security-and-data-protection/', label: 'Security and Data Protection', note: 'The system concept this page implements.', status: 'custom'},
+    {to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/risks-and-technical-debt/', label: '11. Risks and Technical Debt', note: 'Where the open points are tracked.', status: 'custom'},
+    {to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/context-and-scope/', label: '3. Context and Scope', note: 'The interfaces these boundaries protect.', status: 'generated'},
+  ]}
+/>

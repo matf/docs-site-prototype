@@ -1,0 +1,144 @@
+---
+title: 6. Runtime View
+sidebar_label: 6. Runtime View
+sidebar_position: 0
+description: Generated reaction graph and derived runtime sequence of Example Component B, linked to the system's contract pages.
+doc_status: generated
+---
+
+# 6. Runtime View
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="runtime-view"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
+    revision: '3fd8b52',
+    generatedAt: '2026-08-04 03:14 UTC',
+    scope: 'Whole page — reaction graph, reaction table and the derived sequence',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Derived from the component's message handlers: which message triggers which use case, what it
+changes and what it publishes. The scenarios that had to be *designed* rather than derived are
+hand-written pages below this section.
+
+:::
+
+## Generated reaction graph
+
+<Diagram
+  title="Reaction graph — event to decision"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52"
+  caption="Rounded nodes are messages; rectangles are processing steps. Every path ends in a published decision — the component never stays silent.">
+
+```mermaid
+flowchart TB
+  classDef msgIn fill:#f4eefa,stroke:#7a3ca8,color:#12161a
+  classDef msgOut fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+  classDef step fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef state fill:#fbeef0,stroke:#c8102e,color:#12161a
+  classDef down fill:#ecf5f0,stroke:#1f6f43,color:#12161a
+
+  I1(["DeclarationAccepted<br/>event received"]):::msgIn
+  I2(["DeclarationAmended<br/>event received"]):::msgIn
+  I3(["RecalculateRisk<br/>command received"]):::msgIn
+
+  D1["Idempotency check<br/>processed-message table"]:::step
+  C1["Open risk case<br/>for this revision"]:::state
+  C0["Invalidate the case<br/>of the previous revision"]:::step
+  F1["Assemble features<br/>declaration + history"]:::step
+  R1["Load rule set version<br/>from the cache"]:::step
+  M1{"Model version<br/>available?"}:::step
+  M2["Score with the model"]:::step
+  M3["Fallback rule set<br/>marked as fallback"]:::step
+  B1["Rules fired → score → band"]:::step
+  S1["Persist decision<br/>append-only"]:::state
+  O1["Outbox row written<br/>in the same transaction"]:::step
+  E1(["RiskAssessmentCompleted<br/>published"]):::msgOut
+  Q1{"Band = high?"}:::step
+  E2(["OrderInspection<br/>published"]):::msgOut
+  DN1["Example Component A<br/>clears or holds"]:::down
+  DN2["Inspection Planning<br/>schedules a control"]:::down
+
+  I1 --> D1
+  I2 --> C0 --> D1
+  I3 --> D1
+  D1 -->|"new"| C1 --> F1 --> R1 --> M1
+  M1 -->|"yes"| M2 --> B1
+  M1 -->|"no"| M3 --> B1
+  B1 --> S1 --> O1 --> E1 --> DN1
+  E1 --> Q1
+  Q1 -->|"yes"| E2 --> DN2
+  Q1 -->|"no"| DN1
+```
+
+</Diagram>
+
+### Reactions in table form
+
+<Diagram
+  title="Message reactions"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52"
+  caption="Each row is one message handler. Follow a message name to its contract page below the system's building block view.">
+
+| Trigger | Use case | State change | Publishes |
+| --- | --- | --- | --- |
+| <Msg system="example-system-a" name="DeclarationAccepted" /> | Assess revision | New risk case, one decision | <Msg system="example-system-a" name="RiskAssessmentCompleted" />, on `high` also <Msg system="example-system-a" name="OrderInspection" /> |
+| <Msg system="example-system-a" name="DeclarationAmended" /> | Re-assess after correction | Previous case invalidated, new case | <Msg system="example-system-a" name="RiskAssessmentCompleted" /> |
+| <Msg system="example-system-a" name="RecalculateRisk" /> | Manual re-assessment | New decision on the same revision, new decision id | <Msg system="example-system-a" name="RiskAssessmentCompleted" /> |
+| Rule set / model activation | Publish version | Caches refreshed | <Msg system="example-system-a" name="RiskModelDeployed" /> |
+
+</Diagram>
+
+## Scenario — assessment with the internal building blocks
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant BR as Broker
+  participant MIN as Messaging Adapter (in)
+  participant APP as Assessment Service
+  participant RSC as Rule Set Cache
+  participant MC as Model Cache
+  participant HC as History Client
+  participant DOM as Scoring Domain
+  participant PERS as Persistence Adapter
+
+  BR->>MIN: DeclarationAccepted (revision 1)
+  MIN->>APP: assess(event)
+  APP->>PERS: seen(messageId)?
+  PERS-->>APP: no
+  APP->>RSC: ruleSet(active)
+  RSC-->>APP: rule set 2026.07 (cached)
+  APP->>MC: model(active)
+  MC-->>APP: model v14 (cached)
+  APP->>HC: features(declarantRef)
+  HC-->>APP: aggregated features
+  APP->>DOM: evaluate(declaration, features, ruleSet, model)
+  DOM-->>APP: score 0.31, band = low, rules [R-102, R-217]
+  APP->>PERS: save(decision) + outbox(RiskAssessmentCompleted) + processed(messageId)
+  Note over APP,PERS: one transaction
+  PERS-->>APP: committed
+```
+
+## Rolling out a new rule set
+
+The operational scenario for publishing rules and models is a separate custom page:
+[Rule Set Rollout](/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/runtime-view/rule-set-rollout/).
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/runtime-view/rule-set-rollout/', label: 'Rule Set Rollout', note: 'Custom operational scenario below this arc42 section.', status: 'custom'},
+    {to: '/systems/example-system-a/system-architecture/building-block-view/', label: 'Events and Commands', note: 'Contracts for every message above.', status: 'generated'},
+    {to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/runtime-view/', label: 'Example Component A — 6. Runtime View', note: 'The other half of the conversation.', status: 'generated'},
+    {to: '/systems/example-system-a/system-architecture/runtime-view/', label: 'Example System A — 6. Runtime View', note: 'The same flows at system level.', status: 'custom'},
+  ]}
+/>

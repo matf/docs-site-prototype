@@ -92,7 +92,7 @@ add the prefix, and nothing else in the repository has to know about environment
 
 | Difference | Where to see it |
 | --- | --- |
-| A component deployed on DEV only | `Example Component D`, and the extra block in System A's building block view on DEV |
+| A component deployed on DEV only | `Example Component D` under `Components`, and the extra block in System A's building block view on DEV |
 | Source revision and generation timestamp | The generation metadata panel on any generated page |
 | Contract consumers | `DeclarationCleared` lists Component D as a consumer on DEV only |
 | Deployment topology and sizing | System A's deployment view: one replica and a single site on DEV, two data centres elsewhere |
@@ -193,18 +193,22 @@ Systems
 │   │   ├── 4. Solution Strategy
 │   │   ├── 5. Building Block View                 ← the decomposition lives here
 │   │   │   ├── Decomposition Rationale            ← custom
-│   │   │   ├── Example Component A                ← a component is a building block
-│   │   │   │   └── Component Architecture
-│   │   │   │       ├── 1. Introduction and Goals
-│   │   │   │       ├── … (all twelve arc42 sections)
-│   │   │   │       └── 8. Crosscutting Concerns
-│   │   │   │           ├── Integration Conventions    (custom)
-│   │   │   │           ├── Observability              (generated)
-│   │   │   │           └── Security                   (custom)
-│   │   │   ├── Example Component B
-│   │   │   ├── SubmitDeclaration                  ← one generated page per command …
-│   │   │   ├── DeclarationAccepted                ← … and per event
-│   │   │   └── …
+│   │   │   ├── Components
+│   │   │   │   ├── Example Component A            ← a component is a building block
+│   │   │   │   │   └── Component Architecture
+│   │   │   │   │       ├── 1. Introduction and Goals
+│   │   │   │   │       ├── … (all twelve arc42 sections)
+│   │   │   │   │       └── 8. Crosscutting Concerns
+│   │   │   │   │           ├── Integration Conventions    (custom)
+│   │   │   │   │           ├── Observability              (generated)
+│   │   │   │   │           └── Security                   (custom)
+│   │   │   │   └── Example Component B
+│   │   │   ├── Events                             ← one generated page per contract
+│   │   │   │   ├── DeclarationAccepted
+│   │   │   │   └── …
+│   │   │   └── Commands
+│   │   │       ├── SubmitDeclaration
+│   │   │       └── …
 │   │   ├── 6. Runtime View
 │   │   │   ├── Correction Race Scenario           ← custom
 │   │   │   └── Peak Load and Degradation          ← custom
@@ -229,7 +233,10 @@ Systems
         ├── 2. Architecture Constraints
         ├── 3. Context and Scope
         ├── 5. Building Block View                 ← 4. Solution Strategy has no content,
-        │   └── Example Component C                  so it does not exist and is not shown
+        │   ├── Components                            so it does not exist and is not shown
+        │   │   └── Example Component C
+        │   ├── Events
+        │   └── Commands
         ├── 6. Runtime View
         └── …
 ```
@@ -244,8 +251,9 @@ Four rules matter:
   (`component-architecture/`).
 - **A component lives inside the system's `5. Building Block View`.** That section describes how
   the system is decomposed, and a component is one of the blocks — so the block, its documentation
-  and the contracts between the blocks are all in one place. There is no separate `Components`
-  node.
+  and the contracts between the blocks are all in one place. The section groups its children by
+  kind: `Components`, `Events`, `Commands`, in that order. The group is a folder, so the kind
+  appears in the navigation and in the URL.
 - **Custom documentation is filed under the arc42 section it belongs to.** There is no generic
   catch-all category. In most cases the right home is `8. Crosscutting Concerns`; an operational
   scenario belongs under `6. Runtime View`, an ADR under `9. Architecture Decisions`.
@@ -293,17 +301,21 @@ content/base/
         │   └── …
         │   ├── 05-building-block-view/
         │   │   ├── _category_.json
-        │   │   ├── index.mdx          the decomposition and the contract catalogue
+        │   │   ├── index.mdx              the decomposition and the contract catalogue
         │   │   ├── decomposition-rationale.mdx
-        │   │   ├── example-component-a/    ← a component is a building block
-        │   │   │   ├── _category_.json     label "Example Component A", position 2
-        │   │   │   ├── index.mdx
-        │   │   │   └── component-architecture/
-        │   │   │       ├── _category_.json label "Component Architecture"
+        │   │   ├── components/            _category_.json position 2
+        │   │   │   └── example-component-a/
+        │   │   │       ├── _category_.json
         │   │   │       ├── index.mdx
-        │   │   │       ├── 01-introduction-and-goals.mdx
-        │   │   │       └── …
-        │   │   └── declaration-accepted.mdx  ← one page per contract, position 20+
+        │   │   │       └── component-architecture/
+        │   │   │           ├── _category_.json label "Component Architecture"
+        │   │   │           ├── index.mdx
+        │   │   │           ├── 01-introduction-and-goals.mdx
+        │   │   │           └── …
+        │   │   ├── events/                _category_.json position 3
+        │   │   │   └── declaration-accepted.mdx
+        │   │   └── commands/              _category_.json position 4
+        │   │       └── submit-declaration.mdx
         │   └── …
 ```
 
@@ -438,9 +450,9 @@ Nothing else — the sidebar picks it up automatically.
 
 ## How to add a component
 
-1. Create `content/base/systems/<system-id>/system-architecture/05-building-block-view/<component-id>/`
+1. Create `content/base/systems/<system-id>/system-architecture/05-building-block-view/components/<component-id>/`
    — a component is a building block, so it lives inside the section that describes the
-   decomposition.
+   decomposition, in the `components/` group.
 2. Add `_category_.json` with the label and position.
 3. Add `index.mdx`, then a `component-architecture/` folder with its own `index.mdx` and section files, exactly as for a system. Its `_category_.json` label is `Component Architecture`.
 4. Add the component to the owning system's `components` array in `src/data/catalog.ts`. If it
@@ -456,7 +468,8 @@ Contracts are per system. Add the entry to the system's catalogue in `src/data/m
 payload fields, example, optional version history), then add the page:
 
 ```text
-content/base/systems/example-system-a/system-architecture/05-building-block-view/<slug>.mdx
+content/base/systems/example-system-a/system-architecture/05-building-block-view/events/<slug>.mdx
+# or commands/<slug>.mdx
 ```
 
 ```mdx
@@ -522,17 +535,17 @@ content/base/systems/example-system-a/system-architecture/08-crosscutting-concer
 ```
 
 **Beneath a component's Runtime View** →
-`/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/bulk-import-scenario/`
+`/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/runtime-view/bulk-import-scenario/`
 
 ```text
-content/base/systems/example-system-a/system-architecture/05-building-block-view/example-component-a/component-architecture/06-runtime-view/bulk-import-scenario.mdx
+content/base/systems/example-system-a/system-architecture/05-building-block-view/components/example-component-a/component-architecture/06-runtime-view/bulk-import-scenario.mdx
 ```
 
 **Beneath a component's Architecture Decisions** →
-`/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/architecture-decisions/adr-0002-schema-registry/`
+`/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/architecture-decisions/adr-0002-schema-registry/`
 
 ```text
-content/base/systems/example-system-a/system-architecture/05-building-block-view/example-component-a/component-architecture/09-architecture-decisions/adr-0002-schema-registry.mdx
+content/base/systems/example-system-a/system-architecture/05-building-block-view/components/example-component-a/component-architecture/09-architecture-decisions/adr-0002-schema-registry.mdx
 ```
 
 **Beneath a system's Product Requirements (BMAD)** →

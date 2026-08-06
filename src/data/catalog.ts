@@ -178,15 +178,18 @@ export function systemPath(systemId: string): string {
 /**
  * Components live inside the system's building block view: that section
  * describes the decomposition, and a component *is* one of the building blocks.
- * There is no separate `Components` node.
  *
- * `/systems/example-system-a/system-architecture/building-block-view/example-component-a/`
+ * The section groups its children by what they are — `components/`, `events/`,
+ * `commands/` — so the kind is visible in the navigation and in the URL:
+ *
+ * `/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/`
  */
 export const COMPONENT_HOME_STRUCTURE = 'system-architecture';
 export const COMPONENT_HOME_SECTION = 'building-block-view';
+export const COMPONENT_GROUP = 'components';
 
 export function componentPath(systemId: string, componentId: string): string {
-  return `/systems/${systemId}/${COMPONENT_HOME_STRUCTURE}/${COMPONENT_HOME_SECTION}/${componentId}/`;
+  return `/systems/${systemId}/${COMPONENT_HOME_STRUCTURE}/${COMPONENT_HOME_SECTION}/${COMPONENT_GROUP}/${componentId}/`;
 }
 
 /**

@@ -596,10 +596,18 @@ export function messagesOfComponent(
 }
 
 /**
- * `/systems/example-system-a/system-architecture/building-block-view/declaration-accepted/`
+ * Contracts are grouped by kind below the building block view, so the URL says
+ * what the page is before you open it.
+ *
+ * `/systems/example-system-a/system-architecture/building-block-view/events/declaration-accepted/`
  */
 export function messagePath(systemId: string, name: string): string {
-  return `${sectionPath(systemId, undefined, 'system-architecture', 'building-block-view')}${
-    messageByName(systemId, name).slug
-  }`;
+  const message = messageByName(systemId, name);
+  const group = message.kind === 'command' ? 'commands' : 'events';
+  return `${sectionPath(
+    systemId,
+    undefined,
+    'system-architecture',
+    'building-block-view',
+  )}${group}/${message.slug}/`;
 }

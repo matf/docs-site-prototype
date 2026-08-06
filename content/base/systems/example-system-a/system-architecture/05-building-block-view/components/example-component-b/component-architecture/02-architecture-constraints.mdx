@@ -1,0 +1,53 @@
+---
+title: 2. Architecture Constraints
+sidebar_label: 2. Architecture Constraints
+description: Constraints that apply to Example Component B.
+doc_status: custom
+---
+
+# 2. Architecture Constraints
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="architecture-constraints"
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Inherited from the system
+
+All constraints in
+[Example System A — 2. Architecture Constraints](/systems/example-system-a/system-architecture/architecture-constraints/)
+apply. The decisive ones:
+
+| # | Constraint | Effect here |
+| --- | --- | --- |
+| O-2 | Decisions are subject to legal review for ten years. | Rule set and model versions are part of every decision event; neither may ever be deleted. |
+| O-3 | Rule sets are owned by the specialist unit. | Rules are data, published by analysts, not code deployed by engineers. |
+| T-2 | Broker-only asynchronous transport. | The component is a pure consumer/producer; it exposes no business API. |
+
+## Component-specific
+
+| # | Constraint | Reason |
+| --- | --- | --- |
+| CB-1 | Scoring must be deterministic: the same inputs, rule set version and model version always produce the same band. | Reproducibility goal. Rules out anything with runtime randomness or wall-clock-dependent behaviour. |
+| CB-2 | No model may use the declarant's identity as a direct feature. | Legal and fairness requirement; identity may only enter through aggregated history features that are reviewed. |
+| CB-3 | Rule sets and models are immutable once published; a change is a new version. | Makes rollback a one-step operation and keeps history reproducible. |
+| CB-4 | A decision must be produced for every revision, even when the model is unavailable. | A missing decision blocks a consignment; the fallback is a conservative band, never silence. |
+
+CB-1 and CB-4 pull against each other: determinism argues for one code path, availability argues
+for a fallback. The resolution — a versioned fallback rule set that is itself deterministic — is
+described in
+[4. Solution Strategy](/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/solution-strategy/).
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/architecture-decisions/adr-0001-versioned-rule-sets/', label: 'ADR-0001 — Versioned rule sets and models', note: 'How CB-1 and CB-3 are implemented.', status: 'custom'},
+    {to: '/systems/example-system-a/system-architecture/architecture-constraints/', label: 'Example System A — 2. Architecture Constraints', note: 'The inherited constraints.', status: 'custom'},
+  ]}
+/>

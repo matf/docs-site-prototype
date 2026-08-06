@@ -34,7 +34,7 @@ doc_status: custom
 | --- | --- | --- | --- | --- |
 | D-1 | The notification projection lives inside Example Component A instead of being its own component. | Avoided a deployable unit without an ownership boundary — see [5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/). | Intake deployments carry notification changes. | Reassess when a third notification channel appears. |
 | D-2 | Rule set versions are pinned per decision, but the *evaluation code* is not versioned. | Reproducing an old decision assumes the evaluator behaves identically. | Weakens QS-1 for very old decisions. | Snapshot the evaluator version into the decision event; planned for the next quarter. |
-| D-3 | Dead-letter replay is a manual procedure. | Automating it before understanding the failure classes would have automated the wrong thing. | Requires an operator with the right training at the right moment. | Documented in [Failover and Replay](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/failover-and-replay/); automate the two known safe classes. |
+| D-3 | Dead-letter replay is a manual procedure. | Automating it before understanding the failure classes would have automated the wrong thing. | Requires an operator with the right training at the right moment. | Documented in [Failover and Replay](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/runtime-view/failover-and-replay/); automate the two known safe classes. |
 | D-4 | `staging` uses an anonymised extract, so some real-world data shapes never appear before production. | Data protection. | Occasional production-only validation failures. | Accepted. Compensated by a strict rejection path that always produces a readable reason. |
 
 ## Explicitly accepted
@@ -58,7 +58,7 @@ reasoning recorded, not oversights.
       status: 'custom',
     },
     {
-      to: '/systems/example-system-a/system-architecture/building-block-view/example-component-b/component-architecture/risks-and-technical-debt/',
+      to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/risks-and-technical-debt/',
       label: 'Example Component B — 11. Risks and Technical Debt',
       note: 'Component-level risks of the risk engine.',
       status: 'custom',

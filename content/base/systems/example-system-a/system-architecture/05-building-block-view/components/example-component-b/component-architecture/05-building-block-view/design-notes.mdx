@@ -1,0 +1,64 @@
+---
+title: Design Notes
+sidebar_label: Design Notes
+sidebar_position: 1
+description: Custom page below arc42 section 5 — the reasoning behind the internal structure of Example Component B.
+doc_status: custom
+---
+
+# Design Notes
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="building-block-view"
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+:::note[Custom explanation of a generated diagram]
+
+The [generated component view](/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/building-block-view/) shows the
+blocks and their dependencies. This page says why they are cut that way.
+
+:::
+
+## Why this structure
+
+The same hexagonal structure as every component in this system, with one addition worth noticing:
+the **Rule Set Cache** and the **Model Cache** are separate building blocks, because rule sets and
+models have different lifecycles — rules change weekly, models quarterly.
+
+## Why the domain is pure
+
+The `Scoring Domain` block has no outgoing dependencies at all. Every input — rule set version,
+model version, declaration content, history features — is passed in, and the same inputs always
+produce the same band. That is what makes a three-year-old decision reproducible, and it is why
+the build fails if the domain touches the clock.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/building-block-view/',
+      label: '5. Building Block View',
+      note: 'The generated diagram this page explains.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/solution-strategy/',
+      label: '4. Solution Strategy',
+      note: 'The decisions this structure implements.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/crosscutting-concerns/development-guidelines/',
+      label: 'Development Guidelines',
+      note: 'The layering rules every component follows.',
+      status: 'custom',
+    },
+  ]}
+/>

@@ -60,9 +60,9 @@ retained for the legal retention period; the event log is the audit record.
   before seeing `CLEARED`, and the trade portal had to be changed to show that honestly.
 - Every consumer must be idempotent, because delivery is at-least-once. This is a permanent tax on
   every new consumer — implemented via the transactional outbox in
-  [ADR-0001 of Example Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/architecture-decisions/adr-0001-transactional-outbox/).
+  [ADR-0001 of Example Component A](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/architecture-decisions/adr-0001-transactional-outbox/).
 - Operations needs a replay procedure and the training to use it —
-  [Failover and Replay](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/failover-and-replay/).
+  [Failover and Replay](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/runtime-view/failover-and-replay/).
 - Debugging a single declaration means correlating across components, which is why
   `correlationId` propagation is mandatory in the
   [Development Guidelines](/systems/example-system-a/system-architecture/crosscutting-concerns/development-guidelines/).

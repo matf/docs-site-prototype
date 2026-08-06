@@ -63,8 +63,8 @@ Each level is a URL segment and a sidebar node:
 /systems/example-system-a/
 /systems/example-system-a/system-architecture/
 /systems/example-system-a/system-architecture/building-block-view/
-/systems/example-system-a/system-architecture/building-block-view/declaration-accepted/
-/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/runtime-view/
+/systems/example-system-a/system-architecture/building-block-view/events/declaration-accepted/
+/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/runtime-view/
 /systems/example-system-a/specs-docs/stories/story-1-1-submit-declaration/
 ```
 
@@ -114,19 +114,38 @@ rationale and the contracts that flow between the blocks:
 System Architecture
 └── 5. Building Block View
     ├── Decomposition Rationale        custom
-    ├── Example Component A            a building block
-    │   └── Component Architecture
-    │       ├── 1. Introduction and Goals
-    │       └── …
-    ├── Example Component B
-    └── DeclarationAccepted            one page per contract
+    ├── Components
+    │   ├── Example Component A        a building block
+    │   │   └── Component Architecture
+    │   │       ├── 1. Introduction and Goals
+    │   │       └── …
+    │   └── Example Component B
+    ├── Events
+    │   ├── DeclarationAccepted        one page per contract
+    │   └── …
+    └── Commands
+        ├── SubmitDeclaration
+        └── …
 ```
 
-There is **no separate `Components` node**. Everything about the decomposition — why it is cut
-this way, what the blocks are, and what flows between them — is reachable from one section.
+Everything about the decomposition — why it is cut this way, what the blocks are, and what flows
+between them — is reachable from one section.
 
-Ordering inside the section: the section index, the decomposition rationale, then the components,
-then the contracts. Blocks before connections.
+**Grouping.** The section groups its children by what they are: **Components**, **Events**,
+**Commands**, in that order, after the decomposition rationale. The group is a folder, so the kind
+is visible both in the navigation and in the URL:
+
+```text
+…/building-block-view/components/example-component-a/
+…/building-block-view/events/declaration-accepted/
+…/building-block-view/commands/submit-declaration/
+```
+
+The same grouping applies to a component's building block view wherever it is needed. Today a
+component has no sub-components and publishes no contracts of its own, so it has nothing to group
+and its children sit directly below the section. If a component later documents, for example, the
+events it consumes, they go into an `events/` folder there and the navigation gains the same
+structure one level down. The grouping is a convention, not a special case for systems.
 
 ### 2.4 A node exists only when it has content
 
@@ -152,7 +171,7 @@ documented **per system**, one page per event or command, directly below the sys
 *5. Building Block View* — the section that describes how the building blocks fit together and
 therefore what flows between them.
 
-Commands are listed before events. Each contract page is fully generated: producer, consumers,
+Events are listed before commands, each in its own group. Each contract page is fully generated: producer, consumers,
 channel, schema and version, ordering key, retention, payload fields, an example and the version
 history.
 
@@ -415,6 +434,7 @@ Available in every MDX file without an import:
 | Structure is a URL segment | Several methodologies coexist per system |
 | A structure is named for what it describes | *System Architecture* / *Component Architecture* |
 | Components live inside `5. Building Block View` | Decomposition, components and contracts in one place |
+| That section groups by kind: components, events, commands | The kind is visible in the navigation and the URL |
 | `NN-` prefixes order, and are stripped from URLs | Methodology order preserved without ugly links |
 | `index.mdx` is the category landing page | No `Overview` nodes |
 | A section is a file until it needs children, then a folder | URL unchanged when children are added |

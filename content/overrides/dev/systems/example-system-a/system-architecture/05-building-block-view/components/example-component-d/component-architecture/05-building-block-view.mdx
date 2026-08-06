@@ -1,0 +1,88 @@
+---
+title: 5. Building Block View
+sidebar_label: 5. Building Block View
+description: Generated internal decomposition of Example Component D.
+doc_status: generated
+---
+
+# 5. Building Block View
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-d"
+  section="building-block-view"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-projection-service',
+    revision: '0b74e12',
+    generatedAt: '2026-08-06 06:00 UTC',
+    scope: 'Whole page — internal component view and the building block table',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Derived from the package structure and the declared ports.
+
+:::
+
+<Diagram
+  title="Internal component view — Example Component D"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · notification-projection-service@0b74e12">
+
+```mermaid
+flowchart TB
+  classDef adapter fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+  classDef app fill:#fdf4e5,stroke:#8a5a00,color:#12161a
+  classDef domain fill:#fbeef0,stroke:#c8102e,stroke-width:2px,color:#12161a
+  classDef ext fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+
+  subgraph CD["Example Component D"]
+    direction TB
+    MIN["Messaging Adapter (inbound)"]:::adapter
+    APP["Projection Service<br/>idempotency, transaction boundary"]:::app
+    DOM["Domain<br/>NotificationView, channel selection"]:::domain
+    PERS["Persistence Adapter<br/>read model + processed messages"]:::adapter
+    MAIL["E-mail Channel Adapter"]:::adapter
+    PUSH["Push Channel Adapter"]:::adapter
+    INBOX["Inbox Channel Adapter"]:::adapter
+  end
+
+  BROKER["Broker"]:::ext
+  DB[("Notification read model")]:::ext
+  PROV["E-mail / push providers"]:::ext
+  PORTAL["Trade Portal inbox"]:::ext
+
+  BROKER --> MIN --> APP --> DOM
+  APP --> PERS --> DB
+  APP --> MAIL --> PROV
+  APP --> PUSH --> PROV
+  APP --> INBOX --> PORTAL
+```
+
+</Diagram>
+
+| Building block | Responsibility |
+| --- | --- |
+| **Messaging Adapter (inbound)** | Deserialises declaration lifecycle events. |
+| **Projection Service** | Updates the read model and dispatches to channels in one transaction boundary; idempotent per (event, channel). |
+| **Domain** | Which channels a declarant gets, and what the notification says. No framework imports. |
+| **Persistence Adapter** | Notification read model and the processed-message table. |
+| **Channel adapters** | One per channel, behind a single port — the reason this component exists. |
+
+## Messages this component handles
+
+<ComponentMessages system="example-system-a" component="example-component-d" />
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/components/example-component-d/component-architecture/runtime-view/',
+      label: '6. Runtime View',
+      note: 'These blocks in motion.',
+      status: 'generated',
+    },
+  ]}
+/>

@@ -24,7 +24,7 @@ doc_status: generated
 :::info[Three components on DEV]
 
 The notification projection was extracted from Example Component A into
-[Example Component D](/systems/example-system-a/system-architecture/building-block-view/example-component-d/). That has happened
+[Example Component D](/systems/example-system-a/system-architecture/building-block-view/components/example-component-d/). That has happened
 on **DEV** only — on REF, ABN and PROD this system still has two components, and their building
 block views show exactly that.
 
@@ -103,9 +103,9 @@ arc42 sections each.
 
 | Component | Responsibility | Consumes | Publishes | Documentation |
 | --- | --- | --- | --- | --- |
-| [Example Component A](/systems/example-system-a/system-architecture/building-block-view/example-component-a/) | Owns the declaration aggregate and its lifecycle: validation, persistence, state transitions. | `SubmitDeclaration`, `CorrectDeclaration`, `RiskAssessmentCompleted` | `DeclarationAccepted`, `DeclarationRejected`, `DeclarationAmended`, `DeclarationCleared`, `DeclarationHeld` | <DocMix system="example-system-a" component="example-component-a" /> |
-| [Example Component B](/systems/example-system-a/system-architecture/building-block-view/example-component-b/) | Owns the risk decision: rule evaluation, scoring, inspection orders. | `DeclarationAccepted`, `DeclarationAmended`, `RecalculateRisk` | `RiskAssessmentCompleted`, `OrderInspection`, `RiskModelDeployed` | <DocMix system="example-system-a" component="example-component-b" /> |
-| [Example Component D](/systems/example-system-a/system-architecture/building-block-view/example-component-d/) | Projects declaration lifecycle events into declarant notifications. | `DeclarationCleared`, `DeclarationHeld`, `DeclarationRejected` | — | <DocMix system="example-system-a" component="example-component-d" /> |
+| [Example Component A](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/) | Owns the declaration aggregate and its lifecycle: validation, persistence, state transitions. | `SubmitDeclaration`, `CorrectDeclaration`, `RiskAssessmentCompleted` | `DeclarationAccepted`, `DeclarationRejected`, `DeclarationAmended`, `DeclarationCleared`, `DeclarationHeld` | <DocMix system="example-system-a" component="example-component-a" /> |
+| [Example Component B](/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/) | Owns the risk decision: rule evaluation, scoring, inspection orders. | `DeclarationAccepted`, `DeclarationAmended`, `RecalculateRisk` | `RiskAssessmentCompleted`, `OrderInspection`, `RiskModelDeployed` | <DocMix system="example-system-a" component="example-component-b" /> |
+| [Example Component D](/systems/example-system-a/system-architecture/building-block-view/components/example-component-d/) | Projects declaration lifecycle events into declarant notifications. | `DeclarationCleared`, `DeclarationHeld`, `DeclarationRejected` | — | <DocMix system="example-system-a" component="example-component-d" /> |
 
 </Diagram>
 
@@ -124,8 +124,8 @@ The internal structure of each component is documented in the component's own bu
 view, not here — that keeps this page about the system and lets each component's page carry its
 generated internal decomposition:
 
-- [Example Component A — 5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/example-component-a/component-architecture/building-block-view/)
-- [Example Component B — 5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/example-component-b/component-architecture/building-block-view/)
+- [Example Component A — 5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/components/example-component-a/component-architecture/building-block-view/)
+- [Example Component B — 5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/components/example-component-b/component-architecture/building-block-view/)
 
 <RelatedDocs
   items={[
