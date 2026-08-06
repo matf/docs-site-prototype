@@ -22,7 +22,9 @@ backend. It demonstrates:
 - generated documentation (context diagrams, component views, reaction graphs, messaging
   catalogues, observability inventories) integrated into the arc42 section it belongs to;
 - custom documentation insertable at any level of the arc42 structure;
-- a consistent `Generated` / `Custom` / `Mixed` labelling with provenance and ownership metadata;
+- a page-level `Generated` / `Custom` labelling with provenance and ownership metadata — a page
+  has exactly one origin, never both;
+- arc42 sections that only exist when they have content, with no empty placeholder pages;
 - navigation between systems, components, arc42 sections, generated content and custom content;
 - automatic deployment to GitHub Pages.
 
@@ -128,6 +130,7 @@ Systems
 │   ├── 10. Quality Requirements
 │   ├── 11. Risks and Technical Debt
 │   ├── 12. Glossary
+│   │   └── Technical Terms                       ← generated, next to the custom glossary
 │   └── Components
 │       ├── Example Component A
 │       │   ├── 1. Introduction and Goals
@@ -139,20 +142,40 @@ Systems
 │       │   │   └── Security                        (custom)
 │       │   └── 12. Glossary
 │       └── Example Component B
-└── Example System B
-    ├── 1. Introduction and Goals … 12. Glossary
+└── Example System B                              ← 9 of 12 sections documented
+    ├── 1. Introduction and Goals
+    ├── 2. Architecture Constraints
+    ├── 3. Context and Scope
+    ├── 5. Building Block View                     ← 4. Solution Strategy has no content,
+    ├── 6. Runtime View                              so it does not exist and is not shown
+    ├── 8. Crosscutting Concerns
+    ├── 9. Architecture Decisions
+    ├── 10. Quality Requirements
+    ├── 12. Glossary
     └── Components
-        └── Example Component C
+        └── Example Component C                    ← 5 of 12 sections documented
+            ├── 1. Introduction and Goals
+            ├── 3. Context and Scope
+            ├── 5. Building Block View
+            ├── 6. Runtime View
+            └── 8. Crosscutting Concerns
 ```
 
-Two rules matter:
+Three rules matter:
 
 - **`Components` is a sibling of the arc42 sections, not a child of `5. Building Block View`.** The
   system's building block view *describes and links* its components; the component documentation
-  lives one level down, where it has room for its own twelve sections.
+  lives one level down, where it has room for its own sections.
 - **Custom documentation is filed under the arc42 section it belongs to.** There is no generic
   catch-all category. In most cases the right home is `8. Crosscutting Concerns`; an operational
   scenario belongs under `6. Runtime View`, an ADR under `9. Architecture Decisions`.
+- **A section exists only if it has content.** The twelve arc42 sections are a checklist, not a
+  quota. A component always has `3. Context and Scope`, `5. Building Block View` and
+  `6. Runtime View` — those three say what it is and what it does, and all three are generated.
+  Everything else appears only when there is something to say. There are no empty or
+  "to be written" placeholder pages anywhere; the gaps in the numbering are the only signal, and
+  that is deliberate. Deleting a section file removes it from the navigation and from the section
+  lists on the landing pages — nothing else has to be updated.
 
 ### Filesystem layout and how it becomes navigation
 
@@ -199,39 +222,70 @@ Three conventions do the work:
 `_category_.json` carries the sidebar label and position for a folder; `sidebar_position` in a
 page's frontmatter places it among its siblings.
 
-## Generated, custom and mixed content
+## Generated and custom content
+
+A page has exactly **one** origin. There is no "mixed" — a page that would be half generated is
+split into two pages.
 
 | Badge | Meaning |
 | --- | --- |
-| `Generated` | Produced by a documentation generator from source code, API contracts, schemas or deployment descriptors. Manual edits would be overwritten on the next run. |
-| `Custom` | Written and maintained by hand by the owning team. Never touched by a generator. |
-| `Mixed` | A page that combines both: manually written explanation around one or more generated blocks. |
+| `Generated` | The whole page is produced by a documentation generator from source code, API contracts, schemas or deployment descriptors. Manual edits are overwritten on the next run. |
+| `Custom` | The whole page is written and maintained by hand by the owning team. No generator ever writes to it. |
 
-Every page declares what it is with a single component at the top:
+The origin is declared once, in the page's frontmatter:
+
+```yaml
+---
+title: 5. Building Block View
+sidebar_label: 5. Building Block View
+sidebar_position: 0
+doc_status: generated      # or: custom
+---
+```
+
+`doc_status` is the single source of truth. `<DocHeader>` reads it to render the badge, and the
+build-time plugin in `plugins/doc-status/` reads it to build the navigation — so the sidebar, the
+section lists, the badges and the page counts can never disagree with the page itself. An invalid
+value fails the build.
 
 ```mdx
 <DocHeader
   system="example-system-a"
   component="example-component-a"
-  section="runtime-view"
-  status="mixed"
+  section="building-block-view"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
-    scope: 'Reaction graph and the reaction table',
+    scope: 'Whole page — internal component view and the building block table',
   }}
-  custom={{owner: 'Team Alpha — Declaration Squad', lastReviewed: '2026-07-30', reviewStatus: 'Reviewed'}}
 />
 ```
 
-`DocHeader` renders the contextual header (system → component → arc42 section), the status badge and
-the provenance/ownership panels. It reads the system and component catalogue in `src/data/`, so
-names and teams cannot drift apart between pages.
+`DocHeader` renders the contextual header (system → component → arc42 section), the badge and the
+provenance/ownership panel. It reads the system and component catalogue in `src/data/`, so names
+and teams cannot drift apart between pages.
 
-Generated blocks inside a mixed page are framed with `<Diagram>` (or a generated table component),
-which keeps the boundary between hand-written explanation and generated output visible.
+### When a generated artefact needs a hand-written explanation
+
+Write a second page. The generated artefact keeps the arc42 section route; the explanation becomes
+a custom page directly beneath it:
+
+```text
+05-building-block-view/
+├── _category_.json
+├── index.mdx           doc_status: generated   the component view
+└── design-notes.mdx    doc_status: custom      why it is shaped that way
+```
+
+This is what makes regeneration safe: the generator replaces whole files and never has to merge
+into somebody's prose. The pattern is used throughout — `context-and-scope/scope-notes`,
+`building-block-view/design-notes`, `runtime-view/correction-race`, `glossary/technical-terms`.
+
+Because a *set* of pages has no single origin, systems and components do not carry an aggregate
+badge. They show counts instead: `<DocMix system="…" component="…" />` renders
+"7 generated · 15 custom".
 
 ### Reusable components
 
@@ -239,14 +293,15 @@ Registered globally in `src/theme/MDXComponents.tsx`, so no MDX file needs an im
 
 | Component | Purpose |
 | --- | --- |
-| `<StatusBadge status="generated\|custom\|mixed" />` | The documentation status badge |
+| `<StatusBadge status="generated\|custom" />` | The documentation origin badge |
 | `<GeneratedMeta … />` | Generated-content provenance panel |
 | `<CustomMeta … />` | Custom-content ownership panel |
 | `<DocHeader … />` | Contextual page header, composes the three above |
 | `<SystemCard id="…" />` | System card |
 | `<ComponentCard system="…" component="…" />` | Component card |
 | `<CardGrid>` | Responsive card grid |
-| `<Arc42SectionNav system="…" component="…" />` | The twelve arc42 section links |
+| `<Arc42SectionNav system="…" component="…" />` | Links to the arc42 sections that exist, with a coverage line |
+| `<DocMix system="…" component="…" />` | Generated/custom page counts for a system or component |
 | `<Diagram title="…" status="…" source="…">` | Framed, scrollable diagram/table container |
 | `<MessagingCatalogue system="…" component="…" />` | Generated message catalogue |
 | `<Msg system="…" component="…" name="…" />` | Inline link to one catalogue entry |
@@ -255,9 +310,10 @@ Registered globally in `src/theme/MDXComponents.tsx`, so no MDX file needs an im
 | `<PrototypeNotice />` | Standing "this content is fictional" notice |
 
 The data behind them lives in `src/data/`: `catalog.ts` (systems and components), `arc42.ts` (the
-twelve sections), `messaging.ts` (message catalogues), `sectionStatus.ts` (per-section status).
-Page counts on the landing page and on the cards are read from the docs plugin's own route data
-(`src/data/useDocsStats.ts`), so they stay correct as documentation is added.
+twelve canonical sections), `messaging.ts` (message catalogues). Which sections actually exist and
+what each page's origin is comes from `src/data/useDocsStatus.ts`, which reads the global data
+produced by `plugins/doc-status/` — so section lists, badges and counts stay correct as
+documentation is added or removed, with nothing to maintain by hand.
 
 ## How to add a system
 
@@ -379,9 +435,10 @@ The generator is expected to own whole files and to leave everything else alone:
 
 - it writes the generated `.mdx` pages (context diagrams, component views, reaction graphs, message
   catalogues, observability inventories) and the catalogue data under `src/data/`;
-- it never edits a page marked `status="custom"`;
-- on a **mixed** page the hand-written prose lives in the page and the generated part is a framed
-  block, so a future generator replaces the block rather than the page;
+- it owns whole files: a generated page is regenerated in full, never merged into, and a page
+  whose frontmatter says `doc_status: custom` is never touched;
+- it may delete a generated page when the artefact behind it disappears — that section then stops
+  appearing in the navigation, which is the correct outcome;
 - it does not touch `sidebars.ts` — the information architecture comes from the folder layout, so
   adding, replacing or removing generated pages never requires a navigation change.
 

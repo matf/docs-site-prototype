@@ -13,8 +13,8 @@ export type StatusBadgeProps = {
 };
 
 /**
- * The `Generated` / `Custom` / `Mixed` marker used everywhere on this site.
- * A single component so the vocabulary can never drift between pages.
+ * The `Generated` / `Custom` marker used everywhere on this site. A single
+ * component so the vocabulary can never drift between pages.
  */
 export default function StatusBadge({
   status,

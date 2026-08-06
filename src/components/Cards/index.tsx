@@ -8,8 +8,8 @@ import {
   systemPath,
   type ComponentEntry,
 } from '@site/src/data/catalog';
-import {useDocsStats} from '@site/src/data/useDocsStats';
-import StatusBadge from '@site/src/components/StatusBadge';
+import {useDocsStatus} from '@site/src/data/useDocsStatus';
+import DocMix from '@site/src/components/DocMix';
 import styles from './styles.module.css';
 
 export function CardGrid({
@@ -40,7 +40,8 @@ function Facts({items}: {items: {label: string; value: ReactNode}[]}): ReactNode
 /** Card for a system, used on the start page and the systems overview. */
 export function SystemCard({id}: {id: string}): ReactNode {
   const system = systemById(id);
-  const stats = useDocsStats();
+  const {countUnder, sectionsOf} = useDocsStatus();
+  const pages = countUnder(systemPath(system.id));
   return (
     <article className={styles.card}>
       <header className={styles.head}>
@@ -50,14 +51,18 @@ export function SystemCard({id}: {id: string}): ReactNode {
           </h3>
           <p className={styles.subtitle}>{system.subtitle}</p>
         </div>
-        <StatusBadge status={system.status} small />
+        <DocMix system={system.id} />
       </header>
       <p className={styles.summary}>{system.summary}</p>
       <Facts
         items={[
           {label: 'Responsible team', value: system.team},
           {label: 'Components', value: system.components.length},
-          {label: 'Documentation pages', value: stats.pagesInSystem(system.id)},
+          {
+            label: 'arc42 sections',
+            value: `${sectionsOf(system.id).length} of 12 documented`,
+          },
+          {label: 'Documentation pages', value: pages.total},
           {label: 'Status', value: system.docStatus},
         ]}
       />
@@ -85,8 +90,19 @@ export function ComponentCard({
   component: string;
 }): ReactNode {
   const entry: ComponentEntry = componentById(system, component);
-  const stats = useDocsStats();
+  const {countUnder, sectionsOf, exists} = useDocsStatus();
   const base = componentPath(system, entry.id);
+  const pages = countUnder(base);
+  const links = [
+    {to: `${base}context-and-scope/`, label: '3. Context and Scope', note: 'Generated context diagram'},
+    {to: `${base}building-block-view/`, label: '5. Building Block View', note: 'Generated internal decomposition'},
+    {to: `${base}runtime-view/`, label: '6. Runtime View', note: 'Generated reaction graph'},
+    {
+      to: `${base}crosscutting-concerns/messaging-events-and-commands/`,
+      label: 'Messaging Events and Commands',
+      note: 'Generated message catalogue',
+    },
+  ].filter((link) => exists(link.to));
   return (
     <article className={styles.card}>
       <header className={styles.head}>
@@ -96,36 +112,28 @@ export function ComponentCard({
           </h3>
           <p className={styles.subtitle}>{entry.subtitle}</p>
         </div>
-        <StatusBadge status={entry.status} small />
+        <DocMix system={system} component={entry.id} />
       </header>
       <p className={styles.summary}>{entry.summary}</p>
       <Facts
         items={[
           {label: 'Responsible team', value: entry.team},
           {label: 'Role in the system', value: entry.role},
-          {label: 'Documentation pages', value: stats.pagesInComponent(system, entry.id)},
+          {
+            label: 'arc42 sections',
+            value: `${sectionsOf(system, entry.id).length} of 12 documented`,
+          },
+          {label: 'Documentation pages', value: pages.total},
           {label: 'Status', value: entry.docStatus},
         ]}
       />
       <ul className={styles.links}>
-        <li>
-          <Link to={`${base}context-and-scope/`}>3. Context and Scope</Link>
-          <span className={styles.linkNote}>Generated context diagram</span>
-        </li>
-        <li>
-          <Link to={`${base}building-block-view/`}>5. Building Block View</Link>
-          <span className={styles.linkNote}>Generated internal decomposition</span>
-        </li>
-        <li>
-          <Link to={`${base}runtime-view/`}>6. Runtime View</Link>
-          <span className={styles.linkNote}>Generated reaction graph</span>
-        </li>
-        <li>
-          <Link to={`${base}crosscutting-concerns/messaging-events-and-commands/`}>
-            Messaging Events and Commands
-          </Link>
-          <span className={styles.linkNote}>Generated message catalogue</span>
-        </li>
+        {links.map((link) => (
+          <li key={link.to}>
+            <Link to={link.to}>{link.label}</Link>
+            <span className={styles.linkNote}>{link.note}</span>
+          </li>
+        ))}
       </ul>
       <Link className={styles.action} to={base}>
         Open {entry.name} →

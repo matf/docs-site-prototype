@@ -2,11 +2,12 @@
 title: 3. Context and Scope
 sidebar_label: 3. Context and Scope
 description: Generated context diagram of Example Component C.
+doc_status: generated
 ---
 
 # 3. Context and Scope
 
-<DocHeader system="example-system-b" component="example-component-c" section="context-and-scope" status="mixed"
+<DocHeader system="example-system-b" component="example-component-c" section="context-and-scope"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
@@ -14,7 +15,7 @@ description: Generated context diagram of Example Component C.
     generatedAt: '2026-08-03 03:10 UTC',
     scope: 'Context diagram',
   }}
-  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+/>
 
 <Diagram
   title="Component context — Example Component C"
@@ -52,10 +53,7 @@ flowchart LR
 
 </Diagram>
 
-The provider is the only hard external dependency, and it is also the only rate-limited one —
-constraint CC-1.
-
 <RelatedDocs items={[
   {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', status: 'generated'},
-  {to: '/systems/example-system-b/components/example-component-c/building-block-view/', label: '5. Building Block View', status: 'mixed'},
+  {to: '/systems/example-system-b/components/example-component-c/building-block-view/', label: '5. Building Block View', status: 'generated'},
 ]} />

@@ -2,6 +2,7 @@
 title: Example Component B
 sidebar_label: Example Component B
 description: Landing page of Example Component B (fictional Risk Assessment Engine) — arc42 sections, generated documentation and metadata.
+doc_status: generated
 ---
 
 # Example Component B
@@ -14,18 +15,12 @@ decides on risk.
 <DocHeader
   system="example-system-a"
   component="example-component-b"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
     revision: '3fd8b52',
     generatedAt: '2026-08-04 03:14 UTC',
     scope: 'Context diagram, component view, reaction graph, messaging catalogue, observability inventory',
-  }}
-  custom={{
-    owner: 'Team Alpha — Risk Squad (fictional)',
-    lastReviewed: '2026-07-28',
-    reviewStatus: 'Reviewed',
   }}
 />
 
@@ -36,8 +31,8 @@ decides on risk.
 | **Part of** | [Example System A](/systems/example-system-a/) |
 | **Responsible team** | Team Alpha — Risk Squad (fictional) |
 | **Role in the system** | Event-driven decision engine |
-| **Documentation status** | Complete — generated context, building block, runtime and messaging views |
-| **Content** | Mixed — generated diagrams and catalogues inside manually written sections |
+| **Documentation status** | Complete — all twelve arc42 sections |
+| **Pages** | <DocMix system="example-system-a" component="example-component-b" verbose /> |
 | **Source repository** | `git.example.admin.ch/bazg-proto/risk-assessment-engine` |
 | **Last generation run** | 2026-08-04 03:14 UTC from revision `3fd8b52` |
 
@@ -61,13 +56,13 @@ decides on risk.
       to: '/systems/example-system-a/components/example-component-a/',
       label: 'Example Component A',
       note: 'Publishes the events this component consumes.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/building-block-view/',
       label: 'Example System A — 5. Building Block View',
       note: 'How this component fits into the system.',
-      status: 'mixed',
+      status: 'generated',
     },
     {to: '/systems/example-system-a/components/', label: 'All components of Example System A', note: 'Back one level.'},
   ]}

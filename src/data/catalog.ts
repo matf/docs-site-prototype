@@ -9,22 +9,26 @@
  * ALL DATA BELOW IS FICTIONAL PROTOTYPE CONTENT.
  */
 
-/** How a page or a documentation set is produced. */
-export type DocStatus = 'generated' | 'custom' | 'mixed';
+/**
+ * How a page is produced.
+ *
+ * There are exactly two values, and they apply to a whole page. A page is
+ * either generated or written by hand — never both. Where a generated artefact
+ * needs hand-written explanation, the explanation is a separate page filed
+ * under the same arc42 section.
+ */
+export type DocStatus = 'generated' | 'custom';
 
 export const DOC_STATUS_LABEL: Record<DocStatus, string> = {
   generated: 'Generated',
   custom: 'Custom',
-  mixed: 'Mixed',
 };
 
 export const DOC_STATUS_DESCRIPTION: Record<DocStatus, string> = {
   generated:
-    'Produced by a documentation generator from source code, API contracts, schemas or deployment descriptors. Manual edits would be overwritten on the next run.',
+    'The whole page is produced by a documentation generator from source code, API contracts, schemas or deployment descriptors. Manual edits are overwritten on the next run.',
   custom:
-    'Written and maintained by hand by the owning team. Never touched by a generator.',
-  mixed:
-    'A page that combines both: manually written explanation around one or more generated blocks.',
+    'The whole page is written and maintained by hand by the owning team. No generator ever writes to it.',
 };
 
 export type ComponentEntry = {
@@ -36,7 +40,6 @@ export type ComponentEntry = {
   readonly subtitle: string;
   readonly summary: string;
   readonly team: string;
-  readonly status: DocStatus;
   /** Short statement of how complete the documentation is. */
   readonly docStatus: string;
   readonly sourceRepo: string;
@@ -52,7 +55,6 @@ export type SystemEntry = {
   readonly subtitle: string;
   readonly summary: string;
   readonly team: string;
-  readonly status: DocStatus;
   readonly docStatus: string;
   readonly sourceRepo: string;
   readonly revision: string;
@@ -68,8 +70,7 @@ export const SYSTEMS: readonly SystemEntry[] = [
     summary:
       'Accepts electronic goods declarations from trade participants, validates them against customs rules, assesses risk and hands cleared consignments over to the border control processes.',
     team: 'Team Alpha — Customs Platform Engineering',
-    status: 'mixed',
-    docStatus: 'Documented in depth — all twelve arc42 sections and two components.',
+    docStatus: 'Documented in depth — all twelve arc42 sections, two components.',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
     revision: 'a41f7c9',
     generatedAt: '2026-08-04 03:12 UTC',
@@ -81,7 +82,6 @@ export const SYSTEMS: readonly SystemEntry[] = [
         summary:
           'Single entry point for electronic declarations. Validates structure and customs rules, persists the declaration aggregate and publishes declaration lifecycle events.',
         team: 'Team Alpha — Declaration Squad',
-        status: 'mixed',
         docStatus: 'Complete — generated context, building block, runtime and messaging views.',
         sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
         revision: '9c1e40d',
@@ -95,7 +95,6 @@ export const SYSTEMS: readonly SystemEntry[] = [
         summary:
           'Consumes declaration events, evaluates rule sets and scoring models, and issues inspection commands for consignments that exceed the risk threshold.',
         team: 'Team Alpha — Risk Squad',
-        status: 'mixed',
         docStatus: 'Complete — generated context, building block, runtime and messaging views.',
         sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
         revision: '3fd8b52',
@@ -111,8 +110,7 @@ export const SYSTEMS: readonly SystemEntry[] = [
     summary:
       'Publishes transit and border waiting-time information to travellers and hauliers, and distributes operational notifications. Included to show that the navigation scales to several systems.',
     team: 'Team Beta — Public Information Services',
-    status: 'mixed',
-    docStatus: 'Reduced sample — all twelve arc42 sections present, deliberately shorter content.',
+    docStatus: 'Partially documented — nine of twelve arc42 sections; the rest have no content yet.',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-b',
     revision: '7b20ae1',
     generatedAt: '2026-08-03 03:09 UTC',
@@ -124,8 +122,7 @@ export const SYSTEMS: readonly SystemEntry[] = [
         summary:
           'Fans operational notifications out to e-mail, push and the public status page. Documented at reduced depth.',
         team: 'Team Beta — Channels Squad',
-        status: 'mixed',
-        docStatus: 'Reduced sample — twelve arc42 sections with concise content.',
+        docStatus: 'Partially documented — five of twelve arc42 sections; the rest have no content yet.',
         sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
         revision: 'd52c118',
         generatedAt: '2026-08-03 03:10 UTC',
@@ -169,8 +166,8 @@ export function componentPath(systemId: string, componentId: string): string {
 }
 
 /**
- * Base path of a system or a component — the prefix that all twelve arc42
- * section routes hang off.
+ * Base path of a system or a component — the prefix that its arc42 section
+ * routes hang off.
  */
 export function basePath(systemId: string, componentId?: string): string {
   return componentId ? componentPath(systemId, componentId) : systemPath(systemId);

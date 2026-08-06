@@ -1,0 +1,63 @@
+---
+title: Concept Coverage
+sidebar_label: Concept Coverage
+sidebar_position: 4
+description: Generated overview of which component of Example System A applies which crosscutting concept.
+doc_status: generated
+---
+
+# Concept Coverage
+
+<DocHeader
+  system="example-system-a"
+  section="crosscutting-concerns"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
+    revision: 'a41f7c9',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Whole page — concept annotations collected from the component repositories',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Collected from the concept annotations in the component repositories. An empty cell is a gap in
+the annotations, not an omission in this report — which is exactly what makes the table worth
+generating.
+
+:::
+
+<Diagram
+  title="Concept coverage across components"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
+  caption="Generated from the concept annotations in the component repositories. Empty cells are gaps, not omissions in the report.">
+
+| Concept | Example Component A | Example Component B |
+| --- | --- | --- |
+| Authentication and authorisation | Applied | Applied |
+| Data classification and retention | Applied | Applied |
+| Messaging conventions | [Documented](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/) | Inherited |
+| Observability | [Documented](/systems/example-system-a/components/example-component-a/crosscutting-concerns/observability/) | [Documented](/systems/example-system-a/components/example-component-b/crosscutting-concerns/observability/) |
+| Error handling and retries | Applied | Applied |
+| Transaction and outbox handling | [ADR-0001](/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0001-transactional-outbox/) | Not applicable |
+
+</Diagram>
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/crosscutting-concerns/',
+      label: '8. Crosscutting Concerns',
+      note: 'The concepts themselves.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/',
+      label: 'Example Component A — 8. Crosscutting Concerns',
+      note: 'How one component documents its own concepts.',
+      status: 'custom',
+    },
+  ]}
+/>

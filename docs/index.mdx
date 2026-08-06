@@ -6,6 +6,7 @@ sidebar_label: Start page
 displayed_sidebar: docsSidebar
 description: Prototype of the BAZG architecture documentation portal — one arc42 documentation tree for systems and components, mixing generated and manually maintained content.
 hide_table_of_contents: false
+doc_status: custom
 ---
 
 # BAZG System Documentation
@@ -63,16 +64,28 @@ Additional documentation — security, operations, messaging, development guidel
 observability — is never collected in a generic catch-all category. It is filed under the arc42
 section it belongs to, which in most cases is *8. Crosscutting Concerns*.
 
-## Generated, custom and mixed content
+A section only appears when it has content. A component always has a context view, a building
+block view and a runtime view; the remaining arc42 sections show up only if that component
+actually has something to say. [Example System B](/systems/example-system-b/) and
+[Example Component C](/systems/example-system-b/components/example-component-c/) are documented
+that way — nine and five of twelve sections respectively, with no empty placeholder pages.
 
-Every page says where its content comes from, and every page that carries generated content
-shows the generator, the source repository, the source revision and the generation timestamp.
+## Generated and custom content
+
+Every page has exactly one origin. It is either produced by a generator or written by hand —
+never both. A generated page shows the generator, the source repository, the source revision and
+the generation timestamp; a custom page shows its owning team and review date.
 
 <ContentLegend />
 
-Generated blocks are always framed, so a page can combine a hand-written explanation with a
-generated diagram or table without the reader having to guess which is which. See
-[Documentation conventions](/conventions/) for the rules and the folder layout behind this.
+Where a generated artefact needs a hand-written explanation, the explanation is its own page,
+filed under the same arc42 section — for example the generated
+[context diagram of Example Component A](/systems/example-system-a/components/example-component-a/context-and-scope/)
+and the custom
+[Scope Notes](/systems/example-system-a/components/example-component-a/context-and-scope/scope-notes/)
+next to it. That keeps regeneration safe: a generator replaces whole files and never has to merge
+into someone's prose. See [Documentation conventions](/conventions/) for the rules and the folder
+layout behind this.
 
 ## Where to start
 
@@ -83,19 +96,19 @@ generated diagram or table without the reader having to guess which is which. Se
       to: '/systems/example-system-a/',
       label: 'Example System A',
       note: 'The fully documented sample system with two components.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/building-block-view/',
       label: 'Example System A — 5. Building Block View',
       note: 'How a system links to its components.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/components/example-component-a/runtime-view/',
       label: 'Example Component A — 6. Runtime View',
       note: 'Generated reaction graph linked to the message catalogue.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',

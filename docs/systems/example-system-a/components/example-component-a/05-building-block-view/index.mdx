@@ -1,7 +1,9 @@
 ---
 title: 5. Building Block View
 sidebar_label: 5. Building Block View
-description: Generated internal decomposition of Example Component A — API adapter, application service, domain, persistence and messaging adapters.
+sidebar_position: 0
+description: Generated internal decomposition of Example Component A — adapters, application service, domain and persistence.
+doc_status: generated
 ---
 
 # 5. Building Block View
@@ -10,28 +12,24 @@ description: Generated internal decomposition of Example Component A — API ada
   system="example-system-a"
   component="example-component-a"
   section="building-block-view"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
-    scope: 'Internal component view and the building block table',
-  }}
-  custom={{
-    owner: 'Team Alpha — Declaration Squad (fictional)',
-    lastReviewed: '2026-07-30',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — internal component view and the building block table',
   }}
 />
 
-## Internal structure
+:::info[Fully generated page]
 
-The component follows the hexagonal structure mandated by the
-[Development Guidelines](/systems/example-system-a/crosscutting-concerns/development-guidelines/):
-adapters at the edge, use cases in the middle, domain logic in the centre with no framework
-dependencies. The diagram is generated from the package structure and the declared ports, so it
-cannot drift from the code.
+Derived from the package structure and the declared ports, so it cannot drift from the code. Why
+the component is shaped this way is written by hand in
+[Design Notes](/systems/example-system-a/components/example-component-a/building-block-view/design-notes/).
+
+:::
+
+## Internal structure
 
 <Diagram
   title="Internal component view — Example Component A"
@@ -106,15 +104,6 @@ flowchart TB
 
 </Diagram>
 
-## The one interesting dependency
-
-Everything above is conventional except the dashed arrow: the **Persistence Adapter writes the
-outbox row in the same transaction as the state change**, and the **Messaging Adapter (outbound)
-reads it asynchronously**. The two adapters are coupled through a database table rather than
-through code, which is the entire point —
-[ADR-0001](/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0001-transactional-outbox/)
-explains what this buys and what it costs.
-
 ## Messaging and runtime behaviour
 
 The building blocks above exchange the messages catalogued in
@@ -125,6 +114,12 @@ How they interact over time — command in, event out — is documented in
 <RelatedDocs
   items={[
     {
+      to: '/systems/example-system-a/components/example-component-a/building-block-view/design-notes/',
+      label: 'Design Notes',
+      note: 'Why the component is shaped this way.',
+      status: 'custom',
+    },
+    {
       to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
       label: 'Messaging Events and Commands',
       note: 'The contracts these blocks produce and consume.',
@@ -134,19 +129,13 @@ How they interact over time — command in, event out — is documented in
       to: '/systems/example-system-a/components/example-component-a/runtime-view/',
       label: '6. Runtime View',
       note: 'These blocks in motion.',
-      status: 'mixed',
-    },
-    {
-      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/',
-      label: 'Integration Conventions',
-      note: 'Headers, idempotency and versioning rules applied by the adapters.',
-      status: 'custom',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/building-block-view/',
       label: 'Example System A — 5. Building Block View',
       note: 'This component in its system context.',
-      status: 'mixed',
+      status: 'generated',
     },
   ]}
 />

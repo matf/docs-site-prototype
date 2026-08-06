@@ -1,6 +1,7 @@
 import MDXComponents from '@theme-original/MDXComponents';
 import Arc42SectionNav from '@site/src/components/Arc42SectionNav';
 import Diagram from '@site/src/components/Diagram';
+import DocMix from '@site/src/components/DocMix';
 import DocHeader from '@site/src/components/DocHeader';
 import MessagingCatalogue, {Msg} from '@site/src/components/MessagingCatalogue';
 import PrototypeNotice from '@site/src/components/PrototypeNotice';
@@ -25,6 +26,7 @@ export default {
   CustomMeta,
   Diagram,
   DocHeader,
+  DocMix,
   GeneratedMeta,
   MessagingCatalogue,
   Msg,

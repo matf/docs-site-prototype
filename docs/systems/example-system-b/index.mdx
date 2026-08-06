@@ -2,6 +2,7 @@
 title: Example System B
 sidebar_label: Example System B
 description: Landing page of Example System B (fictional Transit Information Portal) — arc42 sections, components and documentation status.
+doc_status: generated
 ---
 
 # Example System B
@@ -11,7 +12,6 @@ to travellers and hauliers, and distributes operational notifications.
 
 <DocHeader
   system="example-system-b"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-b',
@@ -19,27 +19,25 @@ to travellers and hauliers, and distributes operational notifications.
     generatedAt: '2026-08-03 03:09 UTC',
     scope: 'Context diagram and component overview',
   }}
-  custom={{
-    owner: 'Team Beta — Public Information Services (fictional)',
-    lastReviewed: '2026-07-11',
-    reviewStatus: 'Reviewed',
-  }}
 />
 
 <PrototypeNotice />
 
-:::info[Reduced sample]
-This system exists to show that the navigation supports several systems. It carries all twelve
-arc42 sections and one component, deliberately with shorter content than
-[Example System A](/systems/example-system-a/). The structure is identical — that is the point.
+:::info[Partially documented — on purpose]
+
+This system shows two things at once: that the navigation supports several systems, and that a
+system does not have to fill in all twelve arc42 sections. Nine are documented here.
+*4. Solution Strategy*, *7. Deployment View* and *11. Risks and Technical Debt* have no content
+yet, so they do not appear at all — no empty pages and no "to be written" placeholders. The gaps
+in the numbering below are the only sign that they are missing, and that is deliberate.
 
 :::
 
 | Property | Value |
 | --- | --- |
 | **Responsible team** | Team Beta — Public Information Services (fictional) |
-| **Documentation status** | Reduced sample — twelve arc42 sections, one component |
-| **Content** | Mixed |
+| **Documentation status** | Nine of twelve arc42 sections, one component |
+| **Pages** | <DocMix system="example-system-b" verbose /> |
 | **Source repository** | `git.example.admin.ch/bazg-proto/example-system-b` |
 | **Last generation run** | 2026-08-03 03:09 UTC from revision `7b20ae1` |
 
@@ -56,6 +54,6 @@ arc42 sections and one component, deliberately with shorter content than
 <RelatedDocs
   items={[
     {to: '/systems/', label: 'All systems', note: 'Back to the systems overview.'},
-    {to: '/systems/example-system-a/', label: 'Example System A', note: 'The fully documented sample system.', status: 'mixed'},
+    {to: '/systems/example-system-a/', label: 'Example System A', note: 'The fully documented sample system.', status: 'generated'},
   ]}
 />

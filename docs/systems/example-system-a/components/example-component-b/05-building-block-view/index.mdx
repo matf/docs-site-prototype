@@ -1,7 +1,9 @@
 ---
 title: 5. Building Block View
 sidebar_label: 5. Building Block View
-description: Generated internal decomposition of Example Component B — messaging adapters, assessment service, scoring domain, registry client and persistence.
+sidebar_position: 0
+description: Generated internal decomposition of Example Component B — adapters, application service, domain and persistence.
+doc_status: generated
 ---
 
 # 5. Building Block View
@@ -10,26 +12,24 @@ description: Generated internal decomposition of Example Component B — messagi
   system="example-system-a"
   component="example-component-b"
   section="building-block-view"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
     revision: '3fd8b52',
     generatedAt: '2026-08-04 03:14 UTC',
-    scope: 'Internal component view and the building block table',
-  }}
-  custom={{
-    owner: 'Team Alpha — Risk Squad (fictional)',
-    lastReviewed: '2026-07-28',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — internal component view and the building block table',
   }}
 />
 
-## Internal structure
+:::info[Fully generated page]
 
-The same hexagonal structure as every component in this system, with one addition worth noticing:
-the **Rule Set Cache** and the **Model Cache** are separate building blocks, because rule sets and
-models have different lifecycles — rules change weekly, models quarterly.
+Derived from the package structure and the declared ports, so it cannot drift from the code. Why
+the component is shaped this way is written by hand in
+[Design Notes](/systems/example-system-a/components/example-component-b/building-block-view/design-notes/).
+
+:::
+
+## Internal structure
 
 <Diagram
   title="Internal component view — Example Component B"
@@ -99,13 +99,6 @@ flowchart TB
 
 </Diagram>
 
-## Why the domain is pure
-
-The `Scoring Domain` block has no outgoing dependencies at all. Every input — rule set version,
-model version, declaration content, history features — is passed in, and the same inputs always
-produce the same band. That is what makes a three-year-old decision reproducible, and it is why
-the build fails if the domain touches the clock.
-
 ## Messaging and runtime behaviour
 
 The messages these blocks exchange are catalogued in
@@ -115,9 +108,29 @@ and their behaviour over time is in
 
 <RelatedDocs
   items={[
-    {to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', note: 'The contracts these blocks produce and consume.', status: 'generated'},
-    {to: '/systems/example-system-a/components/example-component-b/runtime-view/', label: '6. Runtime View', note: 'These blocks in motion.', status: 'mixed'},
-    {to: '/systems/example-system-a/components/example-component-b/architecture-decisions/adr-0001-versioned-rule-sets/', label: 'ADR-0001 — Versioned rule sets and models', note: 'Why the caches are separate.', status: 'custom'},
-    {to: '/systems/example-system-a/building-block-view/', label: 'Example System A — 5. Building Block View', note: 'This component in its system context.', status: 'mixed'},
+    {
+      to: '/systems/example-system-a/components/example-component-b/building-block-view/design-notes/',
+      label: 'Design Notes',
+      note: 'Why the component is shaped this way.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/',
+      label: 'Messaging Events and Commands',
+      note: 'The contracts these blocks produce and consume.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/runtime-view/',
+      label: '6. Runtime View',
+      note: 'These blocks in motion.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Example System A — 5. Building Block View',
+      note: 'This component in its system context.',
+      status: 'generated',
+    },
   ]}
 />

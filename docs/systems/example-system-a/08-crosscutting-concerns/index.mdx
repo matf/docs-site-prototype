@@ -3,6 +3,7 @@ title: 8. Crosscutting Concerns
 sidebar_label: 8. Crosscutting Concerns
 sidebar_position: 0
 description: Concepts that apply across all components of Example System A — security, operations and development guidelines.
+doc_status: custom
 ---
 
 # 8. Crosscutting Concerns
@@ -10,14 +11,6 @@ description: Concepts that apply across all components of Example System A — s
 <DocHeader
   system="example-system-a"
   section="crosscutting-concerns"
-  status="mixed"
-  generated={{
-    generator: 'bazg-archdoc 0.7.2',
-    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
-    revision: 'a41f7c9',
-    generatedAt: '2026-08-04 03:12 UTC',
-    scope: 'Concept coverage table',
-  }}
   custom={{
     owner: 'Team Alpha — Customs Platform Engineering (fictional)',
     lastReviewed: '2026-07-30',
@@ -36,27 +29,15 @@ and integration conventions all belong here rather than in a generic catch-all c
 | Security and data protection | [Security and Data Protection](/systems/example-system-a/crosscutting-concerns/security-and-data-protection/) | <StatusBadge status="custom" small /> |
 | Operations and monitoring | [Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/) | <StatusBadge status="custom" small /> |
 | Development guidelines | [Development Guidelines](/systems/example-system-a/crosscutting-concerns/development-guidelines/) | <StatusBadge status="custom" small /> |
+| Concept coverage | [Concept Coverage](/systems/example-system-a/crosscutting-concerns/concept-coverage/) | <StatusBadge status="generated" small /> |
 
 Component-specific crosscutting concepts are documented on the component, not here. The
 messaging catalogues are the clearest example: each component publishes its own contracts, so
 each component owns its own catalogue.
 
-<Diagram
-  title="Concept coverage across components"
-  status="generated"
-  source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
-  caption="Generated from the concept annotations in the component repositories. Empty cells are gaps, not omissions in the report.">
-
-| Concept | Example Component A | Example Component B |
-| --- | --- | --- |
-| Authentication and authorisation | Applied | Applied |
-| Data classification and retention | Applied | Applied |
-| Messaging conventions | [Documented](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/) | Inherited |
-| Observability | [Documented](/systems/example-system-a/components/example-component-a/crosscutting-concerns/observability/) | [Documented](/systems/example-system-a/components/example-component-b/crosscutting-concerns/observability/) |
-| Error handling and retries | Applied | Applied |
-| Transaction and outbox handling | [ADR-0001](/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0001-transactional-outbox/) | Not applicable |
-
-</Diagram>
+The last row is generated: which component actually applies which concept is collected from the
+component repositories rather than asserted here. That page is overwritten on every generation
+run, which is why it is a page of its own and not a table on this one.
 
 ## How to add a concern here
 
@@ -71,7 +52,7 @@ arc42 section better — an operational scenario, for instance — it belongs th
       to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/',
       label: 'Example Component A — 8. Crosscutting Concerns',
       note: 'The same section one level down, with a generated messaging catalogue.',
-      status: 'mixed',
+      status: 'custom',
     },
     {
       to: '/systems/example-system-a/architecture-decisions/',

@@ -1,0 +1,25 @@
+.mix {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.generated {
+  color: var(--bazg-generated);
+}
+
+.custom {
+  color: var(--bazg-custom);
+}
+
+.sep {
+  color: var(--bazg-border-strong);
+}
+
+.suffix {
+  color: var(--bazg-muted);
+  font-weight: 400;
+}

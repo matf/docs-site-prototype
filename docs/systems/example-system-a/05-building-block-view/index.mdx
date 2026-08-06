@@ -1,7 +1,9 @@
 ---
 title: 5. Building Block View
 sidebar_label: 5. Building Block View
-description: Decomposition of Example System A into components, with a generated component diagram and links to each component's own documentation.
+sidebar_position: 0
+description: Generated decomposition of Example System A into components, with links to each component's own documentation.
+doc_status: generated
 ---
 
 # 5. Building Block View
@@ -9,26 +11,24 @@ description: Decomposition of Example System A into components, with a generated
 <DocHeader
   system="example-system-a"
   section="building-block-view"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
     revision: 'a41f7c9',
     generatedAt: '2026-08-04 03:12 UTC',
-    scope: 'Component diagram and the component/responsibility table',
-  }}
-  custom={{
-    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
-    lastReviewed: '2026-07-30',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — component diagram, component list and responsibility table',
   }}
 />
 
-## Level 1 — decomposition into components
+:::info[Fully generated page]
 
-Example System A is decomposed along the lifecycle of a declaration: one component owns the
-declaration and its state, another owns the risk decision. The split follows the ownership of the
-data, not the technical layers, which is why neither component reads the other's database.
+Derived from the component descriptors of the system. Why the system is cut this way, and why the
+decomposition stops where it does, is written by hand in
+[Decomposition Rationale](/systems/example-system-a/building-block-view/decomposition-rationale/).
+
+:::
+
+## Level 1 — decomposition into components
 
 <Diagram
   title="Component diagram — Example System A"
@@ -71,7 +71,7 @@ flowchart TB
 ## Contained components
 
 Each component is documented in full under `Components`, one level below this section — twelve
-arc42 sections each, with generated context, component, runtime and messaging views.
+arc42 sections each.
 
 <CardGrid>
   <ComponentCard system="example-system-a" component="example-component-a" />
@@ -84,22 +84,14 @@ arc42 sections each, with generated context, component, runtime and messaging vi
   title="Component responsibilities"
   status="generated"
   source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
-  caption="Generated from the component descriptors; the documentation column reflects the status recorded in the documentation catalogue.">
+  caption="Generated from the component descriptors. The documentation column counts the pages of each origin currently published for that component.">
 
 | Component | Responsibility | Consumes | Publishes | Documentation |
 | --- | --- | --- | --- | --- |
-| [Example Component A](/systems/example-system-a/components/example-component-a/) | Owns the declaration aggregate and its lifecycle: validation, persistence, state transitions. | `SubmitDeclaration`, `CorrectDeclaration`, `RiskAssessmentCompleted` | `DeclarationAccepted`, `DeclarationRejected`, `DeclarationAmended`, `DeclarationCleared`, `DeclarationHeld` | <StatusBadge status="mixed" small /> |
-| [Example Component B](/systems/example-system-a/components/example-component-b/) | Owns the risk decision: rule evaluation, scoring, inspection orders. | `DeclarationAccepted`, `DeclarationAmended`, `RecalculateRisk` | `RiskAssessmentCompleted`, `OrderInspection`, `RiskModelDeployed` | <StatusBadge status="mixed" small /> |
+| [Example Component A](/systems/example-system-a/components/example-component-a/) | Owns the declaration aggregate and its lifecycle: validation, persistence, state transitions. | `SubmitDeclaration`, `CorrectDeclaration`, `RiskAssessmentCompleted` | `DeclarationAccepted`, `DeclarationRejected`, `DeclarationAmended`, `DeclarationCleared`, `DeclarationHeld` | <DocMix system="example-system-a" component="example-component-a" /> |
+| [Example Component B](/systems/example-system-a/components/example-component-b/) | Owns the risk decision: rule evaluation, scoring, inspection orders. | `DeclarationAccepted`, `DeclarationAmended`, `RecalculateRisk` | `RiskAssessmentCompleted`, `OrderInspection`, `RiskModelDeployed` | <DocMix system="example-system-a" component="example-component-b" /> |
 
 </Diagram>
-
-## Why the decomposition stops here
-
-A third component for notification was considered and rejected: notifications are a thin
-projection of declaration events, and a separate deployable would have added an operational unit
-without adding an ownership boundary. The projection lives inside Example Component A. This is
-tracked as a reversible decision in
-[11. Risks and Technical Debt](/systems/example-system-a/risks-and-technical-debt/).
 
 ## Level 2
 
@@ -112,6 +104,12 @@ generated internal decomposition:
 
 <RelatedDocs
   items={[
+    {
+      to: '/systems/example-system-a/building-block-view/decomposition-rationale/',
+      label: 'Decomposition Rationale',
+      note: 'Why the system is cut this way, and where the decomposition stops.',
+      status: 'custom',
+    },
     {
       to: '/systems/example-system-a/runtime-view/',
       label: '6. Runtime View',
@@ -134,7 +132,7 @@ generated internal decomposition:
       to: '/systems/example-system-a/deployment-view/',
       label: '7. Deployment View',
       note: 'Where these components run.',
-      status: 'mixed',
+      status: 'generated',
     },
   ]}
 />

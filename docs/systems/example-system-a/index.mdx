@@ -2,6 +2,7 @@
 title: Example System A
 sidebar_label: Example System A
 description: Landing page of Example System A (fictional Goods Declaration Platform) — arc42 sections, components and documentation status.
+doc_status: generated
 ---
 
 # Example System A
@@ -12,18 +13,12 @@ over to the border control processes.
 
 <DocHeader
   system="example-system-a"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
     revision: 'a41f7c9',
     generatedAt: '2026-08-04 03:12 UTC',
     scope: 'Context diagram, component overview, deployment topology, glossary imports',
-  }}
-  custom={{
-    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
-    lastReviewed: '2026-07-30',
-    reviewStatus: 'Reviewed',
   }}
 />
 
@@ -33,7 +28,7 @@ over to the border control processes.
 | --- | --- |
 | **Responsible team** | Team Alpha — Customs Platform Engineering (fictional) |
 | **Documentation status** | Complete — all twelve arc42 sections, two components documented in depth |
-| **Content** | Mixed — generated diagrams and catalogues inside manually written sections |
+| **Pages** | <DocMix system="example-system-a" verbose /> |
 | **Source repository** | `git.example.admin.ch/bazg-proto/example-system-a` |
 | **Last generation run** | 2026-08-04 03:12 UTC from revision `a41f7c9` |
 
@@ -65,13 +60,13 @@ level below this page, so that the building block view stays readable.
       to: '/systems/example-system-a/context-and-scope/',
       label: '3. Context and Scope',
       note: 'Who the system talks to, and about what.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/crosscutting-concerns/',
       label: '8. Crosscutting Concerns',
       note: 'Security, operations and development guidelines.',
-      status: 'mixed',
+      status: 'custom',
     },
     {
       to: '/systems/example-system-a/architecture-decisions/',

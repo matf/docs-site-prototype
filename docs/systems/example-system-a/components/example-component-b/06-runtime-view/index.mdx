@@ -2,7 +2,8 @@
 title: 6. Runtime View
 sidebar_label: 6. Runtime View
 sidebar_position: 0
-description: Generated reaction graph and runtime scenarios of Example Component B, linked to the messaging catalogue.
+description: Generated reaction graph and derived runtime sequence of Example Component B, linked to the messaging catalogue.
+doc_status: generated
 ---
 
 # 6. Runtime View
@@ -11,20 +12,22 @@ description: Generated reaction graph and runtime scenarios of Example Component
   system="example-system-a"
   component="example-component-b"
   section="runtime-view"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
     revision: '3fd8b52',
     generatedAt: '2026-08-04 03:14 UTC',
-    scope: 'Reaction graph and the reaction table',
-  }}
-  custom={{
-    owner: 'Team Alpha — Risk Squad (fictional)',
-    lastReviewed: '2026-07-28',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — reaction graph, reaction table and the derived sequence',
   }}
 />
+
+:::info[Fully generated page]
+
+Derived from the component's message handlers: which message triggers which use case, what it
+changes and what it publishes. The scenarios that had to be *designed* rather than derived are
+hand-written pages below this section.
+
+:::
 
 ## Generated reaction graph
 
@@ -125,33 +128,6 @@ sequenceDiagram
   PERS-->>APP: committed
 ```
 
-## Scenario — model unavailable, fallback decides
-
-```mermaid
-sequenceDiagram
-  autonumber
-  participant APP as Assessment Service
-  participant MC as Model Cache
-  participant REG as Model Registry
-  participant DOM as Scoring Domain
-  participant BR as Broker
-  participant OPS as Operations
-
-  APP->>MC: model(active)
-  MC->>REG: fetch model v15
-  REG--x MC: unavailable
-  MC-->>APP: no model
-  APP->>DOM: evaluate with fallback rule set 2026.05-fallback
-  DOM-->>APP: band = elevated (conservative), fallback = true
-  APP->>BR: RiskAssessmentCompleted (fallback = true)
-  BR->>OPS: risk_fallback_ratio rises → warning
-  Note over APP,OPS: decisions continue — the fallback rate is visible, never silent
-```
-
-The fallback is deliberately conservative: it errs towards `elevated`, which costs inspection
-capacity rather than control effectiveness. The reasoning is in
-[4. Solution Strategy](/systems/example-system-a/components/example-component-b/solution-strategy/).
-
 ## Rolling out a new rule set
 
 The operational scenario for publishing rules and models is a separate custom page:
@@ -161,7 +137,7 @@ The operational scenario for publishing rules and models is a separate custom pa
   items={[
     {to: '/systems/example-system-a/components/example-component-b/runtime-view/rule-set-rollout/', label: 'Rule Set Rollout', note: 'Custom operational scenario below this arc42 section.', status: 'custom'},
     {to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', note: 'Contracts for every message above.', status: 'generated'},
-    {to: '/systems/example-system-a/components/example-component-a/runtime-view/', label: 'Example Component A — 6. Runtime View', note: 'The other half of the conversation.', status: 'mixed'},
+    {to: '/systems/example-system-a/components/example-component-a/runtime-view/', label: 'Example Component A — 6. Runtime View', note: 'The other half of the conversation.', status: 'generated'},
     {to: '/systems/example-system-a/runtime-view/', label: 'Example System A — 6. Runtime View', note: 'The same flows at system level.', status: 'custom'},
   ]}
 />

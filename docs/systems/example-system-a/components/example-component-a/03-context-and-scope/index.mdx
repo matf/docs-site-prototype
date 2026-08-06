@@ -1,7 +1,9 @@
 ---
 title: 3. Context and Scope
 sidebar_label: 3. Context and Scope
+sidebar_position: 0
 description: Generated context diagram of Example Component A — callers, upstream and downstream systems, external dependencies and message flows.
+doc_status: generated
 ---
 
 # 3. Context and Scope
@@ -10,27 +12,23 @@ description: Generated context diagram of Example Component A — callers, upstr
   system="example-system-a"
   component="example-component-a"
   section="context-and-scope"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
-    scope: 'Context diagram and the inbound/outbound relationship tables',
-  }}
-  custom={{
-    owner: 'Team Alpha — Declaration Squad (fictional)',
-    lastReviewed: '2026-07-30',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — context diagram and the inbound/outbound relationship tables',
   }}
 />
 
-## Reading this page
+:::info[Fully generated page]
 
-The diagram below is generated from the component's message subscriptions, published contracts
-and outbound client configurations — it is complete by construction and will change without
-anybody editing this page. The paragraphs around it are written by hand and explain the parts a
-generator cannot know: which relationships are load-bearing and which are incidental.
+Derived from the component's message subscriptions, published contracts and outbound client
+configurations, so it is complete by construction. Which of these relationships are load-bearing —
+the part no generator can know — is written by hand in
+[Scope Notes](/systems/example-system-a/components/example-component-a/context-and-scope/scope-notes/).
+
+:::
 
 ## Generated context diagram
 
@@ -115,21 +113,14 @@ flowchart LR
 
 </Diagram>
 
-## What the diagram does not say
-
-Two things worth knowing that no generator can derive:
-
-- **The Tariff and Rules Service is a soft dependency.** Its arrow looks like every other
-  dependency, but the component keeps working from a 24-hour cache when it is unavailable, with a
-  visible cache-age warning. Constraint C-3 in
-  [2. Architecture Constraints](/systems/example-system-a/components/example-component-a/architecture-constraints/).
-- **The relationship to Example Component B is a cycle in the diagram but not in time.** This
-  component publishes `DeclarationAccepted` and later consumes `RiskAssessmentCompleted` for the
-  same declaration. It is a conversation, not a request; see
-  [6. Runtime View](/systems/example-system-a/components/example-component-a/runtime-view/).
-
 <RelatedDocs
   items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/context-and-scope/scope-notes/',
+      label: 'Scope Notes',
+      note: 'The hand-written reading of this diagram.',
+      status: 'custom',
+    },
     {
       to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
       label: 'Messaging Events and Commands',
@@ -140,13 +131,13 @@ Two things worth knowing that no generator can derive:
       to: '/systems/example-system-a/components/example-component-a/building-block-view/',
       label: '5. Building Block View',
       note: 'What is inside the red box.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/context-and-scope/',
       label: 'Example System A — 3. Context and Scope',
       note: 'The same view one level up.',
-      status: 'mixed',
+      status: 'generated',
     },
   ]}
 />

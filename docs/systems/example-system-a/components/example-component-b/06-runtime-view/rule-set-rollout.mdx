@@ -1,8 +1,9 @@
 ---
 title: Rule Set Rollout
 sidebar_label: Rule Set Rollout
-sidebar_position: 1
+sidebar_position: 2
 description: Custom operational scenario below arc42 section 6 — how a new rule set or scoring model is published and rolled back.
+doc_status: custom
 ---
 
 # Rule Set Rollout
@@ -11,7 +12,6 @@ description: Custom operational scenario below arc42 section 6 — how a new rul
   system="example-system-a"
   component="example-component-b"
   section="runtime-view"
-  status="custom"
   custom={{
     owner: 'Team Alpha — Risk Squad with the specialist unit (fictional)',
     lastReviewed: '2026-07-05',
@@ -103,7 +103,7 @@ component.
 
 <RelatedDocs
   items={[
-    {to: '/systems/example-system-a/components/example-component-b/runtime-view/', label: '6. Runtime View', note: 'The parent arc42 section.', status: 'mixed'},
+    {to: '/systems/example-system-a/components/example-component-b/runtime-view/', label: '6. Runtime View', note: 'The parent arc42 section.', status: 'generated'},
     {to: '/systems/example-system-a/components/example-component-b/architecture-decisions/adr-0001-versioned-rule-sets/', label: 'ADR-0001 — Versioned rule sets and models', note: 'Why versions are immutable.', status: 'custom'},
     {to: '/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/', label: 'Operations and Monitoring', note: 'The dashboard used to watch a rollout.', status: 'custom'},
   ]}

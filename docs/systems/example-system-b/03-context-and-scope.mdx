@@ -2,11 +2,12 @@
 title: 3. Context and Scope
 sidebar_label: 3. Context and Scope
 description: Context of Example System B, with a generated context diagram.
+doc_status: generated
 ---
 
 # 3. Context and Scope
 
-<DocHeader system="example-system-b" section="context-and-scope" status="mixed"
+<DocHeader system="example-system-b" section="context-and-scope"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-b',
@@ -14,10 +15,14 @@ description: Context of Example System B, with a generated context diagram.
     generatedAt: '2026-08-03 03:09 UTC',
     scope: 'Context diagram',
   }}
-  custom={{owner: 'Team Beta — Public Information Services (fictional)', lastReviewed: '2026-07-11'}} />
+/>
 
-The system reads from measurement and operational sources and writes to public channels. It has
-no inbound business interface — nobody submits anything to it.
+:::info[Fully generated page]
+
+Derived from the system's interface descriptors. What the system deliberately does *not* own is
+stated in [1. Introduction and Goals](/systems/example-system-b/introduction-and-goals/).
+
+:::
 
 <Diagram
   title="System context — Example System B"
@@ -54,12 +59,7 @@ flowchart LR
 
 </Diagram>
 
-## Outside the boundary
-
-Waiting times are measured elsewhere; this system never computes them. Declaration and clearance
-data belong to [Example System A](/systems/example-system-a/) and are not accessible from here.
-
 <RelatedDocs items={[
-  {to: '/systems/example-system-b/building-block-view/', label: '5. Building Block View', status: 'mixed'},
-  {to: '/systems/example-system-b/components/example-component-c/context-and-scope/', label: 'Example Component C — 3. Context and Scope', status: 'mixed'},
+  {to: '/systems/example-system-b/building-block-view/', label: '5. Building Block View', status: 'generated'},
+  {to: '/systems/example-system-b/components/example-component-c/context-and-scope/', label: 'Example Component C — 3. Context and Scope', status: 'generated'},
 ]} />

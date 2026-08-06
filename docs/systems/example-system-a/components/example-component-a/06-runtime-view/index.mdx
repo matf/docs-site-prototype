@@ -2,7 +2,8 @@
 title: 6. Runtime View
 sidebar_label: 6. Runtime View
 sidebar_position: 0
-description: Generated reaction graph and runtime scenarios of Example Component A, linked to the messaging catalogue.
+description: Generated reaction graph and derived runtime sequence of Example Component A, linked to the messaging catalogue.
+doc_status: generated
 ---
 
 # 6. Runtime View
@@ -11,20 +12,22 @@ description: Generated reaction graph and runtime scenarios of Example Component
   system="example-system-a"
   component="example-component-a"
   section="runtime-view"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
-    scope: 'Reaction graph and the reaction table',
-  }}
-  custom={{
-    owner: 'Team Alpha — Declaration Squad (fictional)',
-    lastReviewed: '2026-07-30',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — reaction graph, reaction table and the derived sequence',
   }}
 />
+
+:::info[Fully generated page]
+
+Derived from the component's message handlers: which message triggers which use case, what it
+changes and what it publishes. The scenarios that had to be *designed* rather than derived are
+hand-written pages below this section.
+
+:::
 
 ## Generated reaction graph
 
@@ -138,34 +141,6 @@ sequenceDiagram
   MOUT->>BR: publish DeclarationCleared
 ```
 
-## Scenario — correction arrives while assessment is in flight
-
-The race that every event-driven design has to answer. The rule here: **the risk decision is
-bound to a revision**, and a decision for a superseded revision is discarded.
-
-```mermaid
-sequenceDiagram
-  autonumber
-  participant P as Trade Portal
-  participant A as Example Component A
-  participant B as Example Component B
-
-  P->>A: SubmitDeclaration
-  A-->>B: DeclarationAccepted (revision 1)
-  P->>A: CorrectDeclaration
-  A->>A: persist revision 2, invalidate decision for revision 1
-  A-->>B: DeclarationAmended (revision 2)
-  B-->>A: RiskAssessmentCompleted (revision 1, band = low)
-  A->>A: revision 1 is superseded → discard
-  Note over A: no state change, no event, logged at INFO
-  B-->>A: RiskAssessmentCompleted (revision 2, band = elevated)
-  A->>A: transition to HELD
-  A-->>P: DeclarationHeld
-```
-
-Discarding rather than queueing is deliberate: a decision on stale input is not useful later, and
-keeping it would create two plausible answers for one declaration.
-
 ## Failure behaviour
 
 Replay, dead-lettering and the outbox relay's failure modes are documented separately in
@@ -189,7 +164,7 @@ Replay, dead-lettering and the outbox relay's failure modes are documented separ
       to: '/systems/example-system-a/components/example-component-b/runtime-view/',
       label: 'Example Component B — 6. Runtime View',
       note: 'The other half of the conversation.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/runtime-view/',

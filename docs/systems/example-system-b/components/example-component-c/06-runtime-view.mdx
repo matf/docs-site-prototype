@@ -2,11 +2,12 @@
 title: 6. Runtime View
 sidebar_label: 6. Runtime View
 description: Generated reaction graph and delivery scenario of Example Component C.
+doc_status: generated
 ---
 
 # 6. Runtime View
 
-<DocHeader system="example-system-b" component="example-component-c" section="runtime-view" status="mixed"
+<DocHeader system="example-system-b" component="example-component-c" section="runtime-view"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
@@ -14,7 +15,7 @@ description: Generated reaction graph and delivery scenario of Example Component
     generatedAt: '2026-08-03 03:10 UTC',
     scope: 'Reaction graph',
   }}
-  custom={{owner: 'Team Beta — Channels Squad (fictional)', lastReviewed: '2026-07-09'}} />
+/>
 
 ## Generated reaction graph
 
@@ -82,10 +83,6 @@ sequenceDiagram
   APP->>BR: NotificationDelivered (aggregated per channel)
   Note over APP,BR: rejected addresses retry with backoff —<br/>exhausted ones raise NotificationFailed
 ```
-
-At 500 messages per batch and the provider's rate limit, 40 000 subscribers take roughly 90
-seconds — inside the two-minute objective **BS-3** in
-[Example System B — 10. Quality Requirements](/systems/example-system-b/quality-requirements/).
 
 <RelatedDocs items={[
   {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', status: 'generated'},

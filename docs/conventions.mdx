@@ -4,7 +4,8 @@ id: conventions
 title: Documentation conventions
 sidebar_label: Documentation conventions
 displayed_sidebar: docsSidebar
-description: Folder layout, arc42 placement rules and the Generated / Custom / Mixed convention used across the BAZG system documentation.
+description: Folder layout, arc42 placement rules and the Generated / Custom convention used across the BAZG system documentation.
+doc_status: custom
 ---
 
 # Documentation conventions
@@ -71,34 +72,67 @@ is how a custom page can sit **between** two generated pages, as
 [Integration Conventions](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/)
 does.
 
-## Generated, custom and mixed
+## Generated or custom — never both
 
 <ContentLegend />
 
-Each page declares what it is with a single component at the top:
+There is no third value. A page has exactly one origin, declared once in its frontmatter:
+
+```yaml
+---
+title: 6. Runtime View
+sidebar_label: 6. Runtime View
+sidebar_position: 0
+doc_status: generated      # or: custom
+---
+```
+
+`doc_status` is the single source of truth. `<DocHeader>` reads it to render the badge, and the
+build-time `bazg-doc-status` plugin reads it to build the navigation — which is why the sidebar,
+the section lists and the page counts can never disagree with the page itself.
 
 ```mdx
 <DocHeader
   system="example-system-a"
   component="example-component-a"
   section="runtime-view"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Whole page — reaction graph and reaction table',
   }}
-  custom={{owner: 'Team Alpha — Declaration Squad', lastReviewed: '2026-07-30'}}
 />
 ```
 
-`DocHeader` renders the contextual header (system, component, arc42 section), the status badge
-and the provenance panels. Because it reads the system and component catalogue, the names and
-teams cannot drift out of sync between pages.
+### When a generated artefact needs explanation
 
-Generated blocks inside a mixed page are always framed with `<Diagram>` or a generated table
-component, so the boundary between hand-written explanation and generated output stays visible.
+Write a second page. The generated artefact keeps the arc42 section route; the hand-written
+explanation becomes a custom page directly beneath it:
+
+```text
+05-building-block-view/
+├── index.mdx           doc_status: generated   the component view
+└── design-notes.mdx    doc_status: custom      why it is shaped that way
+```
+
+This is what makes regeneration safe: the generator replaces whole files and never has to merge
+into somebody's prose. A page that would be "half generated" is two pages.
+
+## Sections only exist when they have content
+
+The twelve arc42 sections are a checklist, not a quota. A section that has nothing to say does
+not get a placeholder page — it simply does not exist, and the navigation does not show it.
+
+A component always has *3. Context and Scope*, *5. Building Block View* and *6. Runtime View*:
+those three say what it is and what it does, and all three are generated. Everything else appears
+only when the component has its own content for it.
+
+[Example System B](/systems/example-system-b/) documents nine of twelve sections and
+[Example Component C](/systems/example-system-b/components/example-component-c/) five of twelve.
+The gaps in the numbering are the only sign that a section is missing — which is exactly the
+intent. Deleting a section file removes it from the navigation; nothing else has to be updated.
 
 ## Expectation for a future generator
 
@@ -106,9 +140,9 @@ The generator is expected to own whole files and to leave everything else alone:
 
 - it writes generated `.mdx` files (context diagrams, component views, message catalogues,
   reaction graphs) and the catalogue data under `src/data/`;
-- it never edits a file marked `status="custom"`;
-- on a **mixed** page the hand-written prose lives in the page, and the generated part is a
-  framed block — a future generator would replace the block, not the page.
+- it never edits a file whose frontmatter says `doc_status: custom`;
+- it may delete a generated page when the artefact behind it disappears — the section then stops
+  appearing in the navigation, which is the correct outcome.
 
 Because the information architecture comes from the folder layout and not from a hand-maintained
 sidebar file, a generator can add or replace pages without any navigation change.
@@ -118,9 +152,9 @@ sidebar file, a generator can add or replace pages without any navigation change
     {to: '/systems/', label: 'Systems overview', note: 'All documented systems.'},
     {
       to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/',
-      label: 'A crosscutting concerns section with mixed children',
-      note: 'Generated and custom pages interleaved.',
-      status: 'mixed',
+      label: 'A crosscutting concerns section with generated and custom children',
+      note: 'Generated and custom pages interleaved in one section.',
+      status: 'custom',
     },
   ]}
 />

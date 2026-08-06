@@ -3,6 +3,7 @@ title: Development Guidelines
 sidebar_label: Development Guidelines
 sidebar_position: 3
 description: Custom crosscutting concept — engineering rules that every component of Example System A follows.
+doc_status: custom
 ---
 
 # Development Guidelines
@@ -10,7 +11,6 @@ description: Custom crosscutting concept — engineering rules that every compon
 <DocHeader
   system="example-system-a"
   section="crosscutting-concerns"
-  status="custom"
   custom={{
     owner: 'Team Alpha — Customs Platform Engineering (fictional)',
     lastReviewed: '2026-07-08',
@@ -84,13 +84,13 @@ carry the review date. See [Documentation conventions](/conventions/).
       to: '/systems/example-system-a/components/example-component-a/building-block-view/',
       label: 'Example Component A — 5. Building Block View',
       note: 'The hexagonal structure above, as built.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/crosscutting-concerns/',
       label: '8. Crosscutting Concerns',
       note: 'The parent arc42 section.',
-      status: 'mixed',
+      status: 'custom',
     },
     {
       to: '/conventions/',

@@ -5,20 +5,20 @@ import {
   SYSTEMS,
   type DocStatus,
 } from '@site/src/data/catalog';
-import {ARC42_SECTIONS} from '@site/src/data/arc42';
-import {useDocsStats} from '@site/src/data/useDocsStats';
+import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import StatusBadge from '@site/src/components/StatusBadge';
 import styles from './styles.module.css';
 
 /** Headline counts for the whole documentation tree. */
 export function StatsRow(): ReactNode {
-  const stats = useDocsStats();
+  const {countUnder} = useDocsStatus();
+  const pages = countUnder('/systems');
   const componentCount = SYSTEMS.reduce((sum, system) => sum + system.components.length, 0);
   const items = [
     {value: SYSTEMS.length, label: 'Systems'},
     {value: componentCount, label: 'Components'},
-    {value: stats.totalPages, label: 'Documentation pages'},
-    {value: ARC42_SECTIONS.length, label: 'arc42 sections per entry'},
+    {value: pages.generated, label: 'Generated pages'},
+    {value: pages.custom, label: 'Custom pages'},
   ];
   return (
     <dl className={styles.stats}>
@@ -32,9 +32,9 @@ export function StatsRow(): ReactNode {
   );
 }
 
-const ORDER: DocStatus[] = ['generated', 'custom', 'mixed'];
+const ORDER: DocStatus[] = ['generated', 'custom'];
 
-/** Explains the Generated / Custom / Mixed vocabulary used across the site. */
+/** Explains the Generated / Custom vocabulary used across the site. */
 export function ContentLegend(): ReactNode {
   return (
     <ul className={styles.legend}>

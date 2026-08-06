@@ -68,3 +68,9 @@
 .badge {
   margin-top: 0.15rem;
 }
+
+.coverage {
+  margin: -1.25rem 0 2rem;
+  font-size: 0.8125rem;
+  color: var(--bazg-muted);
+}

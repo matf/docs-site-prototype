@@ -45,6 +45,10 @@ const config: Config = {
     },
   },
 
+  // Local build-time plugin: collects each page's `doc_status` frontmatter so
+  // the navigation can show what exists and where it came from.
+  plugins: ['./plugins/doc-status'],
+
   themes: ['@docusaurus/theme-mermaid'],
 
   presets: [
@@ -80,7 +84,7 @@ const config: Config = {
       {
         name: 'description',
         content:
-          'Prototype of the BAZG system documentation portal: one arc42-structured documentation tree for systems and components, mixing generated and manually maintained content.',
+          'Prototype of the BAZG system documentation portal: one arc42-structured documentation tree for systems and components, with generated and manually maintained pages side by side.',
       },
     ],
     colorMode: {

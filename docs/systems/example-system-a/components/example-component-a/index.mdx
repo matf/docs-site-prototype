@@ -2,6 +2,7 @@
 title: Example Component A
 sidebar_label: Example Component A
 description: Landing page of Example Component A (fictional Declaration Intake Service) — arc42 sections, generated documentation and metadata.
+doc_status: generated
 ---
 
 # Example Component A
@@ -14,18 +15,12 @@ declaration lifecycle events that the rest of
 <DocHeader
   system="example-system-a"
   component="example-component-a"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
     scope: 'Context diagram, component view, reaction graph, messaging catalogue, observability inventory',
-  }}
-  custom={{
-    owner: 'Team Alpha — Declaration Squad (fictional)',
-    lastReviewed: '2026-07-30',
-    reviewStatus: 'Reviewed',
   }}
 />
 
@@ -36,8 +31,8 @@ declaration lifecycle events that the rest of
 | **Part of** | [Example System A](/systems/example-system-a/) |
 | **Responsible team** | Team Alpha — Declaration Squad (fictional) |
 | **Role in the system** | Inbound adapter and owner of the declaration lifecycle |
-| **Documentation status** | Complete — generated context, building block, runtime and messaging views |
-| **Content** | Mixed — generated diagrams and catalogues inside manually written sections |
+| **Documentation status** | Complete — all twelve arc42 sections |
+| **Pages** | <DocMix system="example-system-a" component="example-component-a" verbose /> |
 | **Source repository** | `git.example.admin.ch/bazg-proto/declaration-intake-service` |
 | **Last generation run** | 2026-08-04 03:12 UTC from revision `9c1e40d` |
 
@@ -64,13 +59,13 @@ Everything else on this component is written by the owning team.
       to: '/systems/example-system-a/components/example-component-b/',
       label: 'Example Component B',
       note: 'The other component of this system; consumes the events published here.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/building-block-view/',
       label: 'Example System A — 5. Building Block View',
       note: 'How this component fits into the system.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/components/',

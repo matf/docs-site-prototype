@@ -1,7 +1,9 @@
 ---
 title: 3. Context and Scope
 sidebar_label: 3. Context and Scope
+sidebar_position: 0
 description: Generated context diagram of Example Component B — callers, upstream and downstream systems, external dependencies and message flows.
+doc_status: generated
 ---
 
 # 3. Context and Scope
@@ -10,26 +12,23 @@ description: Generated context diagram of Example Component B — callers, upstr
   system="example-system-a"
   component="example-component-b"
   section="context-and-scope"
-  status="mixed"
   generated={{
     generator: 'bazg-archdoc 0.7.2',
     sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
     revision: '3fd8b52',
     generatedAt: '2026-08-04 03:14 UTC',
-    scope: 'Context diagram and the inbound/outbound relationship tables',
-  }}
-  custom={{
-    owner: 'Team Alpha — Risk Squad (fictional)',
-    lastReviewed: '2026-07-28',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — context diagram and the inbound/outbound relationship tables',
   }}
 />
 
-## Reading this page
+:::info[Fully generated page]
 
-This component has no business API — everything it does starts with a message. That is visible in
-the generated diagram below: the only synchronous arrows are to the model registry and the
-history store, and both are dependencies rather than callers.
+Derived from the component's message subscriptions, published contracts and outbound client
+configurations, so it is complete by construction. Which of these relationships are load-bearing —
+the part no generator can know — is written by hand in
+[Scope Notes](/systems/example-system-a/components/example-component-b/context-and-scope/scope-notes/).
+
+:::
 
 ## Generated context diagram
 
@@ -106,22 +105,31 @@ flowchart LR
 
 </Diagram>
 
-## What the diagram does not say
-
-- **The Declarant History Store is read-only and feature-level.** It never returns identity
-  attributes — constraint CB-2 in
-  [2. Architecture Constraints](/systems/example-system-a/components/example-component-b/architecture-constraints/).
-  Fairness review depends on this boundary holding.
-- **The Model Registry is a hard dependency at case start and a soft one afterwards.** Versions
-  are cached, so a registry outage does not stop assessment of cases that use an already-loaded
-  version; only a newly published version cannot be picked up.
-- **`OrderInspection` is a command, not an event.** It is the only imperative message this
-  component sends, and it goes to a system that may refuse it.
-
 <RelatedDocs
   items={[
-    {to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', note: 'Full contract details.', status: 'generated'},
-    {to: '/systems/example-system-a/components/example-component-b/building-block-view/', label: '5. Building Block View', note: 'What is inside the red box.', status: 'mixed'},
-    {to: '/systems/example-system-a/components/example-component-a/context-and-scope/', label: 'Example Component A — 3. Context and Scope', note: 'The other side of the conversation.', status: 'mixed'},
+    {
+      to: '/systems/example-system-a/components/example-component-b/context-and-scope/scope-notes/',
+      label: 'Scope Notes',
+      note: 'The hand-written reading of this diagram.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/',
+      label: 'Messaging Events and Commands',
+      note: 'Full contract details for every message above.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/building-block-view/',
+      label: '5. Building Block View',
+      note: 'What is inside the red box.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/context-and-scope/',
+      label: 'Example System A — 3. Context and Scope',
+      note: 'The same view one level up.',
+      status: 'generated',
+    },
   ]}
 />

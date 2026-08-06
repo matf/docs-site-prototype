@@ -3,6 +3,7 @@ title: Messaging Events and Commands
 sidebar_label: Messaging Events and Commands
 sidebar_position: 1
 description: Generated catalogue of every command and event consumed and published by Example Component A.
+doc_status: generated
 ---
 
 # Messaging Events and Commands
@@ -11,7 +12,6 @@ description: Generated catalogue of every command and event consumed and publish
   system="example-system-a"
   component="example-component-a"
   section="crosscutting-concerns"
-  status="generated"
   generated={{
     generator: 'bazg-msgdoc 0.4.1',
     sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
@@ -78,7 +78,7 @@ component consumes both and publishes only events.
       to: '/systems/example-system-a/components/example-component-a/runtime-view/',
       label: '6. Runtime View',
       note: 'These messages in the reaction graph.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/',
@@ -90,7 +90,7 @@ component consumes both and publishes only events.
       to: '/systems/example-system-a/components/example-component-a/building-block-view/',
       label: '5. Building Block View',
       note: 'The adapters that produce and consume these messages.',
-      status: 'mixed',
+      status: 'generated',
     },
   ]}
 />

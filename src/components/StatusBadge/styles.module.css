@@ -43,8 +43,3 @@
   border-color: var(--bazg-custom-border);
 }
 
-.mixed {
-  color: var(--bazg-mixed);
-  background: var(--bazg-mixed-bg);
-  border-color: var(--bazg-mixed-border);
-}

@@ -1,8 +1,9 @@
 ---
 title: Failover and Replay
 sidebar_label: Failover and Replay
-sidebar_position: 1
+sidebar_position: 2
 description: Custom operational scenario below arc42 section 6 — dead-lettering, replay and outbox relay failure modes of Example Component A.
+doc_status: custom
 ---
 
 # Failover and Replay
@@ -11,7 +12,6 @@ description: Custom operational scenario below arc42 section 6 — dead-letterin
   system="example-system-a"
   component="example-component-a"
   section="runtime-view"
-  status="custom"
   custom={{
     owner: 'Team Alpha — Declaration Squad with Platform Operations (fictional)',
     lastReviewed: '2026-07-19',
@@ -106,7 +106,7 @@ replay before knowing the failure classes would automate the wrong decision.
       to: '/systems/example-system-a/components/example-component-a/runtime-view/',
       label: '6. Runtime View',
       note: 'The parent arc42 section.',
-      status: 'mixed',
+      status: 'generated',
     },
     {
       to: '/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/',

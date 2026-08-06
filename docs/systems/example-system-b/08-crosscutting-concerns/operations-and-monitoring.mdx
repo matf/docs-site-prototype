@@ -3,11 +3,12 @@ title: Operations and Monitoring
 sidebar_label: Operations and Monitoring
 sidebar_position: 1
 description: Custom crosscutting concept — service levels, alerts and procedures for Example System B.
+doc_status: custom
 ---
 
 # Operations and Monitoring
 
-<DocHeader system="example-system-b" section="crosscutting-concerns" status="custom"
+<DocHeader system="example-system-b" section="crosscutting-concerns"
   custom={{owner: 'Team Beta with Platform Operations (fictional)', lastReviewed: '2026-07-11', reviewStatus: 'Reviewed'}} />
 
 ## Service level objectives
@@ -29,9 +30,7 @@ description: Custom crosscutting concept — service levels, alerts and procedur
 
 ## Correcting a wrong announcement
 
-Risk **BR-1** in
-[11. Risks and Technical Debt](/systems/example-system-b/risks-and-technical-debt/) has no
-technical mitigation — a delivered notification cannot be recalled. The procedure is a correction
+A delivered notification cannot be recalled, and there is no technical mitigation for that. The procedure is a correction
 broadcast that references the original message identifier, sent on the same channels, in all four
 languages.
 

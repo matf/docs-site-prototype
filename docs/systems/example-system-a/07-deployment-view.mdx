@@ -2,6 +2,7 @@
 title: 7. Deployment View
 sidebar_label: 7. Deployment View
 description: Environments, data centres and the mapping of Example System A's components onto infrastructure.
+doc_status: generated
 ---
 
 # 7. Deployment View
@@ -9,28 +10,24 @@ description: Environments, data centres and the mapping of Example System A's co
 <DocHeader
   system="example-system-a"
   section="deployment-view"
-  status="mixed"
   generated={{
     generator: 'bazg-deploydoc 0.3.5',
     sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-deployment',
     revision: 'ff02b7c',
     generatedAt: '2026-08-04 03:15 UTC',
-    scope: 'Deployment topology diagram and the environment table',
-  }}
-  custom={{
-    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
-    lastReviewed: '2026-07-22',
-    reviewStatus: 'Reviewed',
+    scope: 'Whole page — topology, environments and operational properties',
   }}
 />
 
-## Infrastructure
+:::info[Fully generated page]
 
-Both data centres are in Switzerland, which is constraint **O-1** from
-[2. Architecture Constraints](/systems/example-system-a/architecture-constraints/) and the
-subject of [ADR-0002](/systems/example-system-a/architecture-decisions/adr-0002-hosting-and-data-residency/).
-The second site is warm standby, not active/active: the broker's ordering guarantees are easier
-to reason about with a single writing site, and the recovery objective allows it.
+Produced from the deployment descriptors. Why the second site is warm standby rather than active
+is an architecture decision, recorded in
+[ADR-0002](/systems/example-system-a/architecture-decisions/adr-0002-hosting-and-data-residency/).
+
+:::
+
+## Infrastructure
 
 <Diagram
   title="Deployment topology — production"
@@ -104,10 +101,6 @@ flowchart TB
 | Deployment strategy | Rolling, one replica at a time, health-gated |
 | Maintenance window | 01:00–03:00 CET, database patching only |
 | Scaling trigger | Broker consumer lag and CPU; documented in the runbook |
-
-The failover procedure itself, including who may declare a site failure, is operational
-documentation and lives in
-[Operations and Monitoring](/systems/example-system-a/crosscutting-concerns/operations-and-monitoring/).
 
 <RelatedDocs
   items={[
