@@ -1,7 +1,7 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {usePluginData} from '@docusaurus/useGlobalData';
-import {ARC42_SECTIONS, type Arc42Section} from './arc42';
-import {basePath, type DocStatus} from './catalog';
+import {basePath, structurePath, type DocStatus} from './catalog';
+import {DEFAULT_STRUCTURE, docStructure, type DocSection} from './structures';
 
 type DocStatusGlobalData = {byPermalink: Record<string, DocStatus>};
 
@@ -15,11 +15,12 @@ export type DocsStatusIndex = {
   statusOf: (path: string) => DocStatus | undefined;
   /** Whether a page exists at this route. */
   exists: (path: string) => boolean;
-  /** The arc42 sections actually documented for a system or component. */
+  /** The sections of one structure actually documented for a system or component. */
   sectionsOf: (
     systemId: string,
     componentId?: string,
-  ) => {section: Arc42Section; status: DocStatus}[];
+    structureId?: string,
+  ) => {section: DocSection; status: DocStatus}[];
   /** Generated/custom page counts below a route prefix. */
   countUnder: (prefix: string) => {generated: number; custom: number; total: number};
 };
@@ -28,9 +29,9 @@ export type DocsStatusIndex = {
  * Documentation origin per published route, read from the `bazg-doc-status`
  * plugin's global data.
  *
- * Everything here is derived from what was actually published, so a section
- * that has no page simply does not appear — there are no empty or placeholder
- * sections anywhere in the navigation.
+ * Everything here is derived from what was actually published, so a structure
+ * or a section that has no page simply does not appear — there are no empty or
+ * placeholder nodes anywhere in the navigation.
  */
 export function useDocsStatus(): DocsStatusIndex {
   const {
@@ -51,9 +52,9 @@ export function useDocsStatus(): DocsStatusIndex {
   return {
     statusOf,
     exists: (path) => statusOf(path) !== undefined,
-    sectionsOf: (systemId, componentId) => {
-      const base = basePath(systemId, componentId);
-      return ARC42_SECTIONS.flatMap((section) => {
+    sectionsOf: (systemId, componentId, structureId = DEFAULT_STRUCTURE) => {
+      const base = structurePath(systemId, componentId, structureId);
+      return docStructure(structureId).sections.flatMap((section) => {
         const status = statusOf(`${base}${section.slug}/`);
         return status ? [{section, status}] : [];
       });

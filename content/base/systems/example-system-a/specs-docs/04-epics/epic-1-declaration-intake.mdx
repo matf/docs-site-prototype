@@ -1,0 +1,70 @@
+---
+title: Epic 1 — Declaration Intake
+sidebar_label: Epic 1 — Declaration Intake
+sidebar_position: 1
+description: BMAD epic for Example System A — accepting, validating and correcting declarations.
+doc_status: custom
+---
+
+# Epic 1 — Declaration Intake
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="epics"
+  custom={{
+    owner: 'Product owner, Customs Clearance (fictional)',
+    lastReviewed: '2026-06-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | Delivered |
+| **Requirements** | FR-1, FR-2, FR-3, FR-9 |
+| **Realised by** | [Example Component A](/systems/example-system-a/components/example-component-a/) |
+
+## Goal
+
+A declarant can submit a declaration and knows within seconds whether it was accepted, and if not,
+exactly what to change.
+
+## Why this is one epic
+
+Submission, rejection feedback and correction are one user journey. Splitting them would have
+delivered a system that accepts declarations but cannot tell anybody what is wrong with them —
+which is worse than not shipping.
+
+## Acceptance
+
+- A valid declaration is acknowledged and durably stored.
+- An invalid declaration is rejected with a rule identifier, a field path and the accepted values.
+- A correction is accepted until the declaration is cleared, and refused afterwards.
+- No declaration acknowledged to the portal is ever lost.
+
+The last point is the one that shaped the architecture — it is why
+[ADR-0001 of Component A](/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/adr-0001-transactional-outbox/)
+exists.
+
+## Stories
+
+- [Story 1.1 — Submit a declaration](/systems/example-system-a/specs-docs/stories/story-1-1-submit-declaration/)
+- [Story 1.2 — Correct a declaration](/systems/example-system-a/specs-docs/stories/story-1-2-correct-declaration/)
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/epics/',
+      label: '4. Epics',
+      note: 'The parent section.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/',
+      label: 'Example Component A — 6. Runtime View',
+      note: 'How this epic behaves once built.',
+      status: 'generated',
+    },
+  ]}
+/>

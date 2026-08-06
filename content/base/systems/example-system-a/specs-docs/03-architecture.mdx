@@ -1,0 +1,61 @@
+---
+title: 3. Architecture
+sidebar_label: 3. Architecture
+description: BMAD architecture section for Example System A — how the requirements are realised, deferring to the arc42 architecture description.
+doc_status: custom
+---
+
+# 3. Architecture
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="architecture"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-06-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+This section is deliberately short. BMAD expects an architecture document; this system already has
+a full arc42 architecture description, and maintaining a second one would guarantee that the two
+disagree within a quarter.
+
+So this page says only how the requirements map onto the architecture, and points at it.
+
+## How the requirements are realised
+
+| Requirement | Realised by | Where it is described |
+| --- | --- | --- |
+| FR-1, FR-2, FR-3 | Declaration Intake Service | [Example Component A](/systems/example-system-a/components/example-component-a/) |
+| FR-4, FR-5, FR-8 | Risk Assessment Engine | [Example Component B](/systems/example-system-a/components/example-component-b/) |
+| FR-6, FR-7 | Versioned rule sets and models | [ADR-0001 of Component B](/systems/example-system-a/components/example-component-b/system-architecture/architecture-decisions/adr-0001-versioned-rule-sets/) |
+| FR-9 | Payload-free operator API | [Component A — Security](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/security/) |
+| NFR-1, NFR-2 | Event-driven integration | [ADR-0001](/systems/example-system-a/system-architecture/architecture-decisions/adr-0001-event-driven-integration/) |
+| NFR-3 | Immutable decision events | [ADR-0001](/systems/example-system-a/system-architecture/architecture-decisions/adr-0001-event-driven-integration/) |
+| NFR-5 | Rule sets deployed as data | [Rule Set Rollout](/systems/example-system-a/components/example-component-b/system-architecture/runtime-view/rule-set-rollout/) |
+
+## Where to read further
+
+The architecture itself is documented under
+<StructureLink system="example-system-a" structure="system-architecture" />: system context,
+building block view with the full contract catalogue, runtime views, deployment, crosscutting
+concepts and the decision records.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/',
+      label: 'System Architecture',
+      note: 'The arc42 description this page defers to.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'System Architecture — 5. Building Block View',
+      note: 'Components and the contracts between them.',
+      status: 'generated',
+    },
+  ]}
+/>

@@ -1,0 +1,65 @@
+---
+title: 6. Quality and Test Strategy
+sidebar_label: 6. Quality and Test Strategy
+description: BMAD quality and test strategy for Example System A — gates a story passes before it is done.
+doc_status: custom
+---
+
+# 6. Quality and Test Strategy
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="quality-and-test-strategy"
+  custom={{
+    owner: 'Team Alpha with the test lead (fictional)',
+    lastReviewed: '2026-07-02',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Definition of done
+
+A story is done when all of the following hold. Nothing here is negotiable per story — a story that
+cannot meet a gate becomes a smaller story.
+
+| # | Gate | Evidence |
+| --- | --- | --- |
+| G-1 | Every acceptance criterion has an automated test | Test names reference the criterion number |
+| G-2 | Contract tests pass for every message the story touches | Consumer contracts run against the producer |
+| G-3 | Architecture tests pass | Layering, logging annotations, determinism |
+| G-4 | No business payload appears in logs or operational tooling | Automated check |
+| G-5 | The affected documentation is updated or regenerated | Build is green with no broken links |
+
+## Test levels
+
+| Level | Owns | Runs |
+| --- | --- | --- |
+| Unit | Domain rules | Every build |
+| Contract | Message schemas | Every build |
+| Integration | Component with real broker and database | Every build |
+| Load | The peak profile | Before each release |
+| Chaos | Neighbour outages | Before each release |
+| Audit rehearsal | Reproducibility of old decisions | Twice a year |
+
+The architectural counterpart is
+[10. Quality Requirements](/systems/example-system-a/system-architecture/quality-requirements/),
+which expresses the same expectations as measurable scenarios. This page is about *when a story is
+allowed to be called finished*; that one is about *what the system must demonstrably do*.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/stories/',
+      label: '5. Stories',
+      note: 'What these gates apply to.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/quality-requirements/',
+      label: 'System Architecture — 10. Quality Requirements',
+      note: 'The architectural expression of the same expectations.',
+      status: 'custom',
+    },
+  ]}
+/>

@@ -17,8 +17,11 @@ This is primarily a **UX and information-architecture prototype**, not a documen
 backend. It demonstrates:
 
 - one coherent documentation tree, rooted at `Systems`;
-- the twelve arc42 sections starting **directly** beneath every system and every component, with no
-  intermediate `Overview`, `arc42` or `Other Topics` navigation node;
+- a **documentation structure** level below each system and component — `System Architecture`
+  (arc42) and `Specification Docs` (BMAD) — present in the navigation and in the URL, so a system
+  can carry several methodologies at once;
+- the methodology's sections starting **directly** beneath the structure, with no intermediate
+  `Overview` or `Other Topics` navigation node;
 - generated documentation (context diagrams, component views, reaction graphs, messaging
   catalogues, observability inventories) integrated into the arc42 section it belongs to;
 - custom documentation insertable at any level of the arc42 structure;
@@ -111,64 +114,68 @@ component:
 ```text
 Systems
 ├── Example System A
-│   ├── 1. Introduction and Goals
-│   │   └── Stakeholder Goals                     ← custom page below an arc42 section
-│   ├── 2. Architecture Constraints
-│   ├── 3. Context and Scope
-│   ├── 4. Solution Strategy
-│   ├── 5. Building Block View                    ← components + the contract catalogue
-│   │   ├── Decomposition Rationale               ← custom
-│   │   ├── SubmitDeclaration                     ← one generated page per command …
-│   │   ├── DeclarationAccepted                   ← … and per event
-│   │   └── …
-│   ├── 6. Runtime View
-│   │   └── Peak Load and Degradation             ← custom operational scenario
-│   ├── 7. Deployment View
-│   ├── 8. Crosscutting Concerns
-│   │   ├── Security and Data Protection
-│   │   ├── Operations and Monitoring
-│   │   └── Development Guidelines
-│   ├── 9. Architecture Decisions
-│   │   ├── ADR-0001 Event-driven integration
-│   │   └── ADR-0002 Hosting and data residency
-│   ├── 10. Quality Requirements
-│   ├── 11. Risks and Technical Debt
-│   ├── 12. Glossary
-│   │   └── Technical Terms                       ← generated, next to the custom glossary
+│   ├── System Architecture                        ← arc42
+│   │   ├── 1. Introduction and Goals
+│   │   │   └── Stakeholder Goals                  ← custom page below a section
+│   │   ├── 2. Architecture Constraints
+│   │   ├── 3. Context and Scope
+│   │   │   └── Scope and Boundaries               ← custom, next to the generated diagram
+│   │   ├── 4. Solution Strategy
+│   │   ├── 5. Building Block View                 ← components + the contract catalogue
+│   │   │   ├── Decomposition Rationale            ← custom
+│   │   │   ├── SubmitDeclaration                  ← one generated page per command …
+│   │   │   ├── DeclarationAccepted                ← … and per event
+│   │   │   └── …
+│   │   ├── 6. Runtime View
+│   │   │   ├── Correction Race Scenario           ← custom
+│   │   │   └── Peak Load and Degradation          ← custom
+│   │   ├── 7. Deployment View
+│   │   ├── 8. Crosscutting Concerns
+│   │   ├── 9. Architecture Decisions
+│   │   ├── 10. Quality Requirements
+│   │   ├── 11. Risks and Technical Debt
+│   │   └── 12. Glossary
+│   │       └── Technical Terms                    ← generated, next to the custom glossary
+│   ├── Specification Docs                         ← BMAD
+│   │   ├── 1. Project Brief
+│   │   ├── 2. Product Requirements
+│   │   │   └── Functional Requirements
+│   │   ├── 3. Architecture                        ← defers to the arc42 description
+│   │   ├── 4. Epics
+│   │   │   ├── Epic 1 — Declaration Intake
+│   │   │   └── Epic 2 — Risk Assessment
+│   │   ├── 5. Stories
+│   │   │   ├── 1.1 Submit a declaration
+│   │   │   └── …
+│   │   └── 6. Quality and Test Strategy
 │   └── Components
 │       ├── Example Component A
-│       │   ├── 1. Introduction and Goals
-│       │   ├── … (all twelve arc42 sections)
-│       │   ├── 8. Crosscutting Concerns
-│       │   │   ├── Integration Conventions         (custom)
-│       │   │   ├── Observability                   (generated)
-│       │   │   └── Security                        (custom)
-│       │   └── 12. Glossary
+│       │   └── System Architecture
+│       │       ├── 1. Introduction and Goals
+│       │       ├── … (all twelve arc42 sections)
+│       │       └── 8. Crosscutting Concerns
+│       │           ├── Integration Conventions    (custom)
+│       │           ├── Observability              (generated)
+│       │           └── Security                   (custom)
 │       └── Example Component B
-└── Example System B                              ← 9 of 12 sections documented
-    ├── 1. Introduction and Goals
-    ├── 2. Architecture Constraints
-    ├── 3. Context and Scope
-    ├── 5. Building Block View                     ← 4. Solution Strategy has no content,
-    ├── 6. Runtime View                              so it does not exist and is not shown
-    ├── 8. Crosscutting Concerns
-    ├── 9. Architecture Decisions
-    ├── 10. Quality Requirements
-    ├── 12. Glossary
-    └── Components
-        └── Example Component C                    ← 5 of 12 sections documented
-            ├── 1. Introduction and Goals
-            ├── 3. Context and Scope
-            ├── 5. Building Block View
-            ├── 6. Runtime View
-            └── 8. Crosscutting Concerns
+└── Example System B                               ← System Architecture only
+    └── System Architecture                        ← 9 of 12 sections documented
+        ├── 1. Introduction and Goals
+        ├── 2. Architecture Constraints
+        ├── 3. Context and Scope
+        ├── 5. Building Block View                 ← 4. Solution Strategy has no content,
+        ├── 6. Runtime View                          so it does not exist and is not shown
+        └── …
 ```
 
-Three rules matter:
+Four rules matter:
 
-- **`Components` is a sibling of the arc42 sections, not a child of `5. Building Block View`.** The
+- **The documentation structure is a level of its own.** A system or component may carry several
+  methodologies at the same time; each gets its own URL segment and its own sidebar node. Adding one
+  means adding an entry to `src/data/structures.ts` and a folder — no navigation code changes.
+- **`Components` is a sibling of the structures, not a child of `5. Building Block View`.** The
   system's building block view *describes and links* its components; the component documentation
-  lives one level down, where it has room for its own sections.
+  lives one level down, where it has room for its own structures and sections.
 - **Custom documentation is filed under the arc42 section it belongs to.** There is no generic
   catch-all category. In most cases the right home is `8. Crosscutting Concerns`; an operational
   scenario belongs under `6. Runtime View`, an ADR under `9. Architecture Decisions`.
@@ -188,32 +195,43 @@ Three rules matter:
 ### Filesystem layout and how it becomes navigation
 
 The sidebar is autogenerated from the filesystem (`sidebars.ts` contains one `autogenerated` entry
-for `docs/systems`), so **adding a file to the right folder is enough** to add it to the
+for `content/base/systems`), so **adding a file to the right folder is enough** to add it to the
 navigation.
 
 ```text
-docs/
-├── index.mdx                       → /                     (start page)
-├── systems-index.mdx               → /systems/             (systems overview)
-├── conventions.mdx                 → /conventions/
+content/base/
+├── index.mdx                          → /                  (start page)
+├── systems-index.mdx                  → /systems/          (systems overview)
+├── conventions.mdx                    → /conventions/
 └── systems/
-    └── example-system-a/           → /systems/example-system-a/
-        ├── _category_.json         label + position of the system in the sidebar
-        ├── index.mdx               the system landing page
-        ├── 01-introduction-and-goals/
-        │   ├── _category_.json
-        │   ├── index.mdx           → /systems/example-system-a/introduction-and-goals/
-        │   └── stakeholder-goals.mdx
-        ├── 02-architecture-constraints.mdx   → …/architecture-constraints/
-        ├── …
+    └── example-system-a/              → /systems/example-system-a/
+        ├── _category_.json            label + position of the system in the sidebar
+        ├── index.mdx                  the system landing page
+        ├── system-architecture/       → /systems/example-system-a/system-architecture/
+        │   ├── _category_.json        label "System Architecture", position 1
+        │   ├── index.mdx              the structure landing page
+        │   ├── 01-introduction-and-goals/
+        │   │   ├── _category_.json
+        │   │   ├── index.mdx          → …/system-architecture/introduction-and-goals/
+        │   │   └── stakeholder-goals.mdx
+        │   ├── 02-architecture-constraints.mdx
+        │   └── …
+        ├── specs-docs/                → /systems/example-system-a/specs-docs/
+        │   ├── _category_.json        label "Specification Docs", position 2
+        │   ├── index.mdx
+        │   ├── 01-project-brief.mdx
+        │   └── …
         └── components/
-            ├── _category_.json     label "Components", position 13 (after 12. Glossary)
+            ├── _category_.json        label "Components", position 10 (after the structures)
             ├── index.mdx
             └── example-component-a/
                 ├── _category_.json
                 ├── index.mdx
-                ├── 01-introduction-and-goals.mdx
-                └── …
+                └── system-architecture/
+                    ├── _category_.json
+                    ├── index.mdx
+                    ├── 01-introduction-and-goals.mdx
+                    └── …
 ```
 
 Three conventions do the work:
@@ -308,7 +326,9 @@ Registered globally in `src/theme/MDXComponents.tsx`, so no MDX file needs an im
 | `<SystemCard id="…" />` | System card |
 | `<ComponentCard system="…" component="…" />` | Component card |
 | `<CardGrid>` | Responsive card grid |
-| `<Arc42SectionNav system="…" component="…" />` | Links to the arc42 sections that exist, with a coverage line |
+| `<SectionNav system="…" component="…" structure="…" />` | Links to the sections of one structure that exist, with a coverage line |
+| `<StructureCards system="…" component="…" />` | The documentation structures an entity carries |
+| `<StructureLink system="…" structure="…" />` | Inline link to a structure |
 | `<DocMix system="…" component="…" />` | Generated/custom page counts for a system or component |
 | `<Diagram title="…" status="…" source="…">` | Framed, scrollable diagram/table container |
 | `<MessagingCatalogue system="…" />` | Generated catalogue of a system's events and commands |
@@ -320,14 +340,14 @@ Registered globally in `src/theme/MDXComponents.tsx`, so no MDX file needs an im
 | `<PrototypeNotice />` | Standing "this content is fictional" notice |
 
 The data behind them lives in `src/data/`: `catalog.ts` (systems and components), `arc42.ts` (the
-twelve canonical sections), `messaging.ts` (the per-system contract catalogues). Which sections actually exist and
+twelve canonical sections), `structures.ts` (the methodologies and their sections), `messaging.ts` (the per-system contract catalogues). Which sections actually exist and
 what each page's origin is comes from `src/data/useDocsStatus.ts`, which reads the global data
 produced by `plugins/doc-status/` — so section lists, badges and counts stay correct as
 documentation is added or removed, with nothing to maintain by hand.
 
 ## How to add a system
 
-1. Create `docs/systems/<system-id>/`.
+1. Create `content/base/systems/<system-id>/`.
 2. Add `_category_.json`:
 
    ```json
@@ -335,8 +355,8 @@ documentation is added or removed, with nothing to maintain by hand.
    ```
 
 3. Add `index.mdx` — the landing page. Use `<DocHeader>`, `<Arc42SectionNav>` and `<CardGrid>` with
-   `<ComponentCard>`s; copy `docs/systems/example-system-a/index.mdx` as a starting point.
-4. Add the twelve arc42 sections as `01-introduction-and-goals.mdx` … `12-glossary.mdx`.
+   `<ComponentCard>`s; copy `content/base/systems/example-system-a/index.mdx` as a starting point.
+4. Add a `system-architecture/` folder with its `_category_.json` (`{"label": "System Architecture", "position": 1}`), an `index.mdx` carrying `<SectionNav>`, and the arc42 sections as `01-introduction-and-goals.mdx` … `12-glossary.mdx`. Add a `specs-docs/` folder the same way if the system has BMAD specifications.
 5. Register the system in `src/data/catalog.ts` (`SYSTEMS`) so cards, landing pages and contextual
    headers know about it, and in `src/data/sectionStatus.ts` if the per-section badges should differ
    from the default.
@@ -345,9 +365,9 @@ Nothing else — the sidebar picks it up automatically.
 
 ## How to add a component
 
-1. Create `docs/systems/<system-id>/components/<component-id>/`.
+1. Create `content/base/systems/<system-id>/components/<component-id>/`.
 2. Add `_category_.json` with the label and position.
-3. Add `index.mdx` and the twelve arc42 section files, exactly as for a system.
+3. Add `index.mdx`, then a `system-architecture/` folder with its own `index.mdx` and section files, exactly as for a system.
 4. Add the component to the owning system's `components` array in `src/data/catalog.ts`. If it
    publishes or consumes messages, name it as producer or consumer on the relevant contracts in
    `src/data/messaging.ts` — the contracts themselves belong to the system, not to the component.
@@ -361,7 +381,7 @@ Contracts are per system. Add the entry to the system's catalogue in `src/data/m
 payload fields, example, optional version history), then add the page:
 
 ```text
-docs/systems/example-system-a/05-building-block-view/<slug>.mdx
+content/base/systems/example-system-a/system-architecture/05-building-block-view/<slug>.mdx
 ```
 
 ```mdx
@@ -390,7 +410,7 @@ message lists and every inline `<Msg …/>` pick the new contract up automatical
 The section must be a **folder**. If it is currently a single file, convert it:
 
 ```bash
-cd docs/systems/example-system-a
+cd content/base/systems/example-system-a/system-architecture
 mkdir 06-runtime-view
 git mv 06-runtime-view.mdx 06-runtime-view/index.mdx
 printf '{"label": "6. Runtime View", "position": 6}\n' > 06-runtime-view/_category_.json
@@ -399,7 +419,7 @@ printf '{"label": "6. Runtime View", "position": 6}\n' > 06-runtime-view/_catego
 The URL does not change. Then drop the new page next to `index.mdx`:
 
 ```text
-docs/systems/example-system-a/06-runtime-view/
+content/base/systems/example-system-a/system-architecture/06-runtime-view/
 ├── _category_.json
 ├── index.mdx                    ← the arc42 section itself
 └── my-new-scenario.mdx          ← the custom page
@@ -420,40 +440,47 @@ Give the `index.mdx` of the section `sidebar_position: 0` so the section itself 
 ### Concise examples
 
 **Beneath a system's Crosscutting Concerns** →
-`/systems/example-system-a/crosscutting-concerns/disaster-recovery/`
+`/systems/example-system-a/system-architecture/crosscutting-concerns/disaster-recovery/`
 
 ```text
-docs/systems/example-system-a/08-crosscutting-concerns/disaster-recovery.mdx
+content/base/systems/example-system-a/system-architecture/08-crosscutting-concerns/disaster-recovery.mdx
 ```
 
 **Beneath a component's Runtime View** →
-`/systems/example-system-a/components/example-component-a/runtime-view/bulk-import-scenario/`
+`/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/bulk-import-scenario/`
 
 ```text
-docs/systems/example-system-a/components/example-component-a/06-runtime-view/bulk-import-scenario.mdx
+content/base/systems/example-system-a/components/example-component-a/system-architecture/06-runtime-view/bulk-import-scenario.mdx
 ```
 
 **Beneath a component's Architecture Decisions** →
-`/systems/example-system-a/components/example-component-a/architecture-decisions/adr-0002-schema-registry/`
+`/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/adr-0002-schema-registry/`
 
 ```text
-docs/systems/example-system-a/components/example-component-a/09-architecture-decisions/adr-0002-schema-registry.mdx
+content/base/systems/example-system-a/components/example-component-a/system-architecture/09-architecture-decisions/adr-0002-schema-registry.mdx
 ```
 
-In all three cases, creating the file is the only step. To place a custom page **between** two
-generated pages, give it the `sidebar_position` that belongs between theirs — this is what
-`08-crosscutting-concerns/integration-conventions.mdx` (position 2, between the generated
-*Messaging Events and Commands* at 1 and the generated *Observability* at 3) demonstrates.
+**Beneath a system's Product Requirements (BMAD)** →
+`/systems/example-system-a/specs-docs/product-requirements/reporting-requirements/`
+
+```text
+content/base/systems/example-system-a/specs-docs/02-product-requirements/reporting-requirements.mdx
+```
+
+In every case, creating the file is the only step — the mechanism does not care which methodology
+the structure follows. To place a custom page **between** two generated pages, give it the
+`sidebar_position` that belongs between theirs, as
+`system-architecture/08-crosscutting-concerns/integration-conventions.mdx` does.
 
 ## How to add a new Crosscutting Concern
 
 1. Decide whether it really is crosscutting. If it is an operational scenario it belongs under
    `6. Runtime View`; if it is a decision, under `9. Architecture Decisions`; if it is a constraint,
    under `2. Architecture Constraints`. Only concepts that apply across building blocks go here.
-2. Add the file to `08-crosscutting-concerns/` of the system or the component:
+2. Add the file to `system-architecture/08-crosscutting-concerns/` of the system or the component:
 
    ```text
-   docs/systems/example-system-a/08-crosscutting-concerns/data-retention.mdx
+   content/base/systems/example-system-a/system-architecture/08-crosscutting-concerns/data-retention.mdx
    ```
 
 3. Frontmatter:
@@ -529,7 +556,8 @@ build output, which would otherwise drop files and folders beginning with an und
 
 ```text
 .github/workflows/       deployment and pull-request validation
-docs/                    the documentation tree (the site content)
+content/base/            the documentation tree (the site content)
+content/overrides/<env>/ reserved for per-environment overrides
 src/components/          reusable presentation components
 src/data/                system/component catalogue, arc42 sections, messaging catalogues
 src/theme/               MDXComponents.tsx — makes the components globally available in MDX

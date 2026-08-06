@@ -1,5 +1,5 @@
 import React, {type ReactNode} from 'react';
-import {componentById, componentPath, systemPath} from '@site/src/data/catalog';
+import {componentById, componentPath, sectionPath} from '@site/src/data/catalog';
 import {messageByName} from '@site/src/data/messaging';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import RelatedDocs, {type RelatedDocItem} from '@site/src/components/RelatedDocs';
@@ -33,7 +33,7 @@ export default function MessageRelated({
     }
     seen.add(componentId);
     const entry = componentById(system, componentId);
-    const runtime = `${componentPath(system, componentId)}runtime-view/`;
+    const runtime = sectionPath(system, componentId, 'system-architecture', 'runtime-view');
     const role = message.producer.component === componentId ? 'Publishes' : 'Consumes';
     if (exists(runtime)) {
       items.push({
@@ -52,15 +52,16 @@ export default function MessageRelated({
     }
   }
 
+  const buildingBlockView = sectionPath(system, undefined, 'system-architecture', 'building-block-view');
   items.push({
-    to: `${systemPath(system)}building-block-view/`,
+    to: buildingBlockView,
     label: '5. Building Block View',
     note: 'The full contract catalogue of this system.',
-    status: statusOf(`${systemPath(system)}building-block-view/`),
+    status: statusOf(buildingBlockView),
   });
 
   const conventions =
-    '/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/';
+    '/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/integration-conventions/';
   if (exists(conventions)) {
     items.push({
       to: conventions,

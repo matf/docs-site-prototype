@@ -1,0 +1,68 @@
+---
+title: 12. Glossary
+sidebar_label: 12. Glossary
+sidebar_position: 0
+description: Domain terms agreed with the specialist unit for Example System A.
+doc_status: custom
+---
+
+# 12. Glossary
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="glossary"
+  custom={{
+    owner: 'Team Alpha with the specialist unit (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Domain terms
+
+Agreed with the specialist unit. Where the everyday word and the system's word differ, the
+difference is stated — that is the whole point of this table.
+
+| Term | Meaning in this system |
+| --- | --- |
+| **Declaration** | The formal statement about a consignment crossing the border. The unit of work of the whole system. |
+| **Revision** | An immutable version of a declaration. A correction creates a new revision; nothing is ever overwritten. |
+| **Consignment** | The goods covered by one declaration, moving from one consignor to one consignee. |
+| **Declarant** | The party legally responsible for the declaration. Not necessarily the party that submitted it. |
+| **Clearance** | The decision that a consignment may proceed. Terminal state of the happy path. |
+| **Hold** | The decision that a consignment must not proceed until a control decision exists. |
+| **Risk case** | The assessment record for one declaration revision. Owned by the risk engine, not by the declaration. |
+| **Score band** | `low`, `elevated` or `high`. The band, not the raw score, drives the decision. |
+| **Rule set** | A versioned collection of customs and risk rules, deployed as data. |
+
+## Terms deliberately not used
+
+| Avoided | Use instead | Reason |
+| --- | --- | --- |
+| "Customer" | Declarant | The declarant has a legal role, not a commercial one. |
+| "Order" | Declaration | "Order" means an inspection order in this domain. |
+| "Approved" | Cleared | Approval suggests discretion; clearance is a rule-based outcome. |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/glossary/technical-terms/',
+      label: 'Technical Terms',
+      note: 'Generated from the domain model and message schemas.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/glossary/',
+      label: 'Example Component A — 12. Glossary',
+      note: 'Component-specific terms.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/introduction-and-goals/',
+      label: '1. Introduction and Goals',
+      note: 'Where these terms are first used.',
+      status: 'custom',
+    },
+  ]}
+/>

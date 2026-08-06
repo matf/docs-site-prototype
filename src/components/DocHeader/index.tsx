@@ -1,10 +1,16 @@
 import React, {type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
-import {arc42BySlug, arc42Label} from '@site/src/data/arc42';
+import {
+  DEFAULT_STRUCTURE,
+  docStructure,
+  sectionBySlug,
+  sectionLabel,
+} from '@site/src/data/structures';
 import {
   componentById,
   componentPath,
+  structurePath,
   systemById,
   systemPath,
   type DocStatus,
@@ -18,7 +24,9 @@ export type DocHeaderProps = {
   system: string;
   /** Component id when the page documents a component rather than the system. */
   component?: string;
-  /** arc42 section slug, e.g. `runtime-view`. Omit on landing pages. */
+  /** Documentation structure the page belongs to. */
+  structure?: string;
+  /** Section slug within that structure, e.g. `runtime-view`. Omit on landing pages. */
   section?: string;
   /** Provenance panel; set on generated pages. */
   generated?: Omit<GeneratedMetaProps, 'team'> & {team?: string};
@@ -40,6 +48,7 @@ export type DocHeaderProps = {
 export default function DocHeader({
   system,
   component,
+  structure = DEFAULT_STRUCTURE,
   section,
   generated,
   custom,
@@ -56,7 +65,8 @@ export default function DocHeader({
   }
   const systemEntry = systemById(system);
   const componentEntry = component ? componentById(system, component) : undefined;
-  const sectionEntry = section ? arc42BySlug(section) : undefined;
+  const structureEntry = docStructure(structure);
+  const sectionEntry = section ? sectionBySlug(structure, section) : undefined;
   const owningTeam = componentEntry?.team ?? systemEntry.team;
 
   return (
@@ -78,9 +88,17 @@ export default function DocHeader({
             </span>
           ) : null}
           <span className={styles.item}>
-            <span className={styles.kind}>arc42</span>
+            <span className={styles.kind}>Docs</span>
+            <Link
+              className={styles.name}
+              to={structurePath(systemEntry.id, componentEntry?.id, structureEntry.id)}>
+              {structureEntry.label}
+            </Link>
+          </span>
+          <span className={styles.item}>
+            <span className={styles.kind}>{structureEntry.methodology}</span>
             <span className={styles.name}>
-              {sectionEntry ? arc42Label(sectionEntry) : 'Landing page'}
+              {sectionEntry ? sectionLabel(sectionEntry) : 'Landing page'}
             </span>
           </span>
         </nav>

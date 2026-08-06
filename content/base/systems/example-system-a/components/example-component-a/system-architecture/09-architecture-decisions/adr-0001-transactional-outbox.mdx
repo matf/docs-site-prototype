@@ -1,0 +1,106 @@
+---
+title: ADR-0001 — Transactional outbox
+sidebar_label: ADR-0001 Transactional outbox
+sidebar_position: 1
+description: Custom architecture decision record below a component arc42 section 9 — state change and event publication in one transaction.
+doc_status: custom
+---
+
+# ADR-0001 — Transactional outbox for event publication
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-a"
+  section="architecture-decisions"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | Accepted |
+| **Date** | 2025-12-11 |
+| **Deciders** | Team Alpha — Declaration Squad, lead architect |
+| **Scope** | Example Component A only |
+
+## Context
+
+The component's first quality goal is that **no accepted declaration is ever lost**: once the
+trade portal has an acknowledgement, the declaration must be durably stored *and* announced to
+the rest of the system.
+
+Two writes are involved — the database and the broker — and they cannot be atomic across two
+systems. Both orderings fail:
+
+- **Publish, then commit.** A crash in between announces a declaration that does not exist.
+  Example Component B opens a risk case for nothing.
+- **Commit, then publish.** A crash in between stores a declaration nobody hears about. The
+  declarant has an acknowledgement and the consignment silently never gets a decision. This is the
+  worse failure, and it is invisible.
+
+## Decision
+
+The state change and the outgoing event are written **in the same database transaction**: the
+event goes into an `outbox` table. A separate **outbox relay** polls the table, publishes to the
+broker and marks the row published, retrying indefinitely.
+
+## Consequences
+
+**Positive**
+
+- Atomicity where it matters. Either both the revision and the outbox row exist, or neither does.
+- The relay can fail, restart or be redeployed without losing events; it resumes from the oldest
+  unpublished row, in order.
+- Recovery after a site failover is trivial — see
+  [Failover and Replay](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/failover-and-replay/).
+
+**Negative**
+
+- **At-least-once delivery.** A crash between publishing and marking the row published republishes
+  the event. Every consumer must be idempotent, which is codified in
+  [Integration Conventions](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/integration-conventions/).
+- **Publication latency.** The poll interval (`PT0.5S`) is added to every event. Acceptable
+  against the 8-second decision budget in
+  [10. Quality Requirements](/systems/example-system-a/components/example-component-a/system-architecture/quality-requirements/).
+- **An extra moving part.** The relay is a second workload with its own failure mode; `outbox_pending_rows`
+  and `outbox.relay.stalled` in the generated
+  [Observability](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/observability/)
+  inventory exist because of this decision.
+- **Outbox table growth.** Published rows are pruned after 7 days by a scheduled job.
+
+## Alternatives considered
+
+| Alternative | Why not |
+| --- | --- |
+| Two-phase commit between database and broker | Not supported by the managed database service, and the operational cost of in-doubt transactions is high. |
+| Change data capture from the database log | Would work and needs no relay, but couples the event schema to the table schema and requires a platform capability that is not available. Reconsider if it becomes available. |
+| Publish first, compensate on failure | Compensation needs a durable record of the intent — which is an outbox with extra steps. |
+| Accept the risk and publish after commit | Rejected: the failure is silent, and silence is what the first quality goal forbids. |
+
+## Affected documentation
+
+- [5. Building Block View](/systems/example-system-a/components/example-component-a/system-architecture/building-block-view/) — the outbox relay building block
+- [6. Runtime View](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/) — the single-transaction step in the sequence
+- [Integration Conventions](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/integration-conventions/) — the idempotency rule this forces on consumers
+- [Observability](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/observability/) — the relay metrics
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/',
+      label: '9. Architecture Decisions',
+      note: 'The parent arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/architecture-decisions/adr-0001-event-driven-integration/',
+      label: 'System ADR-0001 — Event-driven integration',
+      note: 'The system decision this one follows from.',
+      status: 'custom',
+    },
+  ]}
+/>

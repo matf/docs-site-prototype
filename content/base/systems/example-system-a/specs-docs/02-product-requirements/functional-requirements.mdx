@@ -1,0 +1,67 @@
+---
+title: Functional Requirements
+sidebar_label: Functional Requirements
+sidebar_position: 1
+description: Custom page below BMAD section 2 — the numbered functional requirements of Example System A.
+doc_status: custom
+---
+
+# Functional Requirements
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="product-requirements"
+  custom={{
+    owner: 'Product owner with the specialist unit (fictional)',
+    lastReviewed: '2026-06-20',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+:::note[A custom page below a BMAD section]
+
+The insertion model is the same in every documentation structure: adding this file to
+`specs-docs/02-product-requirements/` was enough to place it directly after its parent section.
+Nothing about arc42 is assumed anywhere in the navigation.
+
+:::
+
+| # | Requirement | Priority | Realised by |
+| --- | --- | --- | --- |
+| FR-1 | A declarant can submit a declaration and receives an acknowledgement or a rejection | Must | [Epic 1](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) |
+| FR-2 | A rejection names the violated rule, the field and the accepted values | Must | [Epic 1](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) |
+| FR-3 | A declarant can correct an accepted declaration until it is cleared | Must | [Epic 1](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) |
+| FR-4 | Every accepted declaration is assessed for risk | Must | [Epic 2](/systems/example-system-a/specs-docs/epics/epic-2-risk-assessment/) |
+| FR-5 | A high-risk consignment produces an inspection order | Must | [Epic 2](/systems/example-system-a/specs-docs/epics/epic-2-risk-assessment/) |
+| FR-6 | A risk analyst can publish a rule set without a deployment | Must | [Epic 2](/systems/example-system-a/specs-docs/epics/epic-2-risk-assessment/) |
+| FR-7 | A risk analyst can roll a rule set back in one step | Must | [Epic 2](/systems/example-system-a/specs-docs/epics/epic-2-risk-assessment/) |
+| FR-8 | A customs officer can see why a consignment was held | Should | [Epic 2](/systems/example-system-a/specs-docs/epics/epic-2-risk-assessment/) |
+| FR-9 | An operator can replay a failed message without seeing its payload | Should | [Epic 1](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) |
+
+## Open questions
+
+| # | Question | Owner | Blocking |
+| --- | --- | --- | --- |
+| Q-1 | Should a correction be possible after a hold, or only before? | Specialist unit | FR-3 |
+| Q-2 | How long may an inspection order stay unanswered before it expires? | Inspection Planning | FR-5 |
+
+Open questions live with the requirement, not in a separate tracker — a question that is invisible
+in the specification gets answered by whoever implements it first.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/product-requirements/',
+      label: '2. Product Requirements',
+      note: 'The parent section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/specs-docs/stories/',
+      label: '5. Stories',
+      note: 'Where these requirements become implementable units.',
+      status: 'generated',
+    },
+  ]}
+/>

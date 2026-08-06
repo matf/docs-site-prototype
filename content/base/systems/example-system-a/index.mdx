@@ -1,0 +1,79 @@
+---
+title: Example System A
+sidebar_label: Example System A
+description: Landing page of Example System A (fictional Goods Declaration Platform) — arc42 sections, components and documentation status.
+doc_status: generated
+---
+
+# Example System A
+
+**Goods Declaration Platform (fictional).** Accepts electronic goods declarations from trade
+participants, validates them against customs rules, assesses risk and hands cleared consignments
+over to the border control processes.
+
+<DocHeader
+  system="example-system-a"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
+    revision: 'a41f7c9',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Context diagram, component overview, deployment topology, glossary imports',
+  }}
+/>
+
+<PrototypeNotice />
+
+| Property | Value |
+| --- | --- |
+| **Responsible team** | Team Alpha — Customs Platform Engineering (fictional) |
+| **Documentation status** | Complete — all twelve arc42 sections, two components documented in depth |
+| **Pages** | <DocMix system="example-system-a" verbose /> |
+| **Source repository** | `git.example.admin.ch/bazg-proto/example-system-a` |
+| **Last generation run** | 2026-08-04 03:12 UTC from revision `a41f7c9` |
+
+## Documentation
+
+This system is documented with the structures below. Each one is a
+methodology with its own chapters, and each has its own place in the navigation and in the URL.
+
+<StructureCards system="example-system-a" />
+
+## Components
+
+Two components are documented in depth. Each one has its own twelve arc42 sections, including a
+generated context diagram, a generated internal component view, a generated reaction graph and a
+generated messaging catalogue.
+
+<CardGrid>
+  <ComponentCard system="example-system-a" component="example-component-a" />
+  <ComponentCard system="example-system-a" component="example-component-b" />
+</CardGrid>
+
+The system's [5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/) shows how
+these components fit together. The full component documentation lives under `Components`, one
+level below this page, so that the building block view stays readable.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/context-and-scope/',
+      label: '3. Context and Scope',
+      note: 'Who the system talks to, and about what.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/crosscutting-concerns/',
+      label: '8. Crosscutting Concerns',
+      note: 'Security, operations and development guidelines.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/architecture-decisions/',
+      label: '9. Architecture Decisions',
+      note: 'Why the system is event-driven and where it runs.',
+      status: 'custom',
+    },
+    {to: '/systems/', label: 'All systems', note: 'Back to the systems overview.'},
+  ]}
+/>

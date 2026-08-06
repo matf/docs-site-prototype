@@ -4,10 +4,12 @@ import Link from '@docusaurus/Link';
 import {
   componentById,
   componentPath,
+  sectionPath,
   systemById,
   systemPath,
   type ComponentEntry,
 } from '@site/src/data/catalog';
+import {DEFAULT_STRUCTURE} from '@site/src/data/structures';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import DocMix from '@site/src/components/DocMix';
 import styles from './styles.module.css';
@@ -40,7 +42,7 @@ function Facts({items}: {items: {label: string; value: ReactNode}[]}): ReactNode
 /** Card for a system, used on the start page and the systems overview. */
 export function SystemCard({id}: {id: string}): ReactNode {
   const system = systemById(id);
-  const {countUnder, sectionsOf} = useDocsStatus();
+  const {countUnder} = useDocsStatus();
   const pages = countUnder(systemPath(system.id));
   return (
     <article className={styles.card}>
@@ -58,10 +60,6 @@ export function SystemCard({id}: {id: string}): ReactNode {
         items={[
           {label: 'Responsible team', value: system.team},
           {label: 'Components', value: system.components.length},
-          {
-            label: 'arc42 sections',
-            value: `${sectionsOf(system.id).length} of 12 documented`,
-          },
           {label: 'Documentation pages', value: pages.total},
           {label: 'Status', value: system.docStatus},
         ]}
@@ -93,15 +91,12 @@ export function ComponentCard({
   const {countUnder, sectionsOf, exists} = useDocsStatus();
   const base = componentPath(system, entry.id);
   const pages = countUnder(base);
+  const arc42 = (slug: string) =>
+    sectionPath(system, entry.id, DEFAULT_STRUCTURE, slug);
   const links = [
-    {to: `${base}context-and-scope/`, label: '3. Context and Scope', note: 'Generated context diagram'},
-    {to: `${base}building-block-view/`, label: '5. Building Block View', note: 'Generated internal decomposition'},
-    {to: `${base}runtime-view/`, label: '6. Runtime View', note: 'Generated reaction graph'},
-    {
-      to: `${base}crosscutting-concerns/messaging-events-and-commands/`,
-      label: 'Messaging Events and Commands',
-      note: 'Generated message catalogue',
-    },
+    {to: arc42('context-and-scope'), label: '3. Context and Scope', note: 'Generated context diagram'},
+    {to: arc42('building-block-view'), label: '5. Building Block View', note: 'Generated internal decomposition'},
+    {to: arc42('runtime-view'), label: '6. Runtime View', note: 'Generated reaction graph'},
   ].filter((link) => exists(link.to));
   return (
     <article className={styles.card}>
@@ -120,8 +115,8 @@ export function ComponentCard({
           {label: 'Responsible team', value: entry.team},
           {label: 'Role in the system', value: entry.role},
           {
-            label: 'arc42 sections',
-            value: `${sectionsOf(system, entry.id).length} of 12 documented`,
+            label: 'System Architecture',
+            value: `${sectionsOf(system, entry.id).length} of 12 arc42 sections`,
           },
           {label: 'Documentation pages', value: pages.total},
           {label: 'Status', value: entry.docStatus},

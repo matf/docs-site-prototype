@@ -1,0 +1,67 @@
+---
+title: 11. Risks and Technical Debt
+sidebar_label: 11. Risks and Technical Debt
+description: Known risks, accepted technical debt and planned mitigations for Example System A.
+doc_status: custom
+---
+
+# 11. Risks and Technical Debt
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="risks-and-technical-debt"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Risks
+
+| # | Risk | Impact | Likelihood | Mitigation |
+| --- | --- | --- | --- | --- |
+| R-1 | A bad rule set clears or holds everything before anyone notices. | High — either revenue loss or border congestion | Medium | Score band distribution alert on the *Risk decisions* dashboard; one-click rollback to the previous rule set version. |
+| R-2 | The external tariff service changes its contract without notice. | Medium — validation degrades to the cache | Low | Contract tests run nightly against the provider's test environment; the 24 h cache buys a working day. |
+| R-3 | Eventual consistency is misread by declarants as a lost declaration. | Medium — support load, trust | Medium | The trade portal shows the true state including "decision pending"; wording reviewed with the specialist unit. |
+| R-4 | Inference of risk rules from many submissions. | Medium — control effectiveness | Low | Rejection reasons expose customs rules only, never risk rules; submission patterns monitored. |
+| R-5 | Failover has never been executed under real load. | High — the recovery time objective may be optimistic | Medium | Annual failover exercise in `staging` at production sizing; next exercise scheduled. |
+
+## Technical debt
+
+| # | Debt | Why it was taken on | Cost of carrying it | Plan |
+| --- | --- | --- | --- | --- |
+| D-1 | The notification projection lives inside Example Component A instead of being its own component. | Avoided a deployable unit without an ownership boundary — see [5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/). | Intake deployments carry notification changes. | Reassess when a third notification channel appears. |
+| D-2 | Rule set versions are pinned per decision, but the *evaluation code* is not versioned. | Reproducing an old decision assumes the evaluator behaves identically. | Weakens QS-1 for very old decisions. | Snapshot the evaluator version into the decision event; planned for the next quarter. |
+| D-3 | Dead-letter replay is a manual procedure. | Automating it before understanding the failure classes would have automated the wrong thing. | Requires an operator with the right training at the right moment. | Documented in [Failover and Replay](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/failover-and-replay/); automate the two known safe classes. |
+| D-4 | `staging` uses an anonymised extract, so some real-world data shapes never appear before production. | Data protection. | Occasional production-only validation failures. | Accepted. Compensated by a strict rejection path that always produces a readable reason. |
+
+## Explicitly accepted
+
+The system does not work offline at border posts, and it does not calculate duties. Both are
+[non-goals](/systems/example-system-a/system-architecture/introduction-and-goals/stakeholder-goals/) with the
+reasoning recorded, not oversights.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/architecture-decisions/',
+      label: '9. Architecture Decisions',
+      note: 'Where the trade-offs behind this debt were made.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/quality-requirements/',
+      label: '10. Quality Requirements',
+      note: 'The scenarios these risks threaten.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/system-architecture/risks-and-technical-debt/',
+      label: 'Example Component B — 11. Risks and Technical Debt',
+      note: 'Component-level risks of the risk engine.',
+      status: 'custom',
+    },
+  ]}
+/>

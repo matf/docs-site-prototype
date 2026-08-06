@@ -58,7 +58,7 @@ const config: Config = {
         docs: {
           // Docs-only mode: the documentation tree is the site.
           routeBasePath: '/',
-          path: 'docs',
+          path: 'content/base',
           sidebarPath: './sidebars.ts',
           editUrl: `${repoUrl}/edit/main/`,
           showLastUpdateTime: true,

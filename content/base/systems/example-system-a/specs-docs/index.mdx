@@ -1,0 +1,55 @@
+---
+title: Specification Docs
+sidebar_label: Specification Docs
+sidebar_position: 0
+description: BMAD specification documents of Example System A — brief, product requirements, architecture, epics and stories.
+doc_status: custom
+---
+
+# Specification Docs — Example System A
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  custom={{
+    owner: 'Team Alpha with the specialist unit (fictional)',
+    lastReviewed: '2026-07-24',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+The specification chain of Example System A, following the **BMAD** method: a brief agrees the
+problem, the product requirements make it precise, the architecture says how it is realised, and
+epics and stories shard it into units a team can implement.
+
+:::note[Two structures, one system]
+
+This system carries two documentation structures side by side. **Specification Docs** says *what*
+is to be built and *why*; <StructureLink system="example-system-a" structure="system-architecture" />
+says *how it is structured*. They are deliberately not merged — they have different authors,
+different review cycles and different lifetimes, and a reader almost always wants one or the other
+rather than both interleaved.
+
+Where they touch, they link: [3. Architecture](/systems/example-system-a/specs-docs/architecture/)
+is a short page that defers to the arc42 description instead of repeating it.
+
+:::
+
+<SectionNav system="example-system-a" structure="specs-docs" />
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/',
+      label: 'Example System A',
+      note: 'Back to the system landing page.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/',
+      label: 'System Architecture',
+      note: 'The arc42 architecture description of the same system.',
+      status: 'custom',
+    },
+  ]}
+/>

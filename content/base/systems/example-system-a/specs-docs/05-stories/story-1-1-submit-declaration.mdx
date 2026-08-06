@@ -1,0 +1,67 @@
+---
+title: Story 1.1 — Submit a declaration
+sidebar_label: 1.1 Submit a declaration
+sidebar_position: 1
+description: BMAD story for Example System A — a declarant submits a declaration and receives a decision.
+doc_status: custom
+---
+
+# Story 1.1 — Submit a declaration
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="stories"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-04-18',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | Done |
+| **Epic** | [Epic 1 — Declaration Intake](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) |
+| **Requirements** | FR-1, FR-2 |
+
+> **As a** declarant
+> **I want** to submit a goods declaration and be told immediately whether it was accepted
+> **so that** I can fix a mistake before the consignment reaches the border.
+
+## Acceptance criteria
+
+1. **Given** a structurally valid declaration that satisfies the customs rules, **when** it is
+   submitted, **then** it is stored as revision 1 and acknowledged as accepted.
+2. **Given** a declaration that violates a customs rule, **when** it is submitted, **then** it is
+   rejected with the rule identifier, the field path and the accepted values, and nothing is stored.
+3. **Given** the same submission delivered twice, **when** both are processed, **then** only one
+   declaration exists.
+4. **Given** the tariff service is unavailable, **when** a declaration is submitted, **then**
+   validation continues from the cache and the decision is unaffected.
+
+## Implementation notes
+
+Criterion 3 is the reason the component carries a processed-message table; criterion 4 is the
+reason the rule client caches for 24 hours. Both are described in
+[Example Component A — 5. Building Block View](/systems/example-system-a/components/example-component-a/system-architecture/building-block-view/).
+
+The contract this story implements is
+<Msg system="example-system-a" name="SubmitDeclaration" />.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/stories/',
+      label: '5. Stories',
+      note: 'The parent section.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/',
+      label: 'Example Component A — 6. Runtime View',
+      note: 'The flow this story produced.',
+      status: 'generated',
+    },
+  ]}
+/>

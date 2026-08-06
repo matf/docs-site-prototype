@@ -1,0 +1,70 @@
+---
+title: Epic 2 — Risk Assessment
+sidebar_label: Epic 2 — Risk Assessment
+sidebar_position: 2
+description: BMAD epic for Example System A — assessing risk and ordering inspections.
+doc_status: custom
+---
+
+# Epic 2 — Risk Assessment
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="epics"
+  custom={{
+    owner: 'Product owner with the risk specialist unit (fictional)',
+    lastReviewed: '2026-07-14',
+    reviewStatus: 'Review due',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | In progress |
+| **Requirements** | FR-4, FR-5, FR-6, FR-7, FR-8 |
+| **Realised by** | [Example Component B](/systems/example-system-a/components/example-component-b/) |
+
+## Goal
+
+Every accepted declaration gets a risk decision that a customs officer can act on and an auditor
+can reproduce, and analysts can change the rules behind it without waiting for a release.
+
+## Why the analyst requirements are in this epic
+
+FR-6 and FR-7 look like operational tooling rather than product scope. They are here because they
+are what makes the risk decision *useful*: a rule set that takes a release cycle to change is a
+rule set that is always out of date. Separating them would have made them somebody else's backlog.
+
+## Acceptance
+
+- Every accepted declaration revision produces exactly one decision.
+- A decision names the rules that fired and the versions that produced it.
+- A high-band decision produces an inspection order.
+- A new rule set takes effect within five minutes with no deployment, and rolls back in one step.
+
+## Open
+
+Q-2 in [Functional Requirements](/systems/example-system-a/specs-docs/product-requirements/functional-requirements/)
+— inspection order expiry — is still unanswered and blocks the last story.
+
+## Stories
+
+- [Story 2.1 — Assess an accepted declaration](/systems/example-system-a/specs-docs/stories/story-2-1-assess-declaration/)
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/epics/',
+      label: '4. Epics',
+      note: 'The parent section.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/system-architecture/runtime-view/rule-set-rollout/',
+      label: 'Rule Set Rollout',
+      note: 'The procedure FR-6 and FR-7 produced.',
+      status: 'custom',
+    },
+  ]}
+/>

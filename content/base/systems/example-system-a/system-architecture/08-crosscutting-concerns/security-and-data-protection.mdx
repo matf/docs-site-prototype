@@ -1,0 +1,92 @@
+---
+title: Security and Data Protection
+sidebar_label: Security and Data Protection
+sidebar_position: 1
+description: Custom crosscutting concept — authentication, authorisation, data classification and retention for Example System A.
+doc_status: custom
+---
+
+# Security and Data Protection
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="crosscutting-concerns"
+  custom={{
+    owner: 'Team Alpha with the Information Security Officer (fictional)',
+    lastReviewed: '2026-07-15',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Authentication
+
+| Caller | Mechanism | Notes |
+| --- | --- | --- |
+| Declarant via Trade Portal | OIDC at the portal; the portal signs the message to the broker | The system never sees the declarant's credentials. |
+| Risk analyst | OIDC, federal identity provider, second factor required | Role `risk-analyst`. |
+| Customs officer | OIDC, second factor required | Read access to declarations, no write. |
+| Service-to-service | mTLS on the broker with per-component certificates | Rotated every 90 days by the platform. |
+
+There is no local user store and no local password handling — constraint **T-4**.
+
+## Authorisation
+
+Authorisation is enforced in the component that owns the data, never in a gateway alone.
+
+| Role | May | May not |
+| --- | --- | --- |
+| `declarant` | Submit and correct own declarations; read own declarations | See other declarants' data, see risk scores |
+| `customs-officer` | Read any declaration and the reasons for a hold | Change a declaration, change a risk decision |
+| `risk-analyst` | Publish rule sets and models, trigger recalculation | Read declarant identity beyond the risk features |
+| `operator` | Read technical state, replay dead-lettered messages | Read declaration payloads |
+
+The last row is deliberate: an operator can recover the system without reading business data.
+Message payloads in operational tooling are shown as hashes, and the replay procedure works on
+message identifiers.
+
+## Data classification and retention
+
+| Data | Classification | Retention | Erasure |
+| --- | --- | --- | --- |
+| Declaration payload | Confidential — commercially sensitive | 10 years | Legal hold; no early erasure |
+| Declarant identity | Personal data | 10 years | Pseudonymised after 10 years, not deleted (legal obligation) |
+| Risk score and rule hits | Confidential — internal | 10 years | Never exposed to the declarant |
+| Technical logs | Internal | 90 days | Automatic, no payloads in logs |
+| Dead-letter messages | Confidential | 30 days | Encrypted at rest; access logged |
+
+Payloads are never written to application logs. This is enforced by a serialiser that refuses to
+log annotated fields — described in
+[Development Guidelines](/systems/example-system-a/system-architecture/crosscutting-concerns/development-guidelines/)
+and verified by an architecture test in each component's build.
+
+## Threats explicitly considered
+
+| Threat | Mitigation | Residual risk |
+| --- | --- | --- |
+| Forged declaration submitted in another declarant's name | Portal-side authentication plus message signing; the intake component verifies the signature | Compromised portal account — accepted, monitored by the portal |
+| Risk rules disclosed to a declarant | Risk scores and rule identifiers never leave the internal boundary; rejection reasons are customs rules only | Inference over many submissions — tracked in [11. Risks and Technical Debt](/systems/example-system-a/system-architecture/risks-and-technical-debt/) |
+| Operator reads business data during an incident | Payload-free operational tooling, access logging | Database-level access by the platform team — covered by the platform's own controls |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/security/',
+      label: 'Example Component A — Security',
+      note: 'How the intake component implements this concept.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/crosscutting-concerns/',
+      label: '8. Crosscutting Concerns',
+      note: 'The parent arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/context-and-scope/',
+      label: '3. Context and Scope',
+      note: 'The external interfaces being secured.',
+      status: 'generated',
+    },
+  ]}
+/>

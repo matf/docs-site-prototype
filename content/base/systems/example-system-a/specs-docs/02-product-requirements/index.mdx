@@ -1,0 +1,66 @@
+---
+title: 2. Product Requirements
+sidebar_label: 2. Product Requirements
+sidebar_position: 0
+description: BMAD product requirements for Example System A — functional and non-functional requirements ready to be sharded into epics.
+doc_status: custom
+---
+
+# 2. Product Requirements
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="product-requirements"
+  custom={{
+    owner: 'Product owner with the specialist unit (fictional)',
+    lastReviewed: '2026-06-20',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+The requirements the epics are sharded from. Each carries an identifier, because epics, stories and
+test cases all reference it.
+
+## Non-functional requirements
+
+| # | Requirement | Acceptance |
+| --- | --- | --- |
+| NFR-1 | A declaration is decided within 8 seconds at the 95th percentile | Load test at the peak profile before each release |
+| NFR-2 | Intake stays available while risk assessment is down | Chaos test; zero rejected submissions attributable to the outage |
+| NFR-3 | Every decision is reproducible for ten years | Annual audit rehearsal on archived cases |
+| NFR-4 | No business payload reaches operational tooling | Automated test on the admin API |
+| NFR-5 | Rule changes take effect without a deployment | Integration test against the registry |
+
+The architectural response to these is
+[10. Quality Requirements](/systems/example-system-a/system-architecture/quality-requirements/),
+which restates them as measurable scenarios.
+
+## Functional requirements
+
+The detailed list is a page of its own:
+[Functional Requirements](/systems/example-system-a/specs-docs/product-requirements/functional-requirements/).
+
+## What is deliberately not specified here
+
+How the system is decomposed, which components exist and how they communicate. Those are
+architecture decisions, and duplicating them here would create a second source of truth that
+quietly goes stale — see
+[3. Architecture](/systems/example-system-a/specs-docs/architecture/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/product-requirements/functional-requirements/',
+      label: 'Functional Requirements',
+      note: 'FR-1 to FR-9, referenced by every epic and story.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/specs-docs/epics/',
+      label: '4. Epics',
+      note: 'How these requirements are sharded for delivery.',
+      status: 'generated',
+    },
+  ]}
+/>

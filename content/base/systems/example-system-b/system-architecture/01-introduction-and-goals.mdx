@@ -1,0 +1,45 @@
+---
+title: 1. Introduction and Goals
+sidebar_label: 1. Introduction and Goals
+description: Task, quality goals and stakeholders of Example System B.
+doc_status: custom
+---
+
+# 1. Introduction and Goals
+
+<DocHeader structure="system-architecture" system="example-system-b" section="introduction-and-goals"
+  custom={{owner: 'Team Beta — Public Information Services (fictional)', lastReviewed: '2026-07-11', reviewStatus: 'Reviewed'}} />
+
+## Task
+
+Example System B tells travellers and hauliers what to expect at the border: current waiting
+times, opening hours, lane closures and unplanned disruptions. It is a publishing system — it
+owns no border process and makes no decision about anybody.
+
+It has no inbound business interface — nobody submits anything to it. Waiting times are measured
+elsewhere and this system never computes them; declaration and clearance data belong to
+[Example System A](/systems/example-system-a/) and are not accessible from here.
+
+## Quality goals
+
+| Priority | Goal | Scenario |
+| --- | --- | --- |
+| 1 | **Correctness of published information** | Nothing is published that is not backed by a current source measurement; stale data is marked stale rather than shown as current. |
+| 2 | **Availability under load spikes** | A closure announcement causes a traffic spike of 20× within two minutes; the public site stays up. |
+| 3 | **Reach** | An operational notification reaches every opted-in channel within two minutes. |
+
+Goal 1 above goal 2 is deliberate: showing an out-of-date waiting time is worse than showing a
+maintenance page.
+
+## Stakeholders
+
+| Role | Expectation |
+| --- | --- |
+| Traveller / haulier | Accurate, current, plainly worded information |
+| Border post operations | Announcements reach the public quickly and can be corrected |
+| Communications | Consistent wording across channels |
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/system-architecture/quality-requirements/', label: '10. Quality Requirements', status: 'custom'},
+  {to: '/systems/example-system-b/system-architecture/context-and-scope/', label: '3. Context and Scope', status: 'generated'},
+]} />

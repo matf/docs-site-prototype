@@ -1,0 +1,56 @@
+---
+title: 5. Stories
+sidebar_label: 5. Stories
+sidebar_position: 0
+description: Generated story index for Example System A — implementable units with status, sharded from the epics.
+doc_status: generated
+---
+
+# 5. Stories
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="stories"
+  generated={{
+    generator: 'bmad-shard 2.1.0',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-specs',
+    revision: 'c02fd41',
+    generatedAt: '2026-08-04 02:40 UTC',
+    scope: 'Whole page — story index with status from the delivery tracker',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Sharded from [4. Epics](/systems/example-system-a/specs-docs/epics/), with the status column read
+from the delivery tracker. It goes stale within a day if it is not regenerated, which is exactly
+why it is not written by hand.
+
+:::
+
+| Story | Epic | Requirements | Status |
+| --- | --- | --- | --- |
+| [1.1 Submit a declaration](/systems/example-system-a/specs-docs/stories/story-1-1-submit-declaration/) | Epic 1 | FR-1, FR-2 | Done |
+| [1.2 Correct a declaration](/systems/example-system-a/specs-docs/stories/story-1-2-correct-declaration/) | Epic 1 | FR-3 | Done |
+| [2.1 Assess an accepted declaration](/systems/example-system-a/specs-docs/stories/story-2-1-assess-declaration/) | Epic 2 | FR-4 | In review |
+
+Three of the nine planned stories are documented in this prototype. The rest exist in the tracker
+and would appear here on the next shard.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/epics/',
+      label: '4. Epics',
+      note: 'What these stories are sharded from.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/specs-docs/quality-and-test-strategy/',
+      label: '6. Quality and Test Strategy',
+      note: 'The gates a story passes before it is done.',
+      status: 'custom',
+    },
+  ]}
+/>

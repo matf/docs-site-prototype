@@ -166,18 +166,30 @@ export function componentPath(systemId: string, componentId: string): string {
 }
 
 /**
- * Base path of a system or a component — the prefix that its arc42 section
- * routes hang off.
+ * Base path of a system or a component — the prefix that its documentation
+ * structures hang off.
  */
 export function basePath(systemId: string, componentId?: string): string {
   return componentId ? componentPath(systemId, componentId) : systemPath(systemId);
 }
 
-/** `/systems/example-system-a/components/example-component-a/runtime-view/` */
+/** `/systems/example-system-a/system-architecture/` */
+export function structurePath(
+  systemId: string,
+  componentId: string | undefined,
+  structureId: string,
+): string {
+  return `${basePath(systemId, componentId)}${structureId}/`;
+}
+
+/**
+ * `/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/`
+ */
 export function sectionPath(
   systemId: string,
   componentId: string | undefined,
+  structureId: string,
   sectionSlug: string,
 ): string {
-  return `${basePath(systemId, componentId)}${sectionSlug}/`;
+  return `${structurePath(systemId, componentId, structureId)}${sectionSlug}/`;
 }

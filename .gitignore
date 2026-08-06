@@ -21,3 +21,6 @@ yarn-error.log*
 
 # Local browser-verification screenshots
 /.playwright-mcp
+
+# Composed per-environment documentation trees
+/docs-build

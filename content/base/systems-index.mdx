@@ -1,0 +1,38 @@
+---
+slug: /systems
+id: systems-index
+title: Systems
+sidebar_label: Systems
+displayed_sidebar: docsSidebar
+description: All documented BAZG systems, their responsible teams, components and documentation status.
+doc_status: custom
+---
+
+# Systems
+
+Every BAZG system documented in this prototype. Opening a system shows the documentation
+structures it carries — an arc42 **System Architecture**, and where it exists a BMAD
+**Specification Docs** set — with its components listed under `Components` at the same level.
+
+<PrototypeNotice />
+
+<CardGrid>
+  <SystemCard id="example-system-a" />
+  <SystemCard id="example-system-b" />
+</CardGrid>
+
+## What a system entry contains
+
+| Level | Contains | Example route |
+| --- | --- | --- |
+| System | Twelve arc42 sections plus a `Components` category | `/systems/example-system-a/` |
+| arc42 section | Generated content, custom content or both | `/systems/example-system-a/system-architecture/building-block-view/` |
+| Custom child page | Filed under the arc42 section it belongs to | `/systems/example-system-a/system-architecture/crosscutting-concerns/security-and-data-protection/` |
+| Component | Twelve arc42 sections of its own | `/systems/example-system-a/components/example-component-a/` |
+
+## Adding a system
+
+A system is a folder under `docs/systems/`. Adding the folder with its `_category_.json` and an
+`index.mdx` is enough — the sidebar is generated from the filesystem, so no navigation
+configuration has to be touched. The exact layout is described in
+[Documentation conventions](/conventions/).

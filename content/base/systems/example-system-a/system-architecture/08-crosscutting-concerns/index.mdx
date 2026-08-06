@@ -1,0 +1,66 @@
+---
+title: 8. Crosscutting Concerns
+sidebar_label: 8. Crosscutting Concerns
+sidebar_position: 0
+description: Concepts that apply across all components of Example System A — security, operations and development guidelines.
+doc_status: custom
+---
+
+# 8. Crosscutting Concerns
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="crosscutting-concerns"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+This section holds the concepts that no single component owns. It is also the section most
+custom documentation ends up in: security concepts, operating procedures, engineering guidelines
+and integration conventions all belong here rather than in a generic catch-all category.
+
+## Concepts documented for this system
+
+| Concept | Page | Content |
+| --- | --- | --- |
+| Security and data protection | [Security and Data Protection](/systems/example-system-a/system-architecture/crosscutting-concerns/security-and-data-protection/) | <StatusBadge status="custom" small /> |
+| Operations and monitoring | [Operations and Monitoring](/systems/example-system-a/system-architecture/crosscutting-concerns/operations-and-monitoring/) | <StatusBadge status="custom" small /> |
+| Development guidelines | [Development Guidelines](/systems/example-system-a/system-architecture/crosscutting-concerns/development-guidelines/) | <StatusBadge status="custom" small /> |
+| Concept coverage | [Concept Coverage](/systems/example-system-a/system-architecture/crosscutting-concerns/concept-coverage/) | <StatusBadge status="generated" small /> |
+
+Component-specific crosscutting concepts are documented on the component, not here. Message
+contracts are the exception in the other direction: they are defined by the *system*, so they live
+under [5. Building Block View](/systems/example-system-a/system-architecture/building-block-view/) rather than on any
+component.
+
+The last row is generated: which component actually applies which concept is collected from the
+component repositories rather than asserted here. That page is overwritten on every generation
+run, which is why it is a page of its own and not a table on this one.
+
+## How to add a concern here
+
+Drop an `.mdx` file into `docs/systems/example-system-a/08-crosscutting-concerns/` and it appears
+in this list. Use `sidebar_position` to place it among its siblings. If a topic fits another
+arc42 section better — an operational scenario, for instance — it belongs there instead, under
+*6. Runtime View*. See [Documentation conventions](/conventions/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/',
+      label: 'Example Component A — 8. Crosscutting Concerns',
+      note: 'The same section one level down.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/architecture-decisions/',
+      label: '9. Architecture Decisions',
+      note: 'The decisions these concepts implement.',
+      status: 'custom',
+    },
+  ]}
+/>

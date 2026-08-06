@@ -1,0 +1,78 @@
+---
+title: Scope and Boundaries
+sidebar_label: Scope and Boundaries
+sidebar_position: 1
+description: Custom page below arc42 section 3 — what Example System A owns and what was deliberately left outside its boundary.
+doc_status: custom
+---
+
+# Scope and Boundaries
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="context-and-scope"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+:::note[Custom explanation of a generated diagram]
+
+The [generated context diagram](/systems/example-system-a/system-architecture/context-and-scope/) shows *what* the
+external interfaces are. It cannot say *why* the boundary sits where it does — that is this page,
+and no generator writes to it.
+
+:::
+
+## Scope in one sentence
+
+Example System A owns the declaration from the moment it is submitted until the consignment is
+cleared or handed to inspection planning — everything before (trade software) and after (duty
+assessment, physical control) belongs to somebody else.
+
+## What is deliberately outside the boundary
+
+- **Duty and tax assessment.** A separate system consumes `DeclarationCleared` and calculates the
+  amounts. Example System A never computes money. Keeping assessment out means a change to a duty
+  rate never touches this system.
+- **Physical control execution.** Inspection Planning schedules and records the control; the
+  outcome comes back as a business event, not as a call into this system. The border process must
+  keep working when this system does not.
+- **Traveller information.** Owned by [Example System B](/systems/example-system-b/). The two
+  systems share no data and no schedule.
+
+## Why the boundary sits here
+
+The boundary follows **who is accountable for the decision**, not who holds the data. Example
+System A decides whether a consignment may proceed; every neighbour either supplies an input to
+that decision or acts on its outcome. Anything that would make this system responsible for a
+second decision — how much duty is owed, which officer performs a control — was pushed out.
+
+That rule is what keeps the interface list in the generated diagram short. When a new integration
+is proposed, the first question is which decision it belongs to.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/context-and-scope/',
+      label: '3. Context and Scope',
+      note: 'The generated context diagram this page explains.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/introduction-and-goals/stakeholder-goals/',
+      label: 'Stakeholder Goals',
+      note: 'The explicit non-goals behind these boundaries.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/decomposition-rationale/',
+      label: 'Decomposition Rationale',
+      note: 'The same reasoning applied one level down.',
+      status: 'custom',
+    },
+  ]}
+/>

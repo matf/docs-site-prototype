@@ -1,0 +1,67 @@
+---
+title: Story 1.2 — Correct a declaration
+sidebar_label: 1.2 Correct a declaration
+sidebar_position: 2
+description: BMAD story for Example System A — a declarant corrects an accepted declaration.
+doc_status: custom
+---
+
+# Story 1.2 — Correct a declaration
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="stories"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-05-06',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | Done |
+| **Epic** | [Epic 1 — Declaration Intake](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) |
+| **Requirements** | FR-3 |
+
+> **As a** declarant
+> **I want** to correct an accepted declaration before it is cleared
+> **so that** a re-weighing at the warehouse does not force me to start again.
+
+## Acceptance criteria
+
+1. **Given** an accepted declaration, **when** a correction is submitted, **then** a new revision is
+   stored and the previous risk decision is invalidated.
+2. **Given** a cleared declaration, **when** a correction is submitted, **then** it is refused with
+   a reason.
+3. **Given** a correction written against a stale revision, **when** it is submitted, **then** it is
+   refused rather than silently applied.
+4. **Given** a risk decision arrives for a superseded revision, **when** it is processed, **then**
+   it is discarded without changing the declaration state.
+
+## What this story taught us
+
+Criterion 4 was not in the original story. It surfaced during implementation as a race between the
+correction and an in-flight assessment, and is now documented as a runtime scenario in its own
+right: [Correction Race Scenario](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/correction-race/).
+
+The contract is <Msg system="example-system-a" name="CorrectDeclaration" />, and the resulting
+event is <Msg system="example-system-a" name="DeclarationAmended" />.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/stories/',
+      label: '5. Stories',
+      note: 'The parent section.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/correction-race/',
+      label: 'Correction Race Scenario',
+      note: 'The edge case this story uncovered.',
+      status: 'custom',
+    },
+  ]}
+/>

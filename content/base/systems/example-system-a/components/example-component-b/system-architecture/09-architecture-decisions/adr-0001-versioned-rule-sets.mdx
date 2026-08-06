@@ -1,0 +1,86 @@
+---
+title: ADR-0001 — Versioned rule sets and models
+sidebar_label: ADR-0001 Versioned rule sets and models
+sidebar_position: 1
+description: Custom architecture decision record — rule sets and scoring models are immutable versioned artefacts referenced by every decision.
+doc_status: custom
+---
+
+# ADR-0001 — Immutable versioned rule sets and models
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="architecture-decisions"
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+| Record | Value |
+| --- | --- |
+| **Status** | Accepted |
+| **Date** | 2026-01-20 |
+| **Deciders** | Team Alpha — Risk Squad, lead architect, specialist unit |
+| **Scope** | Example Component B only |
+
+## Context
+
+Two requirements pull in opposite directions. The specialist unit must be able to change risk
+rules weekly without an engineering release (constraint **O-3**). Legal review must be able to
+reproduce a decision from ten years ago exactly (constraint **O-2**).
+
+Mutable rules satisfy the first and destroy the second: if rule set "current" changed last
+Tuesday, a decision taken last Monday can no longer be explained.
+
+## Decision
+
+Rule sets and scoring models are **immutable, versioned artefacts** published to the Model
+Registry. A change creates a new version; a version is never edited. Every decision records the
+exact `ruleSetVersion` and `modelVersion` that produced it.
+
+## Consequences
+
+**Positive**
+
+- Reproducibility is a property of the data, not of a process anybody has to follow.
+- Rollback is one step — activate the previous version. No deployment, no code change.
+- Simulation against historical cases is meaningful, because the historical versions still exist.
+- The decision to keep the two caches separate in
+  [5. Building Block View](/systems/example-system-a/components/example-component-b/system-architecture/building-block-view/)
+  follows directly: rules and models have different lifecycles.
+
+**Negative**
+
+- Storage grows monotonically. Rule sets are small; models are not. Retention is ten years and no
+  version may be deleted before that.
+- Every decision payload carries two version strings, which enlarges the event.
+- Reproducibility still assumes the *evaluator code* is unchanged. It is not yet versioned — debt
+  item CB-D1 in
+  [11. Risks and Technical Debt](/systems/example-system-a/components/example-component-b/system-architecture/risks-and-technical-debt/).
+  This is the known hole in the guarantee, and it is written down rather than glossed over.
+
+## Alternatives considered
+
+| Alternative | Why not |
+| --- | --- |
+| Mutable rule sets with a change log | The change log must be perfect forever. It will not be. |
+| Rules in code, released with the software | Fails constraint O-3; the specialist unit would depend on release trains. |
+| Snapshot the full rule set into every decision event | Reproducible and self-contained, but the events become large and the schema couples to the rule format. Rejected on cost. |
+
+## Affected documentation
+
+- [4. Solution Strategy](/systems/example-system-a/components/example-component-b/system-architecture/solution-strategy/)
+- [5. Building Block View](/systems/example-system-a/components/example-component-b/system-architecture/building-block-view/) — the two caches
+- [Rule Set Rollout](/systems/example-system-a/components/example-component-b/system-architecture/runtime-view/rule-set-rollout/) — the procedure this enables
+- [Events and Commands](/systems/example-system-a/system-architecture/building-block-view/) — the version fields in the decision payload
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/components/example-component-b/system-architecture/architecture-decisions/', label: '9. Architecture Decisions', note: 'The parent arc42 section.', status: 'custom'},
+    {to: '/systems/example-system-a/system-architecture/architecture-decisions/adr-0001-event-driven-integration/', label: 'System ADR-0001 — Event-driven integration', note: 'The system decision this one lives inside.', status: 'custom'},
+  ]}
+/>

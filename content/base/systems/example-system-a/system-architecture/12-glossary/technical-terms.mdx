@@ -1,0 +1,64 @@
+---
+title: Technical Terms
+sidebar_label: Technical Terms
+sidebar_position: 1
+description: Generated glossary of technical terms extracted from the domain model and message schemas of Example System A.
+doc_status: generated
+---
+
+# Technical Terms
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="glossary"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
+    revision: 'a41f7c9',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Whole page — terms extracted from the aggregate names and message schemas',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Extracted from the aggregate names and message schemas in the component repositories. The domain
+vocabulary agreed with the specialist unit is maintained by hand in
+[12. Glossary](/systems/example-system-a/system-architecture/glossary/).
+
+:::
+
+<Diagram
+  title="Technical terms from the domain model"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
+  caption="Extracted from the aggregate names and message schemas in the component repositories.">
+
+| Term | Meaning | Appears in |
+| --- | --- | --- |
+| `correlationId` | Identifier that ties every message and log line of one declaration together. | All messages |
+| `causationId` | Identifier of the message that caused this one. | All messages |
+| Outbox | Table written in the same transaction as the state change, from which events are published. | [Example Component A](/systems/example-system-a/components/example-component-a/system-architecture/building-block-view/) |
+| Dead-letter topic | Where a message goes after its retries are exhausted. | [Operations and Monitoring](/systems/example-system-a/system-architecture/crosscutting-concerns/operations-and-monitoring/) |
+| Consumer lag | Distance between the newest message and the one the consumer is processing. | [Operations and Monitoring](/systems/example-system-a/system-architecture/crosscutting-concerns/operations-and-monitoring/) |
+| Idempotent consumer | A consumer for which processing the same message twice has the same effect as once. | [Development Guidelines](/systems/example-system-a/system-architecture/crosscutting-concerns/development-guidelines/) |
+
+</Diagram>
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/system-architecture/glossary/',
+      label: '12. Glossary',
+      note: 'The domain vocabulary, maintained by hand.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/crosscutting-concerns/development-guidelines/',
+      label: 'Development Guidelines',
+      note: 'Where several of these terms are turned into rules.',
+      status: 'custom',
+    },
+  ]}
+/>

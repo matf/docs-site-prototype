@@ -1,0 +1,72 @@
+---
+title: Correction Race Scenario
+sidebar_label: Correction Race Scenario
+sidebar_position: 1
+description: Custom operational scenario below arc42 section 6 — what happens when a correction arrives while a risk assessment is in flight in Example Component A.
+doc_status: custom
+---
+
+# Correction Race Scenario
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-a"
+  section="runtime-view"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+:::note[Custom runtime scenario]
+
+A designed scenario, not a derived one. The generator produces the
+[reaction graph](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/) from the handlers; it cannot know
+which race conditions are worth writing down.
+
+:::
+
+The race that every event-driven design has to answer. The rule here: **the risk decision is
+bound to a revision**, and a decision for a superseded revision is discarded.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant P as Trade Portal
+  participant A as Example Component A
+  participant B as Example Component B
+
+  P->>A: SubmitDeclaration
+  A-->>B: DeclarationAccepted (revision 1)
+  P->>A: CorrectDeclaration
+  A->>A: persist revision 2, invalidate decision for revision 1
+  A-->>B: DeclarationAmended (revision 2)
+  B-->>A: RiskAssessmentCompleted (revision 1, band = low)
+  A->>A: revision 1 is superseded → discard
+  Note over A: no state change, no event, logged at INFO
+  B-->>A: RiskAssessmentCompleted (revision 2, band = elevated)
+  A->>A: transition to HELD
+  A-->>P: DeclarationHeld
+```
+
+Discarding rather than queueing is deliberate: a decision on stale input is not useful later, and
+keeping it would create two plausible answers for one declaration.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/',
+      label: '6. Runtime View',
+      note: 'The generated reaction graph.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Events and Commands',
+      note: 'Contracts of the messages in this scenario.',
+      status: 'generated',
+    },
+  ]}
+/>

@@ -1,0 +1,177 @@
+---
+title: 6. Runtime View
+sidebar_label: 6. Runtime View
+sidebar_position: 0
+description: Generated reaction graph and derived runtime sequence of Example Component A, linked to the system's contract pages.
+doc_status: generated
+---
+
+# 6. Runtime View
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-a"
+  section="runtime-view"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
+    revision: '9c1e40d',
+    generatedAt: '2026-08-04 03:12 UTC',
+    scope: 'Whole page — reaction graph, reaction table and the derived sequence',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Derived from the component's message handlers: which message triggers which use case, what it
+changes and what it publishes. The scenarios that had to be *designed* rather than derived are
+hand-written pages below this section.
+
+:::
+
+## Generated reaction graph
+
+The reaction graph is derived from the component's message handlers: which message triggers which
+use case, what the use case changes, and what it publishes as a result. It is the fastest way to
+answer "what happens when this arrives?" without reading the code.
+
+<Diagram
+  title="Reaction graph — command to downstream reaction"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · declaration-intake-service@9c1e40d"
+  caption="Every path starts with an inbound message and ends either in a published event or in a terminal rejection. Rounded nodes are messages; rectangles are processing steps."
+
+>
+
+```mermaid
+flowchart TB
+  classDef msgIn fill:#f4eefa,stroke:#7a3ca8,color:#12161a
+  classDef msgOut fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+  classDef step fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef state fill:#fbeef0,stroke:#c8102e,color:#12161a
+  classDef down fill:#ecf5f0,stroke:#1f6f43,color:#12161a
+
+  C1(["SubmitDeclaration<br/>command received"]):::msgIn
+  V1["Idempotency check<br/>processed-message table"]:::step
+  V2["Structural validation<br/>national message specification"]:::step
+  V3["Customs rule validation<br/>cached rule set"]:::step
+  R1(["DeclarationRejected<br/>published"]):::msgOut
+  S1["Persist revision 1<br/>state = ACCEPTED"]:::state
+  O1["Outbox row written<br/>in the same transaction"]:::step
+  E1(["DeclarationAccepted<br/>published"]):::msgOut
+
+  D1["Example Component B<br/>starts a risk case"]:::down
+  C2(["RiskAssessmentCompleted<br/>event received"]):::msgIn
+  V4["Revision still current?"]:::step
+  X1["Discard — a newer revision exists"]:::step
+  S2["State = CLEARED or HELD"]:::state
+  E2(["DeclarationCleared<br/>published"]):::msgOut
+  E3(["DeclarationHeld<br/>published"]):::msgOut
+  D2["Border Control Operations<br/>releases the consignment"]:::down
+  D3["Inspection Planning<br/>schedules a control"]:::down
+
+  C1 --> V1
+  V1 -->|"already processed"| X1
+  V1 -->|"new"| V2
+  V2 -->|"invalid"| R1
+  V2 -->|"valid"| V3
+  V3 -->|"rule violated"| R1
+  V3 -->|"accepted"| S1 --> O1 --> E1 --> D1
+  D1 --> C2 --> V4
+  V4 -->|"no"| X1
+  V4 -->|"yes"| S2
+  S2 -->|"band = low"| E2 --> D2
+  S2 -->|"band = elevated or high"| E3 --> D3
+```
+
+</Diagram>
+
+### Reactions in table form
+
+<Diagram
+  title="Message reactions"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · declaration-intake-service@9c1e40d"
+  caption="Each row is one message handler. Follow a message name to its contract page below the system's building block view.">
+
+| Trigger | Use case | State change | Publishes |
+| --- | --- | --- | --- |
+| <Msg system="example-system-a" name="SubmitDeclaration" /> | Register declaration | New declaration, revision 1, `ACCEPTED` | <Msg system="example-system-a" name="DeclarationAccepted" /> or <Msg system="example-system-a" name="DeclarationRejected" /> |
+| <Msg system="example-system-a" name="CorrectDeclaration" /> | Correct declaration | New revision, previous decision invalidated | <Msg system="example-system-a" name="DeclarationAmended" /> or <Msg system="example-system-a" name="DeclarationRejected" /> |
+| <Msg system="example-system-a" name="RiskAssessmentCompleted" /> | Apply risk decision | `CLEARED` or `HELD` | <Msg system="example-system-a" name="DeclarationCleared" /> or <Msg system="example-system-a" name="DeclarationHeld" /> |
+
+</Diagram>
+
+## Scenario — submission to clearance
+
+The reaction graph shows what reacts to what; this sequence shows the same flow with the internal
+building blocks, which is what you need when something goes wrong in the middle.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant BR as Broker
+  participant MIN as Messaging Adapter (in)
+  participant APP as Application Service
+  participant DOM as Domain
+  participant PERS as Persistence Adapter
+  participant MOUT as Outbox Relay
+  participant B as Example Component B
+
+  BR->>MIN: SubmitDeclaration
+  MIN->>MIN: map national specification → internal model
+  MIN->>APP: registerDeclaration(command)
+  APP->>PERS: seen(messageId)?
+  PERS-->>APP: no
+  APP->>DOM: Declaration.register(...)
+  DOM->>DOM: structural + customs rule validation
+  DOM-->>APP: revision 1, state ACCEPTED
+  APP->>PERS: save(revision) + outbox(DeclarationAccepted) + processed(messageId)
+  Note over APP,PERS: one transaction — this is the whole point of the outbox
+  PERS-->>APP: committed
+  APP-->>MIN: acknowledged
+  MOUT->>PERS: poll outbox
+  MOUT->>BR: publish DeclarationAccepted
+  BR->>B: DeclarationAccepted
+  B-->>BR: RiskAssessmentCompleted (band = low)
+  BR->>MIN: RiskAssessmentCompleted
+  MIN->>APP: applyRiskDecision(event)
+  APP->>DOM: clear(revision 1)
+  APP->>PERS: save(state CLEARED) + outbox(DeclarationCleared)
+  MOUT->>BR: publish DeclarationCleared
+```
+
+## Failure behaviour
+
+Replay, dead-lettering and the outbox relay's failure modes are documented separately in
+[Failover and Replay](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/failover-and-replay/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/failover-and-replay/',
+      label: 'Failover and Replay',
+      note: 'Custom operational scenario below this arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Events and Commands',
+      note: 'Contracts for every message in the graphs above.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-b/system-architecture/runtime-view/',
+      label: 'Example Component B — 6. Runtime View',
+      note: 'The other half of the conversation.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/runtime-view/',
+      label: 'Example System A — 6. Runtime View',
+      note: 'The same flows at system level.',
+      status: 'custom',
+    },
+  ]}
+/>

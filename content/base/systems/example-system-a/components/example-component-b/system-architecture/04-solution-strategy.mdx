@@ -1,0 +1,54 @@
+---
+title: 4. Solution Strategy
+sidebar_label: 4. Solution Strategy
+description: The approach chosen inside Example Component B and why.
+doc_status: custom
+---
+
+# 4. Solution Strategy
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-b"
+  section="solution-strategy"
+  custom={{
+    owner: 'Team Alpha — Risk Squad (fictional)',
+    lastReviewed: '2026-07-28',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Four decisions that shape the component
+
+| Approach | Addresses | Where |
+| --- | --- | --- |
+| **Rule sets and models as immutable versioned artefacts**, referenced by version in every decision. | Reproducibility, changeability | [ADR-0001](/systems/example-system-a/components/example-component-b/system-architecture/architecture-decisions/adr-0001-versioned-rule-sets/) |
+| **Deterministic evaluation.** No wall-clock, no randomness, no ambient state in the scoring path. | Constraint CB-1 | [5. Building Block View](/systems/example-system-a/components/example-component-b/system-architecture/building-block-view/) |
+| **Risk case per revision.** The case, not the declaration, is the unit of work; a new revision opens a new case. | Correctness under corrections | [6. Runtime View](/systems/example-system-a/components/example-component-b/system-architecture/runtime-view/) |
+| **Conservative fallback.** If the scoring model is unavailable, a versioned fallback rule set decides — never silence. | Constraint CB-4 | Below |
+
+## Why a case per revision
+
+A correction invalidates the previous assessment. Modelling the case per *declaration* would
+require mutating an existing decision, which breaks reproducibility. Modelling it per *revision*
+makes each decision a fact about an immutable input — and lets
+[Example Component A](/systems/example-system-a/components/example-component-a/) discard
+decisions for superseded revisions without any coordination between the two components.
+
+## The fallback, and why it is not silent
+
+If the scoring model cannot be loaded, the component evaluates the fallback rule set: a small,
+deterministic, analyst-maintained rule set that errs towards `elevated`. Every fallback decision
+is marked as such in the event, and the fallback rate is a monitored metric.
+
+The alternative — waiting for the model and producing no decision — was rejected because a
+missing decision leaves a consignment in `ACCEPTED` indefinitely, and nobody notices until a
+haulier calls.
+
+<RelatedDocs
+  items={[
+    {to: '/systems/example-system-a/components/example-component-b/system-architecture/architecture-decisions/adr-0001-versioned-rule-sets/', label: 'ADR-0001 — Versioned rule sets and models', status: 'custom'},
+    {to: '/systems/example-system-a/system-architecture/solution-strategy/', label: 'Example System A — 4. Solution Strategy', note: 'The system approach.', status: 'custom'},
+  ]}
+/>

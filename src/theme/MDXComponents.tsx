@@ -1,5 +1,6 @@
 import MDXComponents from '@theme-original/MDXComponents';
-import Arc42SectionNav from '@site/src/components/Arc42SectionNav';
+import SectionNav from '@site/src/components/SectionNav';
+import StructureCards, {StructureLink} from '@site/src/components/StructureCards';
 import Diagram from '@site/src/components/Diagram';
 import DocMix from '@site/src/components/DocMix';
 import DocHeader from '@site/src/components/DocHeader';
@@ -21,7 +22,9 @@ import {ContentLegend, StatsRow} from '@site/src/components/Overview';
  */
 export default {
   ...MDXComponents,
-  Arc42SectionNav,
+  SectionNav,
+  StructureCards,
+  StructureLink,
   CardGrid,
   ComponentCard,
   ContentLegend,

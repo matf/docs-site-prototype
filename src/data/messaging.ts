@@ -11,7 +11,7 @@
  * In the target picture a generator produces this file and the message pages
  * from the contracts in the system repository.
  */
-import {systemPath} from './catalog';
+import {sectionPath} from './catalog';
 
 export type MessageKind = 'event' | 'command';
 
@@ -573,7 +573,11 @@ export function messagesOfComponent(
   };
 }
 
-/** `/systems/example-system-a/building-block-view/declaration-accepted/` */
+/**
+ * `/systems/example-system-a/system-architecture/building-block-view/declaration-accepted/`
+ */
 export function messagePath(systemId: string, name: string): string {
-  return `${systemPath(systemId)}building-block-view/${messageByName(systemId, name).slug}/`;
+  return `${sectionPath(systemId, undefined, 'system-architecture', 'building-block-view')}${
+    messageByName(systemId, name).slug
+  }`;
 }

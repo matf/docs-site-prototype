@@ -1,0 +1,135 @@
+---
+slug: /
+id: index
+title: BAZG System Documentation
+sidebar_label: Start page
+displayed_sidebar: docsSidebar
+description: Prototype of the BAZG architecture documentation portal — one arc42 documentation tree for systems and components, mixing generated and manually maintained content.
+hide_table_of_contents: false
+doc_status: custom
+---
+
+# BAZG System Documentation
+
+One documentation tree for every BAZG system and every component inside it, structured
+directly according to **arc42**, with generated and manually maintained documentation shown
+side by side.
+
+<PrototypeNotice />
+
+This site is a **navigation and information-architecture prototype**. It demonstrates how
+architecture documentation could be organised, cross-linked and labelled once parts of it are
+produced by a generator. It is not a documentation-generation backend: the "generated" pages
+here are realistic samples with the structure a generator would produce.
+
+<StatsRow />
+
+## Systems
+
+<CardGrid>
+  <SystemCard id="example-system-a" />
+  <SystemCard id="example-system-b" />
+</CardGrid>
+
+[Browse all systems →](/systems/)
+
+## How this documentation is organised
+
+A system is not documented in one fixed way. Different methodologies produce different chapter
+sets, and a system can carry several at once, so the **documentation structure** is a level of its
+own — visible in the navigation and in the URL:
+
+- **System Architecture** (arc42) — how the system is built. Used for systems and components.
+- **Specification Docs** (BMAD) — what is to be built and why. Used for systems.
+
+Beneath a structure, its numbered sections start **directly**. There is no intermediate `Overview`
+or `Other Topics` node anywhere.
+
+```text
+Systems
+└── Example System A
+    ├── System Architecture          ← arc42
+    │   ├── 1. Introduction and Goals
+    │   ├── …
+    │   └── 12. Glossary
+    ├── Specification Docs           ← BMAD
+    │   ├── 1. Project Brief
+    │   ├── …
+    │   └── 6. Quality and Test Strategy
+    └── Components
+        ├── Example Component A
+        │   └── System Architecture
+        │       ├── 1. Introduction and Goals
+        │       └── …
+        └── Example Component B
+```
+
+Components are a sibling of the system's arc42 sections, not a sub-tree of the system's
+*5. Building Block View*. The system's building block view **describes and links** its
+components; the component documentation itself lives one level down, under `Components`, where
+it has room for its own twelve sections.
+
+Additional documentation — security, operations, messaging, development guidelines,
+observability — is never collected in a generic catch-all category. It is filed under the arc42
+section it belongs to, which in most cases is *8. Crosscutting Concerns*.
+
+A section only appears when it has content. A component always has a context view, a building
+block view and a runtime view; the remaining arc42 sections show up only if that component
+actually has something to say. [Example System B](/systems/example-system-b/) and
+[Example Component C](/systems/example-system-b/components/example-component-c/) are documented
+that way — nine and five of twelve sections respectively, with no empty placeholder pages.
+
+## Generated and custom content
+
+Every page has exactly one origin. It is either produced by a generator or written by hand —
+never both. A generated page shows the generator, the source repository, the source revision and
+the generation timestamp; a custom page shows its owning team and review date.
+
+<ContentLegend />
+
+Where a generated artefact needs a hand-written explanation, the explanation is its own page,
+filed under the same arc42 section — for example the generated
+[context diagram of Example Component A](/systems/example-system-a/components/example-component-a/system-architecture/context-and-scope/)
+and the custom
+[Scope Notes](/systems/example-system-a/components/example-component-a/system-architecture/context-and-scope/scope-notes/)
+next to it. That keeps regeneration safe: a generator replaces whole files and never has to merge
+into someone's prose. See [Documentation conventions](/conventions/) for the rules and the folder
+layout behind this.
+
+## Where to start
+
+<RelatedDocs
+  title="Suggested entry points"
+  items={[
+    {
+      to: '/systems/example-system-a/',
+      label: 'Example System A',
+      note: 'The fully documented sample system with two components.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Example System A — 5. Building Block View',
+      note: 'How a system links to its components.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/',
+      label: 'Example Component A — 6. Runtime View',
+      note: 'Generated reaction graph linked to the message catalogue.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Events and Commands',
+      note: 'Generated catalogue of commands and events.',
+      status: 'generated',
+    },
+    {
+      to: '/conventions/',
+      label: 'Documentation conventions',
+      note: 'Where to put a new page so it appears in the right place.',
+      status: 'custom',
+    },
+  ]}
+/>

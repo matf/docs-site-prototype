@@ -1,0 +1,103 @@
+---
+title: Development Guidelines
+sidebar_label: Development Guidelines
+sidebar_position: 3
+description: Custom crosscutting concept — engineering rules that every component of Example System A follows.
+doc_status: custom
+---
+
+# Development Guidelines
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="crosscutting-concerns"
+  custom={{
+    owner: 'Team Alpha — Customs Platform Engineering (fictional)',
+    lastReviewed: '2026-07-08',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+Rules that apply to every component in this system. Each one exists because breaking it has cost
+the team something.
+
+## Component structure
+
+Every component is hexagonal: domain logic in the centre, adapters at the edge.
+
+```text
+component/
+├── api/            inbound HTTP adapter (thin, no business rules)
+├── messaging/      inbound and outbound broker adapters
+├── application/    use cases, transaction boundaries
+├── domain/         entities, invariants, decisions — no framework imports
+└── persistence/    repository implementations
+```
+
+The rule that matters: **`domain/` imports nothing from the other folders and nothing from a
+framework.** It is enforced by an architecture test in the build, not by review discipline.
+
+## Messaging
+
+- Every consumer is idempotent. Delivery is at-least-once; a redelivered message must not produce
+  a second business effect.
+- Every published event carries `messageId`, `correlationId`, `causationId`, `occurredAt` and a
+  schema version.
+- Schema changes are additive within a major version. A breaking change publishes a new major
+  channel and both run in parallel until consumers have migrated.
+- The concrete conventions and header set are documented per component — see
+  [Integration Conventions](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/integration-conventions/).
+
+## Persistence
+
+- One database schema per component, no cross-component reads.
+- State changes and outgoing events are written in the same transaction using the outbox pattern —
+  [ADR-0001 of Example Component A](/systems/example-system-a/components/example-component-a/system-architecture/architecture-decisions/adr-0001-transactional-outbox/).
+- Migrations are forward-only and must be deployable while the previous version is still running.
+
+## Logging
+
+- No business payloads in logs. Fields annotated as sensitive are refused by the serialiser.
+- Every log line carries the `correlationId`, so a declaration can be followed across components.
+- Log levels: `ERROR` means somebody must act; `WARN` means somebody should look during office
+  hours. Anything else is `INFO` or lower.
+
+## Testing
+
+| Level | Scope | Gate |
+| --- | --- | --- |
+| Unit | Domain logic, no infrastructure | Every build |
+| Contract | Published and consumed message schemas | Every build; consumer contracts run against the producer |
+| Integration | Component with real broker and database in containers | Every build |
+| Architecture | Layering rules, logging annotations | Every build |
+| Load | Peak profile against `staging` | Before each release |
+
+## Documentation
+
+Documentation follows the same lifecycle as the code. A component's generated pages are
+regenerated on every merge to `main`; its custom pages are reviewed at least every six months and
+carry the review date. See [Documentation conventions](/conventions/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/building-block-view/',
+      label: 'Example Component A — 5. Building Block View',
+      note: 'The hexagonal structure above, as built.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/crosscutting-concerns/',
+      label: '8. Crosscutting Concerns',
+      note: 'The parent arc42 section.',
+      status: 'custom',
+    },
+    {
+      to: '/conventions/',
+      label: 'Documentation conventions',
+      note: 'How these pages are organised and maintained.',
+      status: 'custom',
+    },
+  ]}
+/>

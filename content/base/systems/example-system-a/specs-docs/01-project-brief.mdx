@@ -1,0 +1,75 @@
+---
+title: 1. Project Brief
+sidebar_label: 1. Project Brief
+description: BMAD project brief for Example System A — problem, users, scope and success criteria.
+doc_status: custom
+---
+
+# 1. Project Brief
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="project-brief"
+  custom={{
+    owner: 'Product owner, Customs Clearance (fictional)',
+    lastReviewed: '2026-05-12',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+## Problem
+
+Declarations are processed in overnight batches. A declarant who makes a formal mistake learns
+about it the next morning, by which time the consignment is already at the border. The cost lands
+on hauliers as waiting time and on the border posts as congestion.
+
+## Who it is for
+
+| User | What they need |
+| --- | --- |
+| Declarant / freight forwarder | A decision within seconds, and a rejection they can act on immediately |
+| Customs officer | Risk decisions that arrive with their reasons attached |
+| Risk analyst | Rule changes that take effect without waiting for a software release |
+
+## Scope
+
+**In:** electronic declaration intake, validation against customs rules, risk assessment, the
+clearance or hold decision.
+
+**Out:** duty and tax calculation, physical control execution, traveller-facing information. Each
+is owned elsewhere and stays there — the reasoning is in
+[Scope and Boundaries](/systems/example-system-a/system-architecture/context-and-scope/scope-and-boundaries/).
+
+## Success criteria
+
+| # | Criterion | Measure |
+| --- | --- | --- |
+| S-1 | Declarants get a decision while the consignment is still in transit | 95 % of declarations decided within 8 seconds |
+| S-2 | Rejections are actionable without a phone call | Support contacts about unclear rejections below 5 per week |
+| S-3 | Rule changes do not need engineering | Median time from analyst decision to effect below 1 hour |
+| S-4 | Every decision survives legal review | 100 % of sampled decisions reproducible in the annual rehearsal |
+
+## Constraints taken as given
+
+Swiss data residency, the ten-year retention obligation, the externally fixed national message
+specification, and the central platform's approved technology set. They are architecture
+constraints rather than product choices, and are documented as such in
+[2. Architecture Constraints](/systems/example-system-a/system-architecture/architecture-constraints/).
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/product-requirements/',
+      label: '2. Product Requirements',
+      note: 'The brief made precise enough to build from.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/introduction-and-goals/',
+      label: 'System Architecture — 1. Introduction and Goals',
+      note: 'The same goals, expressed for an architecture audience.',
+      status: 'custom',
+    },
+  ]}
+/>

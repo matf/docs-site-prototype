@@ -1,0 +1,56 @@
+---
+title: 4. Epics
+sidebar_label: 4. Epics
+sidebar_position: 0
+description: Generated epic index for Example System A — requirement clusters sharded from the product requirements.
+doc_status: generated
+---
+
+# 4. Epics
+
+<DocHeader
+  structure="specs-docs"
+  system="example-system-a"
+  section="epics"
+  generated={{
+    generator: 'bmad-shard 2.1.0',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-specs',
+    revision: 'c02fd41',
+    generatedAt: '2026-08-04 02:40 UTC',
+    scope: 'Whole page — epic index sharded from the product requirements',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Sharded from [2. Product Requirements](/systems/example-system-a/specs-docs/product-requirements/)
+by the BMAD tooling. Editing this index by hand would be overwritten on the next shard; the
+requirements are the thing to edit.
+
+:::
+
+| Epic | Requirements | Stories | Status |
+| --- | --- | --- | --- |
+| [Epic 1 — Declaration Intake](/systems/example-system-a/specs-docs/epics/epic-1-declaration-intake/) | FR-1, FR-2, FR-3, FR-9 | 4 | Delivered |
+| [Epic 2 — Risk Assessment](/systems/example-system-a/specs-docs/epics/epic-2-risk-assessment/) | FR-4, FR-5, FR-6, FR-7, FR-8 | 5 | In progress |
+
+Every functional requirement is covered by exactly one epic. A requirement with no epic, or an epic
+with no requirement, fails the shard step — which is the main reason for generating this index
+rather than writing it.
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/specs-docs/product-requirements/functional-requirements/',
+      label: 'Functional Requirements',
+      note: 'What these epics are sharded from.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/specs-docs/stories/',
+      label: '5. Stories',
+      note: 'The next level down.',
+      status: 'generated',
+    },
+  ]}
+/>

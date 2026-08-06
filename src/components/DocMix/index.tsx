@@ -1,11 +1,13 @@
 import React, {type ReactNode} from 'react';
-import {basePath} from '@site/src/data/catalog';
+import {basePath, structurePath} from '@site/src/data/catalog';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import styles from './styles.module.css';
 
 export type DocMixProps = {
   system: string;
   component?: string;
+  /** Restrict the count to one documentation structure. */
+  structure?: string;
   /** Show the word "pages" after the counts. */
   verbose?: boolean;
 };
@@ -16,8 +18,16 @@ export type DocMixProps = {
  * A set of pages does not have a single origin, so it does not get a status
  * badge — it gets counts. Two honest numbers instead of one aggregate word.
  */
-export default function DocMix({system, component, verbose}: DocMixProps): ReactNode {
-  const {generated, custom} = useDocsStatus().countUnder(basePath(system, component));
+export default function DocMix({
+  system,
+  component,
+  structure,
+  verbose,
+}: DocMixProps): ReactNode {
+  const prefix = structure
+    ? structurePath(system, component, structure)
+    : basePath(system, component);
+  const {generated, custom} = useDocsStatus().countUnder(prefix);
   return (
     <span className={styles.mix}>
       <span className={styles.generated}>{generated} generated</span>

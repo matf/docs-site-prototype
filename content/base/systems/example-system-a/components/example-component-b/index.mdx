@@ -1,0 +1,72 @@
+---
+title: Example Component B
+sidebar_label: Example Component B
+description: Landing page of Example Component B (fictional Risk Assessment Engine) — arc42 sections, generated documentation and metadata.
+doc_status: generated
+---
+
+# Example Component B
+
+**Risk Assessment Engine (fictional).** Consumes declaration events, evaluates versioned rule
+sets and scoring models, and issues inspection commands for consignments that exceed the risk
+threshold. It is the only component in [Example System A](/systems/example-system-a/) that
+decides on risk.
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-b"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/risk-assessment-engine',
+    revision: '3fd8b52',
+    generatedAt: '2026-08-04 03:14 UTC',
+    scope: 'Context diagram, component view, reaction graph, observability inventory',
+  }}
+/>
+
+<PrototypeNotice />
+
+| Property | Value |
+| --- | --- |
+| **Part of** | [Example System A](/systems/example-system-a/) |
+| **Responsible team** | Team Alpha — Risk Squad (fictional) |
+| **Role in the system** | Event-driven decision engine |
+| **Documentation status** | Complete — all twelve arc42 sections |
+| **Pages** | <DocMix system="example-system-a" component="example-component-b" verbose /> |
+| **Source repository** | `git.example.admin.ch/bazg-proto/risk-assessment-engine` |
+| **Last generation run** | 2026-08-04 03:14 UTC from revision `3fd8b52` |
+
+## Documentation
+
+This component is documented with the structures below. Each one is a
+methodology with its own chapters, and each has its own place in the navigation and in the URL.
+
+<StructureCards system="example-system-a" component="example-component-b" />
+
+## Generated documentation for this component
+
+| What | Where | Generator |
+| --- | --- | --- |
+| Context diagram | [3. Context and Scope](/systems/example-system-a/components/example-component-b/system-architecture/context-and-scope/) | `bazg-archdoc 0.7.2` |
+| Internal component view | [5. Building Block View](/systems/example-system-a/components/example-component-b/system-architecture/building-block-view/) | `bazg-archdoc 0.7.2` |
+| Reaction graph | [6. Runtime View](/systems/example-system-a/components/example-component-b/system-architecture/runtime-view/) | `bazg-archdoc 0.7.2` |
+| Messages it consumes and publishes | [5. Building Block View](/systems/example-system-a/components/example-component-b/system-architecture/building-block-view/) | `bazg-archdoc 0.7.2` |
+| Observability inventory | [Observability](/systems/example-system-a/components/example-component-b/system-architecture/crosscutting-concerns/observability/) | `bazg-obsdoc 0.2.0` |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/',
+      label: 'Example Component A',
+      note: 'Publishes the events this component consumes.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Example System A — 5. Building Block View',
+      note: 'How this component fits into the system.',
+      status: 'generated',
+    },
+    {to: '/systems/example-system-a/components/', label: 'All components of Example System A', note: 'Back one level.'},
+  ]}
+/>

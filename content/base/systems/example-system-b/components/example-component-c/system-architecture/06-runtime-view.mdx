@@ -1,0 +1,90 @@
+---
+title: 6. Runtime View
+sidebar_label: 6. Runtime View
+description: Generated reaction graph and delivery scenario of Example Component C.
+doc_status: generated
+---
+
+# 6. Runtime View
+
+<DocHeader structure="system-architecture" system="example-system-b" component="example-component-c" section="runtime-view"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-gateway',
+    revision: 'd52c118',
+    generatedAt: '2026-08-03 03:10 UTC',
+    scope: 'Reaction graph',
+  }}
+/>
+
+## Generated reaction graph
+
+<Diagram
+  title="Reaction graph — request to delivery record"
+  status="generated"
+  source="bazg-archdoc 0.7.2 · notification-gateway@d52c118"
+  caption="Rounded nodes are messages; rectangles are processing steps.">
+
+```mermaid
+flowchart TB
+  classDef msgIn fill:#f4eefa,stroke:#7a3ca8,color:#12161a
+  classDef msgOut fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+  classDef step fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef state fill:#fbeef0,stroke:#c8102e,color:#12161a
+
+  I1(["NotificationRequested"]):::msgIn
+  I2(["SendOperationalBroadcast"]):::msgIn
+  M["Match subscriptions<br/>channel + language"]:::step
+  A["Create delivery attempts<br/>one per subscriber and channel"]:::state
+  B["Batch within the rate limit"]:::step
+  S["Send via the channel adapter"]:::step
+  Q{"Provider accepted?"}:::step
+  OK(["NotificationDelivered"]):::msgOut
+  R{"Retries left?"}:::step
+  W["Backoff and retry"]:::step
+  F(["NotificationFailed"]):::msgOut
+
+  I1 --> M
+  I2 --> M
+  M --> A --> B --> S --> Q
+  Q -->|yes| OK
+  Q -->|no| R
+  R -->|yes| W --> S
+  R -->|no| F
+```
+
+</Diagram>
+
+| Trigger | Use case | Publishes |
+| --- | --- | --- |
+| <Msg system="example-system-b" name="NotificationRequested" /> | Deliver to matching subscriptions | <Msg system="example-system-b" name="NotificationDelivered" /> or <Msg system="example-system-b" name="NotificationFailed" /> |
+| <Msg system="example-system-b" name="SendOperationalBroadcast" /> | Deliver to all subscriptions of the affected region | same |
+
+## Scenario — a closure broadcast to 40 000 subscribers
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant BR as Broker
+  participant APP as Delivery Service
+  participant PERS as Persistence Adapter
+  participant EM as E-mail Channel Adapter
+  participant PROV as Provider
+
+  BR->>APP: SendOperationalBroadcast (region, 4 languages)
+  APP->>PERS: match subscriptions → 40 000 attempts
+  loop rate-limited batches
+    APP->>EM: batch of 500
+    EM->>PROV: send
+    PROV-->>EM: accepted / rejected per address
+    EM-->>APP: results
+    APP->>PERS: update attempts
+  end
+  APP->>BR: NotificationDelivered (aggregated per channel)
+  Note over APP,BR: rejected addresses retry with backoff —<br/>exhausted ones raise NotificationFailed
+```
+
+<RelatedDocs items={[
+  {to: '/systems/example-system-b/system-architecture/building-block-view/', label: 'Events and Commands', status: 'generated'},
+  {to: '/systems/example-system-b/system-architecture/runtime-view/', label: 'Example System B — 6. Runtime View', status: 'custom'},
+]} />

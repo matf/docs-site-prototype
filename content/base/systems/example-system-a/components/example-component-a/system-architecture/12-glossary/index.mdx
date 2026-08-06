@@ -1,0 +1,54 @@
+---
+title: 12. Glossary
+sidebar_label: 12. Glossary
+sidebar_position: 0
+description: Terms of Example Component A that are used with a specific meaning, maintained by hand.
+doc_status: custom
+---
+
+# 12. Glossary
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  component="example-component-a"
+  section="glossary"
+  custom={{
+    owner: 'Team Alpha — Declaration Squad (fictional)',
+    lastReviewed: '2026-07-30',
+    reviewStatus: 'Reviewed',
+  }}
+/>
+
+The system glossary in
+[Example System A — 12. Glossary](/systems/example-system-a/system-architecture/glossary/) applies. Only terms that
+are specific to this component are listed here.
+
+The names in the code are extracted automatically into
+[Domain Model Terms](/systems/example-system-a/components/example-component-a/system-architecture/glossary/domain-model-terms/). This page
+covers the words that are easy to get wrong.
+
+## Terms used carefully
+
+| Term | Note |
+| --- | --- |
+| **Accepted** | Means "formally valid and stored". It says nothing about risk and nothing about clearance. Declarants read it as "done", which is why the portal wording was reviewed with the specialist unit. |
+| **Superseded** | A decision that arrived for a revision that is no longer current. Superseded decisions are discarded, not queued — see [6. Runtime View](/systems/example-system-a/components/example-component-a/system-architecture/runtime-view/). |
+| **Rejected** | A business outcome, never a technical failure. A message that cannot be processed is dead-lettered, not rejected. |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/glossary/domain-model-terms/',
+      label: 'Domain Model Terms',
+      note: 'Generated from the aggregate, state and table definitions.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/glossary/',
+      label: 'Example System A — 12. Glossary',
+      note: 'The shared domain vocabulary.',
+      status: 'custom',
+    },
+  ]}
+/>
