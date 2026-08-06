@@ -20,6 +20,12 @@ export type Party = {
   readonly label: string;
   /** Component id when the party is a component of this system. */
   readonly component?: string;
+  /**
+   * Environments on which this party exists. Omitted means "everywhere".
+   * A component that is only deployed on DEV must not appear as a consumer in
+   * the production contract.
+   */
+  readonly onlyOn?: readonly string[];
 };
 
 export type MessageField = {
@@ -241,6 +247,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       consumers: [
         {label: 'Trade Portal (external)'},
         {label: 'Audit Trail Service (external)'},
+        {label: 'Example Component D', component: 'example-component-d', onlyOn: ['dev']},
       ],
       partitionKey: 'declarationReference',
       retention: '10 years',
@@ -341,6 +348,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
         {label: 'Border Control Operations (external)'},
         {label: 'Trade Portal (external)'},
         {label: 'Audit Trail Service (external)'},
+        {label: 'Example Component D', component: 'example-component-d', onlyOn: ['dev']},
       ],
       partitionKey: 'declarationId',
       retention: '10 years',
@@ -371,6 +379,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
         {label: 'Inspection Planning (external)'},
         {label: 'Trade Portal (external)'},
         {label: 'Audit Trail Service (external)'},
+        {label: 'Example Component D', component: 'example-component-d', onlyOn: ['dev']},
       ],
       partitionKey: 'declarationId',
       retention: '10 years',
@@ -549,6 +558,14 @@ export function systemCatalogue(systemId: string): SystemCatalogue {
   return catalogue;
 }
 
+/** Parties that exist on the given environment. */
+export function partiesOn(
+  parties: readonly Party[],
+  environmentId: string,
+): readonly Party[] {
+  return parties.filter((party) => !party.onlyOn || party.onlyOn.includes(environmentId));
+}
+
 export function messageByName(systemId: string, name: string): MessageEntry {
   const entry = systemCatalogue(systemId).messages.find((m) => m.name === name);
   if (!entry) {
@@ -565,11 +582,16 @@ export function messageByName(systemId: string, name: string): MessageEntry {
 export function messagesOfComponent(
   systemId: string,
   componentId: string,
+  environmentId?: string,
 ): {produced: MessageEntry[]; consumed: MessageEntry[]} {
   const messages = systemCatalogue(systemId).messages;
+  const visible = (parties: readonly Party[]) =>
+    environmentId ? partiesOn(parties, environmentId) : parties;
   return {
     produced: messages.filter((m) => m.producer.component === componentId),
-    consumed: messages.filter((m) => m.consumers.some((c) => c.component === componentId)),
+    consumed: messages.filter((m) =>
+      visible(m.consumers).some((c) => c.component === componentId),
+    ),
   };
 }
 

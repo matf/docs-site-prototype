@@ -1,0 +1,119 @@
+---
+title: 7. Deployment View
+sidebar_label: 7. Deployment View
+description: Environments, data centres and the mapping of Example System A's components onto infrastructure.
+doc_status: generated
+---
+
+# 7. Deployment View
+
+<DocHeader
+  structure="system-architecture"
+  system="example-system-a"
+  section="deployment-view"
+  generated={{
+    generator: 'bazg-deploydoc 0.3.5',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-deployment',
+    revision: 'ff02b7c',
+    generatedAt: '2026-08-04 03:15 UTC',
+    scope: 'Whole page — topology, environments and operational properties',
+  }}
+/>
+
+:::info[Fully generated page]
+
+Produced from the DEV deployment descriptors. DEV runs on a single site with one replica per
+workload; the two-site topology described in
+[ADR-0002](/systems/example-system-a/system-architecture/architecture-decisions/adr-0002-hosting-and-data-residency/)
+applies from REF upwards.
+
+:::
+
+## Infrastructure
+
+<Diagram
+  title="Deployment topology — production"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c"
+  caption="Generated from the deployment descriptors. Replica counts are the configured baseline, not the current autoscaled state.">
+
+```mermaid
+flowchart TB
+  classDef dc fill:#f6f7f9,stroke:#9aa4ae,color:#12161a
+  classDef pod fill:#fbeef0,stroke:#c8102e,color:#12161a
+  classDef svc fill:#eaf3f9,stroke:#0a5c8a,color:#12161a
+
+  subgraph DC1["Data centre 1 — single site (CH)"]
+    direction TB
+    K1["Container platform namespace<br/>example-system-a"]:::dc
+    CA1["declaration-intake-service<br/>1 replica"]:::pod
+    CB1["risk-assessment-engine<br/>1 replica"]:::pod
+    CD1["notification-projection-service<br/>1 replica"]:::pod
+    DB1[("Managed PostgreSQL<br/>primary")]:::svc
+    MQ1["Message broker cluster"]:::svc
+    K1 --- CA1
+    K1 --- CB1
+    K1 --- CD1
+    CA1 --- DB1
+    CB1 --- DB1
+    CA1 --- MQ1
+    CB1 --- MQ1
+  end
+
+  EG["Audited egress proxy"]:::svc
+  CA1 --> EG
+  EG --> TARIFF["Tariff and Rules Service (external)"]:::dc
+```
+
+</Diagram>
+
+## Environments
+
+<Diagram
+  title="Environments"
+  status="generated"
+  source="bazg-deploydoc 0.3.5 · example-system-a-deployment@ff02b7c"
+  caption="Extracted from the environment definitions in the deployment repository.">
+
+| Property | Value on DEV |
+| --- | --- |
+| Purpose | Team integration |
+| Data | Synthetic only |
+| Sizing | 1 replica per workload, single site |
+| Deployed from | Every merge to `main` |
+| Promotion | Manual promotion to REF |
+
+</Diagram>
+
+## Operational properties
+
+| Property | Value |
+| --- | --- |
+| Recovery time objective | None — DEV is rebuilt, not recovered |
+| Recovery point objective | None — synthetic data only |
+| Deployment strategy | Recreate |
+| Maintenance window | Any time |
+| Scaling trigger | None; fixed at one replica |
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/example-component-a/system-architecture/deployment-view/',
+      label: 'Example Component A — 7. Deployment View',
+      note: 'Component-level deployment detail.',
+      status: 'generated',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/architecture-decisions/adr-0002-hosting-and-data-residency/',
+      label: 'ADR-0002 — Hosting and data residency',
+      note: 'Why both sites are in Switzerland and why standby is warm.',
+      status: 'custom',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/crosscutting-concerns/operations-and-monitoring/',
+      label: 'Operations and Monitoring',
+      note: 'Alerting, dashboards and the failover procedure.',
+      status: 'custom',
+    },
+  ]}
+/>

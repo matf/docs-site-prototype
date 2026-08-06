@@ -1,5 +1,5 @@
 import React, {type ReactNode} from 'react';
-import Link from '@docusaurus/Link';
+import Link from '@site/src/components/EnvLink';
 import type {DocStatus} from '@site/src/data/catalog';
 import StatusBadge from '@site/src/components/StatusBadge';
 import styles from './styles.module.css';

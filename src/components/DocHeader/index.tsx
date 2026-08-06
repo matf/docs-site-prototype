@@ -1,5 +1,6 @@
 import React, {type ReactNode} from 'react';
-import Link from '@docusaurus/Link';
+import clsx from 'clsx';
+import Link from '@site/src/components/EnvLink';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import {
   DEFAULT_STRUCTURE,
@@ -7,6 +8,7 @@ import {
   sectionBySlug,
   sectionLabel,
 } from '@site/src/data/structures';
+import {sourceState, useEnvironment} from '@site/src/data/environments';
 import {
   componentById,
   componentPath,
@@ -65,9 +67,23 @@ export default function DocHeader({
   }
   const systemEntry = systemById(system);
   const componentEntry = component ? componentById(system, component) : undefined;
+  const environment = useEnvironment();
   const structureEntry = docStructure(structure);
   const sectionEntry = section ? sectionBySlug(structure, section) : undefined;
   const owningTeam = componentEntry?.team ?? systemEntry.team;
+
+  // Generated pages describe one environment. The revision and the timestamp
+  // therefore come from the environment, not from the page — the same page
+  // composed into four trees reports four different source states.
+  const state = sourceState(environment.id, system, component);
+  const generatedForEnvironment = generated
+    ? {
+        ...generated,
+        revision: state?.revision ?? generated.revision,
+        generatedAt: state?.generatedAt ?? generated.generatedAt,
+        environment: `${environment.short} — ${state?.note ?? environment.regeneration}`,
+      }
+    : undefined;
 
   return (
     <>
@@ -102,9 +118,19 @@ export default function DocHeader({
             </span>
           </span>
         </nav>
-        <StatusBadge status={status} className={styles.badge} />
+        <span className={styles.badges}>
+          <span className={clsx(styles.environment, styles[`env_${environment.id}`])}>
+            {environment.short}
+          </span>
+          <StatusBadge status={status} className={styles.badge} />
+        </span>
       </div>
-      {generated ? <GeneratedMeta {...generated} team={generated.team ?? owningTeam} /> : null}
+      {generatedForEnvironment ? (
+        <GeneratedMeta
+          {...generatedForEnvironment}
+          team={generatedForEnvironment.team ?? owningTeam}
+        />
+      ) : null}
       {custom ? <CustomMeta {...custom} /> : null}
     </>
   );

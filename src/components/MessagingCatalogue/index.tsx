@@ -1,15 +1,17 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
+import Link from '@site/src/components/EnvLink';
 import {
   messageByName,
   messagePath,
   messagesOfComponent,
+  partiesOn,
   systemCatalogue,
   type MessageEntry,
   type MessageKind,
   type Party,
 } from '@site/src/data/messaging';
+import {useEnvironment} from '@site/src/data/environments';
 import styles from './styles.module.css';
 
 const KIND_LABEL: Record<MessageKind, string> = {
@@ -22,9 +24,10 @@ function KindTag({kind}: {kind: MessageKind}): ReactNode {
 }
 
 function PartyList({parties}: {parties: readonly Party[]}): ReactNode {
+  const environment = useEnvironment();
   return (
     <>
-      {parties.map((party, i) => (
+      {partiesOn(parties, environment.id).map((party, i) => (
         <React.Fragment key={party.label}>
           {i > 0 ? ', ' : ''}
           {party.label}
@@ -133,7 +136,8 @@ export function ComponentMessages({
   system: string;
   component: string;
 }): ReactNode {
-  const {produced, consumed} = messagesOfComponent(system, component);
+  const environment = useEnvironment();
+  const {produced, consumed} = messagesOfComponent(system, component, environment.id);
   return (
     <div>
       <Table system={system} title="Consumes" messages={consumed} />

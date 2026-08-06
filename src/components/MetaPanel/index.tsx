@@ -40,6 +40,8 @@ export type GeneratedMetaProps = {
   team: string;
   /** What exactly on the page is generated, if it is not the whole page. */
   scope?: string;
+  /** Which environment this state was generated for. */
+  environment?: string;
 };
 
 /** Provenance panel shown on every page that carries generated content. */
@@ -50,12 +52,14 @@ export function GeneratedMeta({
   generatedAt,
   team,
   scope,
+  environment,
 }: GeneratedMetaProps): ReactNode {
   return (
     <Panel
       variant="generated"
       title="Generation metadata"
       rows={[
+        ...(environment ? [{label: 'Environment', value: environment}] : []),
         {label: 'Generator', value: <code>{generator}</code>},
         {label: 'Source repository', value: <code>{sourceRepo}</code>},
         {label: 'Source revision', value: <code>{revision}</code>},

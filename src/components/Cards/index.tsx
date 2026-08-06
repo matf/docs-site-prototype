@@ -1,6 +1,6 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
+import Link from '@site/src/components/EnvLink';
 import {
   componentById,
   componentPath,
@@ -42,8 +42,11 @@ function Facts({items}: {items: {label: string; value: ReactNode}[]}): ReactNode
 /** Card for a system, used on the start page and the systems overview. */
 export function SystemCard({id}: {id: string}): ReactNode {
   const system = systemById(id);
-  const {countUnder} = useDocsStatus();
+  const {countUnder, exists} = useDocsStatus();
   const pages = countUnder(systemPath(system.id));
+  const presentComponents = system.components.filter((component) =>
+    exists(componentPath(system.id, component.id)),
+  );
   return (
     <article className={styles.card}>
       <header className={styles.head}>
@@ -59,13 +62,13 @@ export function SystemCard({id}: {id: string}): ReactNode {
       <Facts
         items={[
           {label: 'Responsible team', value: system.team},
-          {label: 'Components', value: system.components.length},
+          {label: 'Components', value: presentComponents.length},
           {label: 'Documentation pages', value: pages.total},
           {label: 'Status', value: system.docStatus},
         ]}
       />
       <ul className={styles.links}>
-        {system.components.map((component) => (
+        {presentComponents.map((component) => (
           <li key={component.id}>
             <Link to={componentPath(system.id, component.id)}>{component.name}</Link>
             <span className={styles.linkNote}>{component.subtitle}</span>
@@ -90,6 +93,9 @@ export function ComponentCard({
   const entry: ComponentEntry = componentById(system, component);
   const {countUnder, sectionsOf, exists} = useDocsStatus();
   const base = componentPath(system, entry.id);
+  // A component that is not deployed on this environment has no pages here, so
+  // it is not shown at all — the tree describes one environment, not a diff.
+  const present = exists(base);
   const pages = countUnder(base);
   const arc42 = (slug: string) =>
     sectionPath(system, entry.id, DEFAULT_STRUCTURE, slug);
@@ -98,6 +104,11 @@ export function ComponentCard({
     {to: arc42('building-block-view'), label: '5. Building Block View', note: 'Generated internal decomposition'},
     {to: arc42('runtime-view'), label: '6. Runtime View', note: 'Generated reaction graph'},
   ].filter((link) => exists(link.to));
+
+  if (!present) {
+    return null;
+  }
+
   return (
     <article className={styles.card}>
       <header className={styles.head}>

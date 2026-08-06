@@ -1,6 +1,7 @@
 import React, {type ReactNode} from 'react';
 import {componentById, componentPath, sectionPath} from '@site/src/data/catalog';
-import {messageByName} from '@site/src/data/messaging';
+import {messageByName, partiesOn} from '@site/src/data/messaging';
+import {useEnvironment} from '@site/src/data/environments';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';
 import RelatedDocs, {type RelatedDocItem} from '@site/src/components/RelatedDocs';
 
@@ -21,8 +22,11 @@ export default function MessageRelated({
 }): ReactNode {
   const message = messageByName(system, name);
   const {exists, statusOf} = useDocsStatus();
+  const environment = useEnvironment();
 
-  const parties = [message.producer, ...message.consumers].filter((p) => p.component);
+  const parties = [message.producer, ...partiesOn(message.consumers, environment.id)].filter(
+    (p) => p.component,
+  );
   const seen = new Set<string>();
 
   const items: RelatedDocItem[] = [];

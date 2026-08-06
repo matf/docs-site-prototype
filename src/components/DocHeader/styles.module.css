@@ -57,3 +57,37 @@ a.name:hover {
     gap: 0.2rem;
   }
 }
+
+.badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: none;
+}
+
+.environment {
+  padding: 0.15em 0.55em 0.2em;
+  border: 1px solid var(--bazg-border-strong);
+  border-radius: 999px;
+  background: var(--ifm-background-color);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--bazg-muted);
+}
+
+.env_prod {
+  color: var(--bazg-custom);
+  border-color: var(--bazg-custom-border);
+  background: var(--bazg-custom-bg);
+}
+
+.env_dev {
+  color: var(--ifm-color-primary-darkest);
+  border-color: var(--ifm-color-primary-lightest);
+  background: var(--bazg-accent-soft);
+}
+
+[data-theme='dark'] .env_dev {
+  color: var(--ifm-color-primary-lighter);
+}

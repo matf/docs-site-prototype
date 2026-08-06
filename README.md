@@ -4,7 +4,8 @@ A working prototype of the **BAZG system documentation portal**: one documentati
 system and every component, structured directly according to **arc42**, with generated and
 manually maintained documentation shown side by side.
 
-**Published site:** <https://matf.github.io/docs-site-prototype/>
+**Published site:** <https://matf.github.io/docs-site-prototype/> (production; use the environment
+switcher in the header for DEV, REF and ABN)
 
 > **Prototype content.** All systems, components, teams, decisions, message contracts, metrics and
 > metadata in this repository are fictional. They exist to demonstrate the navigation model and are
@@ -16,6 +17,9 @@ manually maintained documentation shown side by side.
 This is primarily a **UX and information-architecture prototype**, not a documentation-generation
 backend. It demonstrates:
 
+- **one documentation tree per environment** — DEV, REF, ABN and PROD — with production served at
+  the site root and the others behind `/dev/`, `/ref/` and `/abn/`, so a shared link always opens
+  the environment it points at;
 - one coherent documentation tree, rooted at `Systems`;
 - a **documentation structure** level below each system and component — `System Architecture`
   (arc42) and `Specification Docs` (BMAD) — present in the navigation and in the URL, so a system
@@ -35,6 +39,61 @@ The "generated" pages are realistic samples with the structure a generator would
 generator can replace them without touching the site's information architecture — see
 [How generated pages are expected to be replaced](#how-generated-pages-are-expected-to-be-replaced).
 
+## Environments
+
+The same documentation is published four times, once per environment:
+
+| Environment | Route | Reflects |
+| --- | --- | --- |
+| DEV | `/dev/…` | HEAD of every component repository, architecture repository state on DEV |
+| REF | `/ref/…` | The integration baseline |
+| ABN | `/abn/…` | The release candidate under acceptance |
+| **PROD** | `/…` | The released revision running in production — **the default** |
+
+Production is served at the root, so its URLs are canonical and unchanged. Every tree describes the
+state of *that* environment and nothing else: which components are deployed there, which revision
+each generated page came from, which version a contract is at. There is deliberately no comparison
+view — to see a difference, switch environments and look.
+
+Non-production trees carry a banner and are excluded from search engines. They are public, but they
+are not the canonical documentation.
+
+### Authoring once, publishing four times
+
+```text
+content/
+├── environments.json       the four environments and what each reflects
+├── base/                   authored once, shared by every environment
+└── overrides/<env>/        what differs on that environment
+docs-build/<env>/           composed by `npm run prepare-docs`; generated, git-ignored
+```
+
+Composition is a copy of `base` followed by an overlay of `overrides/<env>`. A file in the
+overrides replaces the file at the same path; a file that exists **only** in an override exists
+only on that environment. That is the whole model — which is how *Example Component D* is deployed
+on DEV and absent everywhere else, with no exclusion lists to maintain.
+
+Consequence worth knowing: a shared page cannot link to an environment-specific page, because that
+link would be broken in every other tree. The build enforces it — broken links fail the build.
+
+### Links stay inside the environment
+
+Pages are shared, so their links are written environment-relative (`/systems/…`). Two mechanisms
+add the prefix, and nothing else in the repository has to know about environments:
+
+- `plugins/remark-env-links/` rewrites Markdown links, configured per docs instance;
+- `src/components/EnvLink` does the same for everything rendered from JSX, including the navbar,
+  the footer, the breadcrumb home and the sidebar cards.
+
+### What differs per environment in this prototype
+
+| Difference | Where to see it |
+| --- | --- |
+| A component deployed on DEV only | `Example Component D`, and the extra block in System A's building block view on DEV |
+| Source revision and generation timestamp | The generation metadata panel on any generated page |
+| Contract consumers | `DeclarationCleared` lists Component D as a consumer on DEV only |
+| Deployment topology and sizing | System A's deployment view: one replica and a single site on DEV, two data centres elsewhere |
+
 ## Prerequisites
 
 - **Node.js 20 or newer** (the site is built and deployed with Node 22; `package.json` requires
@@ -52,6 +111,13 @@ npm ci
 Use `npm ci` rather than `npm install` so the lockfile is honoured exactly — this is what the CI
 workflows do.
 
+The environment trees are composed automatically before `start`, `build` and `typecheck`. To do it
+on its own:
+
+```bash
+npm run prepare-docs
+```
+
 ## Development
 
 ```bash
@@ -68,8 +134,9 @@ from the same base path so link and asset problems surface locally rather than a
 npm run build
 ```
 
-Writes the static site to `build/`. The build **fails** on a broken internal link, a broken anchor,
-a broken Markdown link, a broken Markdown image or a duplicate route — see `onBrokenLinks`,
+Writes the static site to `build/` — all four environment trees in a single build, which is what
+makes cross-environment link checking possible. The build **fails** on a broken internal link, a
+broken anchor, a broken Markdown link, a broken Markdown image or a duplicate route — see `onBrokenLinks`,
 `onBrokenAnchors`, `onDuplicateRoutes` and `markdown.hooks` in `docusaurus.config.ts`.
 
 Type-checking is separate:
@@ -556,8 +623,12 @@ build output, which would otherwise drop files and folders beginning with an und
 
 ```text
 .github/workflows/       deployment and pull-request validation
-content/base/            the documentation tree (the site content)
-content/overrides/<env>/ reserved for per-environment overrides
+content/environments.json  the four environments
+content/base/              the shared documentation tree (the site content)
+content/overrides/<env>/   what differs on one environment
+docs-build/<env>/          composed trees; generated, git-ignored
+scripts/prepare-docs.mjs   the composition step
+plugins/remark-env-links/  keeps Markdown links inside their environment
 src/components/          reusable presentation components
 src/data/                system/component catalogue, arc42 sections, messaging catalogues
 src/theme/               MDXComponents.tsx — makes the components globally available in MDX

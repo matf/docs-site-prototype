@@ -1,10 +1,49 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import type * as Preset from '@docusaurus/preset-classic';
 import type {Config} from '@docusaurus/types';
 import {themes as prismThemes} from 'prism-react-renderer';
+import environments from './content/environments.json';
 
 const organizationName = 'matf';
 const projectName = 'docs-site-prototype';
 const repoUrl = `https://github.com/${organizationName}/${projectName}`;
+
+type EnvironmentConfig = (typeof environments.environments)[number];
+
+const ENVIRONMENTS = environments.environments;
+const ROOT_ENVIRONMENT = ENVIRONMENTS.find((e) => e.id === environments.defaultEnvironment)!;
+
+/**
+ * Documentation options for one environment.
+ *
+ * Every environment is a separate docs plugin instance reading its own composed
+ * tree. They are peers: the default environment is served at the site root so
+ * its URLs stay stable, the others sit behind a prefix.
+ */
+function docsOptions(environment: EnvironmentConfig) {
+  const contentPath = `docs-build/${environment.id}`;
+
+  // Written by scripts/prepare-docs.mjs: composed file -> the file it came from.
+  const sourcesFile = path.join(__dirname, contentPath, '.sources.json');
+  const sources: Record<string, string> = fs.existsSync(sourcesFile)
+    ? JSON.parse(fs.readFileSync(sourcesFile, 'utf8'))
+    : {};
+
+  return {
+    path: contentPath,
+    routeBasePath: environment.routePrefix || '/',
+    sidebarPath: './sidebars.ts',
+    breadcrumbs: true,
+    // Composed trees are generated and not in git, so "last updated" would be
+    // meaningless. Pages carry their own generation or review metadata instead.
+    showLastUpdateTime: false,
+    // Point "Edit this page" at the authored source, not the composed copy.
+    editUrl: ({docPath}: {docPath: string}) =>
+      `${repoUrl}/edit/main/${sources[docPath] ?? `content/base/${docPath}`}`,
+    remarkPlugins: [[require('./plugins/remark-env-links'), {prefix: environment.routePrefix}]],
+  };
+}
 
 const config: Config = {
   title: 'BAZG System Documentation',
@@ -45,9 +84,18 @@ const config: Config = {
     },
   },
 
-  // Local build-time plugin: collects each page's `doc_status` frontmatter so
-  // the navigation can show what exists and where it came from.
-  plugins: ['./plugins/doc-status'],
+  plugins: [
+    // Collects each page's `doc_status` frontmatter so the navigation can show
+    // what exists and where it came from.
+    './plugins/doc-status',
+    // One docs instance per non-root environment.
+    ...ENVIRONMENTS.filter((environment) => environment.id !== ROOT_ENVIRONMENT.id).map(
+      (environment): [string, object] => [
+        '@docusaurus/plugin-content-docs',
+        {id: environment.id, ...docsOptions(environment)},
+      ],
+    ),
+  ],
 
   themes: ['@docusaurus/theme-mermaid'],
 
@@ -55,15 +103,9 @@ const config: Config = {
     [
       'classic',
       {
-        docs: {
-          // Docs-only mode: the documentation tree is the site.
-          routeBasePath: '/',
-          path: 'content/base',
-          sidebarPath: './sidebars.ts',
-          editUrl: `${repoUrl}/edit/main/`,
-          showLastUpdateTime: true,
-          breadcrumbs: true,
-        },
+        // Docs-only mode: the documentation tree is the site. This instance
+        // serves the default environment at the root.
+        docs: docsOptions(ROOT_ENVIRONMENT),
         blog: false,
         pages: false,
         theme: {
@@ -106,13 +148,14 @@ const config: Config = {
         height: 28,
       },
       items: [
+        {type: 'custom-envNavLink', to: '/systems/', label: 'Systems', position: 'left'},
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
+          type: 'custom-envNavLink',
+          to: '/conventions/',
+          label: 'Documentation Conventions',
           position: 'left',
-          label: 'Systems',
         },
-        {to: '/conventions/', label: 'Documentation Conventions', position: 'left'},
+        {type: 'custom-environmentSwitcher', position: 'right'},
         {
           href: repoUrl,
           label: 'GitHub',

@@ -1,5 +1,5 @@
 import React, {type ReactNode} from 'react';
-import Link from '@docusaurus/Link';
+import Link from '@site/src/components/EnvLink';
 import {componentById, structurePath, systemById} from '@site/src/data/catalog';
 import {DOC_STRUCTURES, docStructure} from '@site/src/data/structures';
 import {useDocsStatus} from '@site/src/data/useDocsStatus';

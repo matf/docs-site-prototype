@@ -1,9 +1,10 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
+import Link from '@site/src/components/EnvLink';
 import CodeBlock from '@theme/CodeBlock';
 import {componentPath, systemById} from '@site/src/data/catalog';
-import {messageByName, type Party} from '@site/src/data/messaging';
+import {messageByName, partiesOn, type Party} from '@site/src/data/messaging';
+import {useEnvironment} from '@site/src/data/environments';
 import styles from './styles.module.css';
 
 function PartyLink({system, party}: {system: string; party: Party}): ReactNode {
@@ -29,6 +30,8 @@ export default function MessageDetail({
 }): ReactNode {
   const message = messageByName(system, name);
   const systemEntry = systemById(system);
+  const environment = useEnvironment();
+  const consumers = partiesOn(message.consumers, environment.id);
 
   return (
     <>
@@ -43,7 +46,7 @@ export default function MessageDetail({
           },
           {
             label: 'Consumers',
-            value: message.consumers.map((party, i) => (
+            value: consumers.map((party, i) => (
               <React.Fragment key={party.label}>
                 {i > 0 ? ', ' : ''}
                 <PartyLink system={system} party={party} />

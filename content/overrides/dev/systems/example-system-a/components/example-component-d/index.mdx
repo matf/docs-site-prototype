@@ -1,0 +1,71 @@
+---
+title: Example Component D
+sidebar_label: Example Component D
+description: Landing page of Example Component D (fictional Notification Projection Service) — deployed on DEV only.
+doc_status: generated
+---
+
+# Example Component D
+
+**Notification Projection Service (fictional).** Projects declaration lifecycle events into
+declarant-facing notifications. Extracted from
+[Example Component A](/systems/example-system-a/components/example-component-a/) once a third
+notification channel appeared.
+
+<DocHeader
+  system="example-system-a"
+  component="example-component-d"
+  generated={{
+    generator: 'bazg-archdoc 0.7.2',
+    sourceRepo: 'git.example.admin.ch/bazg-proto/notification-projection-service',
+    revision: '0b74e12',
+    generatedAt: '2026-08-06 06:00 UTC',
+    scope: 'Context diagram, component view, reaction graph',
+  }}
+/>
+
+<PrototypeNotice />
+
+:::info[Deployed on DEV only]
+
+This component exists on **DEV** and has not been promoted further. On REF, ABN and PROD it does
+not appear at all — not greyed out, not marked "coming soon", simply absent, because each
+environment's documentation describes the state of *that* environment.
+
+Its extraction was predicted: debt item **D-1** in
+[11. Risks and Technical Debt](/systems/example-system-a/system-architecture/risks-and-technical-debt/)
+says the notification projection should leave Example Component A when a third channel appears.
+That happened, and this is the result.
+
+:::
+
+| Property | Value |
+| --- | --- |
+| **Part of** | [Example System A](/systems/example-system-a/) |
+| **Responsible team** | Team Alpha — Declaration Squad (fictional) |
+| **Role in the system** | Read-model projection and notification adapter |
+| **Extracted from** | [Example Component A](/systems/example-system-a/components/example-component-a/) |
+| **Pages** | <DocMix system="example-system-a" component="example-component-d" verbose /> |
+
+## Documentation
+
+A new component documents the three sections that say what it is and what it does, plus its goals.
+The rest of arc42 follows once there is something to say.
+
+<StructureCards system="example-system-a" component="example-component-d" />
+
+<RelatedDocs
+  items={[
+    {
+      to: '/systems/example-system-a/components/',
+      label: 'All components of Example System A',
+      note: 'Back one level.',
+    },
+    {
+      to: '/systems/example-system-a/system-architecture/building-block-view/',
+      label: 'Example System A — 5. Building Block View',
+      note: 'Where this component fits into the system.',
+      status: 'generated',
+    },
+  ]}
+/>

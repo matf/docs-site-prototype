@@ -89,6 +89,19 @@ export const SYSTEMS: readonly SystemEntry[] = [
         role: 'Inbound adapter and declaration lifecycle owner',
       },
       {
+        id: 'example-component-d',
+        name: 'Example Component D',
+        subtitle: 'Notification Projection Service (fictional)',
+        summary:
+          'Projects declaration lifecycle events into declarant notifications. Extracted from Example Component A once a third notification channel appeared; deployed on DEV only so far.',
+        team: 'Team Alpha — Declaration Squad',
+        docStatus: 'New — context, building block and runtime views plus goals; not yet promoted beyond DEV.',
+        sourceRepo: 'git.example.admin.ch/bazg-proto/notification-projection-service',
+        revision: '0b74e12',
+        generatedAt: '2026-08-06 06:00 UTC',
+        role: 'Read-model projection and notification adapter',
+      },
+      {
         id: 'example-component-b',
         name: 'Example Component B',
         subtitle: 'Risk Assessment Engine (fictional)',

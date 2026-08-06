@@ -95,6 +95,36 @@ is how a custom page can sit **between** two generated pages, as
 [Integration Conventions](/systems/example-system-a/components/example-component-a/system-architecture/crosscutting-concerns/integration-conventions/)
 does.
 
+## One tree per environment
+
+The documentation is published four times, once per environment:
+
+| Environment | Route | Reflects |
+| --- | --- | --- |
+| DEV | `/dev/…` | HEAD of every component repository |
+| REF | `/ref/…` | The integration baseline |
+| ABN | `/abn/…` | The release candidate under acceptance |
+| PROD | `/…` | The released revision running in production |
+
+Production is served at the root, so its URLs are the canonical ones and never change. Every tree
+describes the state of its own environment — which components are deployed, which revision each
+page was generated from, which version a contract is at. There is deliberately no diff view: to
+compare, switch environments and look.
+
+Pages are authored **once**. `content/base/` is shared by every environment and
+`content/overrides/<env>/` holds what differs there; `npm run prepare-docs` composes the four trees
+into `docs-build/`, which is generated and never edited. A file that exists only in an override
+exists only on that environment — that is how *Example Component D* is on DEV and nowhere else.
+
+A shared page therefore **cannot link to an environment-specific page**: the link would be broken
+in every other tree. The build enforces this, because broken links fail it. If a shared page needs
+to point at something that only exists somewhere, it needs an override of its own — or the link
+belongs in a component that can check whether the target exists.
+
+Because pages are shared, their links are written environment-relative (`/systems/…`). Two
+mechanisms add the prefix: a remark plugin for Markdown links, and the `EnvLink` component for
+everything rendered from JSX. No author and no generator has to think about it.
+
 ## Generated or custom — never both
 
 <ContentLegend />

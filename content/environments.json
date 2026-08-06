@@ -1,0 +1,45 @@
+{
+  "defaultEnvironment": "prod",
+  "environments": [
+    {
+      "id": "dev",
+      "short": "DEV",
+      "label": "Development",
+      "routePrefix": "/dev",
+      "order": 1,
+      "reflects": "HEAD of every component repository and the current state of the architecture repository on DEV.",
+      "regeneration": "Regenerated hourly",
+      "indexable": false
+    },
+    {
+      "id": "ref",
+      "short": "REF",
+      "label": "Referenz",
+      "routePrefix": "/ref",
+      "order": 2,
+      "reflects": "The integration baseline promoted to REF — the last revision that passed integration testing.",
+      "regeneration": "Regenerated on every promotion to REF",
+      "indexable": false
+    },
+    {
+      "id": "abn",
+      "short": "ABN",
+      "label": "Abnahme",
+      "routePrefix": "/abn",
+      "order": 3,
+      "reflects": "The release candidate under acceptance on ABN.",
+      "regeneration": "Regenerated on every promotion to ABN",
+      "indexable": false
+    },
+    {
+      "id": "prod",
+      "short": "PROD",
+      "label": "Produktion",
+      "routePrefix": "",
+      "order": 4,
+      "reflects": "The released revision actually running in production.",
+      "regeneration": "Regenerated on every production release",
+      "indexable": true
+    }
+  ]
+}

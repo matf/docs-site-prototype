@@ -1,5 +1,11 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {usePluginData} from '@docusaurus/useGlobalData';
+import {
+  environmentById,
+  environmentOfPath,
+  useEnvironment,
+  withoutEnvironment,
+} from './environments';
 import {basePath, structurePath, type DocStatus} from './catalog';
 import {DEFAULT_STRUCTURE, docStructure, type DocSection} from './structures';
 
@@ -13,8 +19,13 @@ function normalise(path: string): string {
 export type DocsStatusIndex = {
   /** Status of one route, or `undefined` if the page does not exist. */
   statusOf: (path: string) => DocStatus | undefined;
-  /** Whether a page exists at this route. */
+  /** Whether a page exists at this route in the current environment. */
   exists: (path: string) => boolean;
+  /**
+   * Whether the same page exists in another environment. Needed by the
+   * environment switcher, which must not offer a link into a 404.
+   */
+  existsIn: (environmentId: string, path: string) => boolean;
   /** The sections of one structure actually documented for a system or component. */
   sectionsOf: (
     systemId: string,
@@ -38,13 +49,23 @@ export function useDocsStatus(): DocsStatusIndex {
     siteConfig: {baseUrl},
   } = useDocusaurusContext();
   const {byPermalink} = usePluginData('bazg-doc-status') as DocStatusGlobalData;
+  const environment = useEnvironment();
 
+  // Keyed environment-relative and restricted to the current environment, so
+  // every caller can ask about `/systems/…` without knowing where it is.
   const bySitePath = new Map<string, DocStatus>();
+  // Every environment, keyed `<envId>|<environment-relative path>`.
+  const allEnvironments = new Set<string>();
   for (const [permalink, status] of Object.entries(byPermalink)) {
-    const withoutBase = permalink.startsWith(baseUrl)
+    const sitePath = permalink.startsWith(baseUrl)
       ? `/${permalink.slice(baseUrl.length)}`
       : permalink;
-    bySitePath.set(normalise(withoutBase), status);
+    const owner = environmentOfPath(sitePath);
+    const relative = normalise(withoutEnvironment(sitePath));
+    allEnvironments.add(`${owner.id}|${relative}`);
+    if (owner.id === environment.id) {
+      bySitePath.set(relative, status);
+    }
   }
 
   const statusOf = (path: string) => bySitePath.get(normalise(path));
@@ -52,6 +73,8 @@ export function useDocsStatus(): DocsStatusIndex {
   return {
     statusOf,
     exists: (path) => statusOf(path) !== undefined,
+    existsIn: (environmentId, path) =>
+      allEnvironments.has(`${environmentById(environmentId).id}|${normalise(path)}`),
     sectionsOf: (systemId, componentId, structureId = DEFAULT_STRUCTURE) => {
       const base = structurePath(systemId, componentId, structureId);
       return docStructure(structureId).sections.flatMap((section) => {
