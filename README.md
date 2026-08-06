@@ -12,6 +12,9 @@ switcher in the header for DEV, REF and ABN)
 > **not** BAZG architecture information. No official BAZG branding assets are used — the mark in the
 > navbar is a neutral placeholder.
 
+**Full specification:** [`docs/spec.md`](docs/spec.md) — the information architecture, the content
+rules and the open points, written to be shared with a team.
+
 ## Purpose
 
 This is primarily a **UX and information-architecture prototype**, not a documentation-generation
@@ -623,6 +626,7 @@ build output, which would otherwise drop files and folders beginning with an und
 
 ```text
 .github/workflows/       deployment and pull-request validation
+docs/spec.md               the specification of this site
 content/environments.json  the four environments
 content/base/              the shared documentation tree (the site content)
 content/overrides/<env>/   what differs on one environment
