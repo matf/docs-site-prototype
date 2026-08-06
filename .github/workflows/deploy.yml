@@ -64,9 +64,8 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
+        # The action waits for the Pages backend to pick the artifact up. Its
+        # `timeout` input is capped at 10 minutes, so there is nothing to tune
+        # here: if the backend leaves the deployment queued longer than that,
+        # re-run this job.
         uses: actions/deploy-pages@v5
-        with:
-          # The default is 10 minutes. Four environment trees make a larger
-          # artifact, and the Pages backend has been leaving it queued past that
-          # — the upload succeeds and only the wait times out.
-          timeout: 1200000
