@@ -300,7 +300,39 @@ The switcher in the header keeps the reader on the same page, resolving the path
 **target** environment. When the page does not exist there, it walks up to the nearest ancestor
 that does, so it never offers a link into a 404.
 
-### 4.5 What is not solved yet
+### 4.5 Option: one site per environment
+
+The four trees are four docs plugin instances in **one** build. The alternative is four independent
+Docusaurus builds, one per environment, deployed separately. It would buy three things: builds that
+run in parallel, environments that can be rebuilt without touching the others, and a per-environment
+cadence — DEV on every push, PROD on release, a rarely-read environment rarely.
+
+**What already supports it.** `docsOptions(environment)` is parameterised per environment, so a
+per-environment build emits one instance instead of four. The composed trees are already separate
+directories under `docs-build/<env>/` and no tree references another. `plugins/remark-env-links/`
+largely disappears: the route prefix becomes each site's `baseUrl`, and that plugin exists only
+because four trees share one origin.
+
+**What it costs.**
+
+| # | Cost |
+| --- | --- |
+| 1 | **The switcher.** It resolves a path against the *target* environment (4.4), which works because one build sees all four trees. Four builds do not. It would need a published per-environment manifest of known paths, read at runtime, and would then be as correct as that manifest is fresh. |
+| 2 | **Deployment.** GitHub Pages allows one deployment per repository, and the workflow uploads the whole `build/`; four independent deployments would each replace the other three. They need a `gh-pages` branch where every environment writes its own subdirectory, or four hosting targets. |
+| 3 | **Total build cost rises.** `src/` is compiled once today and four times then. Wall-clock drops, runner minutes roughly triple. |
+| 4 | **"Authored once, shared" weakens** (4.2). Different cadences mean environments can be built from different revisions of `base/` and of the theme. A correction lands on DEV now and on PROD at its next build. |
+| 5 | **Production at the root becomes awkward.** Every environment would take a prefix and the root a redirect — a URL change, not only a build change. |
+
+Cost 1 is not an implementation detail. Independence and a switcher that knows what exists elsewhere
+are in tension by definition: a per-environment cadence means the answer is sometimes stale.
+
+**Assessment.** Worth doing when the driver is cadence. Not worth doing for build time alone, which
+is about six minutes today (O-5). A middle ground keeps most of the benefit: split **production from
+the three non-production environments** — two sites. The release cadence is decoupled, the switcher
+stays exact across the non-production three, and staleness is accepted on one boundary instead of
+six.
+
+### 4.6 What is not solved yet
 
 - Custom pages are shared across environments. Pinning a specific version of a custom page per
   environment is possible through overrides but is not modelled.
@@ -396,7 +428,7 @@ Available in every MDX file without an import:
 | --- | --- |
 | Generator | Docusaurus 3 (TypeScript, npm), docs-only mode, no blog |
 | Hosting | GitHub Pages project site at `/docs-site-prototype/`, `trailingSlash: true`, `static/.nojekyll` |
-| Environments | Four `plugin-content-docs` instances in one build |
+| Environments | Four `plugin-content-docs` instances in one build; 4.5 records the one-site-per-environment alternative |
 | Diagrams | Mermaid, in the repository as source |
 | Quality gate | Broken links, broken anchors, broken Markdown links and images, and duplicate routes all **fail** the build |
 | Deployment | GitHub Actions with the official Pages actions, OIDC, `github-pages` environment, no personal access token |
@@ -454,7 +486,7 @@ Available in every MDX file without an import:
 | O-2 | Mermaid renders client-side, so diagrams are absent without JavaScript and are not validated by the build. | New diagrams need a visual check |
 | O-3 | Custom pages cannot yet be pinned per environment. | Acceptable while documentation is shared |
 | O-4 | Hiding a `base` page from one environment requires moving it into the other overrides. | An exclusion manifest would fix it |
-| O-5 | Build time scales with environments × pages. | ~6 minutes in CI for four trees today |
+| O-5 | Build time scales with environments × pages. | ~6 minutes in CI for four trees today; 4.5 weighs one site per environment |
 | O-6 | `Arc42SectionNav` filters by route existence, not by emptiness. | The no-placeholder rule is enforced by review |
 | O-7 | Component landing pages are classified as generated, but a real generator would need the catalogue as input. | Modelling only |
 
