@@ -91,7 +91,7 @@ flowchart LR
 Rolling back activates the previous immutable version. Decisions already taken keep the version
 they were taken with — they are not retroactively changed, because that would break
 reproducibility. If affected consignments need a new decision, the analyst issues
-<Msg system="example-system-a" component="example-component-b" name="RecalculateRisk" />, which
+<Msg system="example-system-a" name="RecalculateRisk" />, which
 produces a **new** decision with a new identifier rather than replacing the old one.
 
 ## Model rollout

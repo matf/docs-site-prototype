@@ -120,6 +120,34 @@ explanation becomes a custom page directly beneath it:
 This is what makes regeneration safe: the generator replaces whole files and never has to merge
 into somebody's prose. A page that would be "half generated" is two pages.
 
+## Events and commands belong to the system
+
+A message contract is not owned by the component that happens to publish it. Several components
+produce and consume the same contract, and the contract outlives any of them, so it is documented
+**per system** — one page per event or command, directly below the system's
+*5. Building Block View*. That is the section that describes how the building blocks fit together,
+which is exactly what the messages between them are.
+
+```text
+docs/systems/example-system-a/05-building-block-view/
+├── _category_.json
+├── index.mdx                        the component diagram + the contract catalogue
+├── decomposition-rationale.mdx      custom
+├── submit-declaration.mdx           one page per command …
+├── correct-declaration.mdx
+├── declaration-accepted.mdx         … and one per event
+└── …
+```
+
+Commands come first, then events, ordered by `sidebar_position`. Each page is fully generated from
+the contract definition: producer, consumers, channel, schema and version, ordering key, retention,
+the payload fields, an example and the version history.
+
+A component page never repeats the contract. It shows only *which* of the system's messages it
+consumes and publishes, on its own *5. Building Block View*, with every name linking to the
+contract page. In prose, `<Msg system="example-system-a" name="DeclarationAccepted" />` renders an
+inline link to it.
+
 ## Sections only exist when they have content
 
 The twelve arc42 sections are a checklist, not a quota. A section that has nothing to say does

@@ -19,20 +19,23 @@ doc_status: custom
   }}
 />
 
-Concepts that cut across every building block of this component. Two of these pages are
-generated, two are written by hand, and they are interleaved in the navigation in the order that
-makes sense to read them — not grouped by origin.
+Concepts that cut across every building block of this component. One of these pages is generated
+and two are written by hand, interleaved in the navigation in the order that makes sense to read
+them — not grouped by origin.
+
+Message contracts are **not** here. They belong to the system, and are documented under
+[Example System A — 5. Building Block View](/systems/example-system-a/building-block-view/).
 
 | Page | Content | Maintained by |
 | --- | --- | --- |
-| [Messaging Events and Commands](/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/) | <StatusBadge status="generated" small /> | `bazg-msgdoc 0.4.1` |
 | [Integration Conventions](/systems/example-system-a/components/example-component-a/crosscutting-concerns/integration-conventions/) | <StatusBadge status="custom" small /> | Team Alpha |
 | [Observability](/systems/example-system-a/components/example-component-a/crosscutting-concerns/observability/) | <StatusBadge status="generated" small /> | `bazg-obsdoc 0.2.0` |
 | [Security](/systems/example-system-a/components/example-component-a/crosscutting-concerns/security/) | <StatusBadge status="custom" small /> | Team Alpha with the Information Security Officer |
 
-:::tip[Custom pages between generated pages]
-*Integration Conventions* sits **between** two generated pages. It is a hand-written page with
-`sidebar_position: 2`, dropped into the same folder as the generated ones. Nothing else was
+:::tip[Custom pages next to generated pages]
+
+*Integration Conventions* is a hand-written page sitting directly before the generated
+*Observability* page, placed there with `sidebar_position: 1` in its frontmatter. Nothing else was
 configured — this is the insertion model described in
 [Documentation conventions](/conventions/).
 

@@ -31,9 +31,10 @@ and integration conventions all belong here rather than in a generic catch-all c
 | Development guidelines | [Development Guidelines](/systems/example-system-a/crosscutting-concerns/development-guidelines/) | <StatusBadge status="custom" small /> |
 | Concept coverage | [Concept Coverage](/systems/example-system-a/crosscutting-concerns/concept-coverage/) | <StatusBadge status="generated" small /> |
 
-Component-specific crosscutting concepts are documented on the component, not here. The
-messaging catalogues are the clearest example: each component publishes its own contracts, so
-each component owns its own catalogue.
+Component-specific crosscutting concepts are documented on the component, not here. Message
+contracts are the exception in the other direction: they are defined by the *system*, so they live
+under [5. Building Block View](/systems/example-system-a/building-block-view/) rather than on any
+component.
 
 The last row is generated: which component actually applies which concept is collected from the
 component repositories rather than asserted here. That page is overwritten on every generation
@@ -51,7 +52,7 @@ arc42 section better — an operational scenario, for instance — it belongs th
     {
       to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/',
       label: 'Example Component A — 8. Crosscutting Concerns',
-      note: 'The same section one level down, with a generated messaging catalogue.',
+      note: 'The same section one level down.',
       status: 'custom',
     },
     {

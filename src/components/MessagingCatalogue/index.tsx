@@ -1,13 +1,14 @@
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import {
-  messageAnchor,
-  messageHref,
-  messagingCatalogue,
+  messageByName,
+  messagePath,
+  messagesOfComponent,
+  systemCatalogue,
   type MessageEntry,
   type MessageKind,
+  type Party,
 } from '@site/src/data/messaging';
 import styles from './styles.module.css';
 
@@ -20,57 +21,28 @@ function KindTag({kind}: {kind: MessageKind}): ReactNode {
   return <span className={clsx(styles.kind, styles[kind])}>{KIND_LABEL[kind]}</span>;
 }
 
-function DirectionTag({direction}: {direction: MessageEntry['direction']}): ReactNode {
+function PartyList({parties}: {parties: readonly Party[]}): ReactNode {
   return (
-    <span className={clsx(styles.direction, styles[direction])}>
-      <span aria-hidden="true">{direction === 'inbound' ? '↓ ' : '↑ '}</span>
-      {direction === 'inbound' ? 'Inbound' : 'Outbound'}
-    </span>
+    <>
+      {parties.map((party, i) => (
+        <React.Fragment key={party.label}>
+          {i > 0 ? ', ' : ''}
+          {party.label}
+        </React.Fragment>
+      ))}
+    </>
   );
 }
 
-/**
- * One catalogue row.
- *
- * The row registers its own anchor with Docusaurus so that the deep links from
- * the runtime views are covered by the build's broken-anchor check — anchors
- * outside headings are invisible to it otherwise.
- */
-function Row({message}: {message: MessageEntry}): ReactNode {
-  const anchor = messageAnchor(message.name);
-  useBrokenLinks().collectAnchor(anchor);
-  return (
-    <tr id={anchor} className={styles.row}>
-      <th scope="row" className={styles.nameCell}>
-        <code>{message.name}</code>
-        <a
-          className={styles.permalink}
-          href={`#${anchor}`}
-          aria-label={`Direct link to ${message.name}`}>
-          #
-        </a>
-      </th>
-      <td>
-        <KindTag kind={message.kind} />
-      </td>
-      <td>
-        <DirectionTag direction={message.direction} />
-      </td>
-      <td>{message.producer}</td>
-      <td>{message.consumer}</td>
-      <td>
-        <code className={styles.channel}>{message.channel}</code>
-      </td>
-      <td>
-        <code className={styles.schema}>{message.schema}</code>
-        <span className={styles.version}>v{message.version}</span>
-      </td>
-      <td className={styles.description}>{message.description}</td>
-    </tr>
-  );
-}
-
-function Table({title, messages}: {title: string; messages: readonly MessageEntry[]}): ReactNode {
+function Table({
+  system,
+  title,
+  messages,
+}: {
+  system: string;
+  title: string;
+  messages: readonly MessageEntry[];
+}): ReactNode {
   if (messages.length === 0) {
     return null;
   }
@@ -85,9 +57,8 @@ function Table({title, messages}: {title: string; messages: readonly MessageEntr
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Type</th>
-              <th scope="col">Direction</th>
               <th scope="col">Producer</th>
-              <th scope="col">Consumer</th>
+              <th scope="col">Consumers</th>
               <th scope="col">Channel</th>
               <th scope="col">Schema / version</th>
               <th scope="col">Description</th>
@@ -95,7 +66,28 @@ function Table({title, messages}: {title: string; messages: readonly MessageEntr
           </thead>
           <tbody>
             {messages.map((message) => (
-              <Row key={message.name} message={message} />
+              <tr key={message.name}>
+                <th scope="row" className={styles.nameCell}>
+                  <Link to={messagePath(system, message.name)}>
+                    <code>{message.name}</code>
+                  </Link>
+                </th>
+                <td>
+                  <KindTag kind={message.kind} />
+                </td>
+                <td>{message.producer.label}</td>
+                <td>
+                  <PartyList parties={message.consumers} />
+                </td>
+                <td>
+                  <code className={styles.channel}>{message.channel}</code>
+                </td>
+                <td>
+                  <code className={styles.schema}>{message.schema}</code>
+                  <span className={styles.version}>v{message.version}</span>
+                </td>
+                <td className={styles.description}>{message.description}</td>
+              </tr>
             ))}
           </tbody>
         </table>
@@ -105,64 +97,61 @@ function Table({title, messages}: {title: string; messages: readonly MessageEntr
 }
 
 /**
- * Generated catalogue of the messages a component consumes and publishes.
+ * Generated catalogue of the events and commands defined by one system.
  *
- * Commands and events are rendered as two separate tables so the difference is
- * visible at a glance, and every row carries a stable anchor so runtime views
- * can link directly to the message they are talking about.
+ * Message contracts belong to the system, not to a single component: several
+ * components produce and consume the same contract. Commands and events are
+ * rendered as two tables so the difference is visible at a glance, and every
+ * name links to that message's own page.
  */
-export default function MessagingCatalogue({
-  system,
-  component,
-}: {
-  system: string;
-  component: string;
-}): ReactNode {
-  const catalogue = messagingCatalogue(system, component);
+export default function MessagingCatalogue({system}: {system: string}): ReactNode {
+  const catalogue = systemCatalogue(system);
   const commands = catalogue.messages.filter((m) => m.kind === 'command');
   const events = catalogue.messages.filter((m) => m.kind === 'event');
-  const inbound = catalogue.messages.filter((m) => m.direction === 'inbound').length;
 
   return (
     <div>
       <p className={styles.summary}>
-        {catalogue.messages.length} messages — {commands.length} commands, {events.length} events;{' '}
-        {inbound} inbound, {catalogue.messages.length - inbound} outbound. Extracted from the
-        message contracts in <code>{catalogue.sourceRepo}</code> at revision{' '}
-        <code>{catalogue.revision}</code>.
+        {catalogue.messages.length} contracts — {commands.length} commands and {events.length}{' '}
+        events. Extracted from the contract definitions in <code>{catalogue.sourceRepo}</code> at
+        revision <code>{catalogue.revision}</code>.
       </p>
-      <Table title="Commands" messages={commands} />
-      <Table title="Events" messages={events} />
+      <Table system={system} title="Commands" messages={commands} />
+      <Table system={system} title="Events" messages={events} />
     </div>
   );
 }
 
 /**
- * Inline reference to one catalogue entry, for use in prose and runtime steps:
- * `<Msg system="…" component="…" name="DeclarationAccepted" />`.
+ * The subset of a system's catalogue that one component produces and consumes.
+ * Used on component pages, which no longer own a catalogue of their own.
  */
-export function Msg({
+export function ComponentMessages({
   system,
   component,
-  name,
 }: {
   system: string;
   component: string;
-  name: string;
 }): ReactNode {
-  const catalogue = messagingCatalogue(system, component);
-  const entry = catalogue.messages.find((m) => m.name === name);
-  if (!entry) {
-    throw new Error(
-      `Message "${name}" is not in the catalogue of ${system}/${component}. Known: ${catalogue.messages
-        .map((m) => m.name)
-        .join(', ')}`,
-    );
-  }
+  const {produced, consumed} = messagesOfComponent(system, component);
+  return (
+    <div>
+      <Table system={system} title="Consumes" messages={consumed} />
+      <Table system={system} title="Publishes" messages={produced} />
+    </div>
+  );
+}
+
+/**
+ * Inline reference to one contract, for use in prose and runtime steps:
+ * `<Msg system="example-system-a" name="DeclarationAccepted" />`.
+ */
+export function Msg({system, name}: {system: string; name: string}): ReactNode {
+  const entry = messageByName(system, name);
   return (
     <Link
       className={clsx(styles.ref, styles[`ref_${entry.kind}`])}
-      to={messageHref(system, component, name)}
+      to={messagePath(system, name)}
       title={`${KIND_LABEL[entry.kind]} — ${entry.description}`}>
       <span className={styles.refKind} aria-hidden="true">
         {entry.kind === 'command' ? 'CMD' : 'EVT'}

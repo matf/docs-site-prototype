@@ -2,7 +2,7 @@
 title: 6. Runtime View
 sidebar_label: 6. Runtime View
 sidebar_position: 0
-description: Generated reaction graph and derived runtime sequence of Example Component A, linked to the messaging catalogue.
+description: Generated reaction graph and derived runtime sequence of Example Component A, linked to the system's contract pages.
 doc_status: generated
 ---
 
@@ -92,13 +92,13 @@ flowchart TB
   title="Message reactions"
   status="generated"
   source="bazg-archdoc 0.7.2 · declaration-intake-service@9c1e40d"
-  caption="Each row is one message handler. Follow a message name to its contract in the messaging catalogue.">
+  caption="Each row is one message handler. Follow a message name to its contract page below the system's building block view.">
 
 | Trigger | Use case | State change | Publishes |
 | --- | --- | --- | --- |
-| <Msg system="example-system-a" component="example-component-a" name="SubmitDeclaration" /> | Register declaration | New declaration, revision 1, `ACCEPTED` | <Msg system="example-system-a" component="example-component-a" name="DeclarationAccepted" /> or <Msg system="example-system-a" component="example-component-a" name="DeclarationRejected" /> |
-| <Msg system="example-system-a" component="example-component-a" name="CorrectDeclaration" /> | Correct declaration | New revision, previous decision invalidated | <Msg system="example-system-a" component="example-component-a" name="DeclarationAmended" /> or <Msg system="example-system-a" component="example-component-a" name="DeclarationRejected" /> |
-| <Msg system="example-system-a" component="example-component-a" name="RiskAssessmentCompleted" /> | Apply risk decision | `CLEARED` or `HELD` | <Msg system="example-system-a" component="example-component-a" name="DeclarationCleared" /> or <Msg system="example-system-a" component="example-component-a" name="DeclarationHeld" /> |
+| <Msg system="example-system-a" name="SubmitDeclaration" /> | Register declaration | New declaration, revision 1, `ACCEPTED` | <Msg system="example-system-a" name="DeclarationAccepted" /> or <Msg system="example-system-a" name="DeclarationRejected" /> |
+| <Msg system="example-system-a" name="CorrectDeclaration" /> | Correct declaration | New revision, previous decision invalidated | <Msg system="example-system-a" name="DeclarationAmended" /> or <Msg system="example-system-a" name="DeclarationRejected" /> |
+| <Msg system="example-system-a" name="RiskAssessmentCompleted" /> | Apply risk decision | `CLEARED` or `HELD` | <Msg system="example-system-a" name="DeclarationCleared" /> or <Msg system="example-system-a" name="DeclarationHeld" /> |
 
 </Diagram>
 
@@ -155,8 +155,8 @@ Replay, dead-lettering and the outbox relay's failure modes are documented separ
       status: 'custom',
     },
     {
-      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
-      label: 'Messaging Events and Commands',
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Events and Commands',
       note: 'Contracts for every message in the graphs above.',
       status: 'generated',
     },

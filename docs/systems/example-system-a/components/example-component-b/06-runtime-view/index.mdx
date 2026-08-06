@@ -2,7 +2,7 @@
 title: 6. Runtime View
 sidebar_label: 6. Runtime View
 sidebar_position: 0
-description: Generated reaction graph and derived runtime sequence of Example Component B, linked to the messaging catalogue.
+description: Generated reaction graph and derived runtime sequence of Example Component B, linked to the system's contract pages.
 doc_status: generated
 ---
 
@@ -86,14 +86,14 @@ flowchart TB
   title="Message reactions"
   status="generated"
   source="bazg-archdoc 0.7.2 · risk-assessment-engine@3fd8b52"
-  caption="Each row is one message handler. Follow a message name to its contract in the messaging catalogue.">
+  caption="Each row is one message handler. Follow a message name to its contract page below the system's building block view.">
 
 | Trigger | Use case | State change | Publishes |
 | --- | --- | --- | --- |
-| <Msg system="example-system-a" component="example-component-b" name="DeclarationAccepted" /> | Assess revision | New risk case, one decision | <Msg system="example-system-a" component="example-component-b" name="RiskAssessmentCompleted" />, on `high` also <Msg system="example-system-a" component="example-component-b" name="OrderInspection" /> |
-| <Msg system="example-system-a" component="example-component-b" name="DeclarationAmended" /> | Re-assess after correction | Previous case invalidated, new case | <Msg system="example-system-a" component="example-component-b" name="RiskAssessmentCompleted" /> |
-| <Msg system="example-system-a" component="example-component-b" name="RecalculateRisk" /> | Manual re-assessment | New decision on the same revision, new decision id | <Msg system="example-system-a" component="example-component-b" name="RiskAssessmentCompleted" /> |
-| Rule set / model activation | Publish version | Caches refreshed | <Msg system="example-system-a" component="example-component-b" name="RiskModelDeployed" /> |
+| <Msg system="example-system-a" name="DeclarationAccepted" /> | Assess revision | New risk case, one decision | <Msg system="example-system-a" name="RiskAssessmentCompleted" />, on `high` also <Msg system="example-system-a" name="OrderInspection" /> |
+| <Msg system="example-system-a" name="DeclarationAmended" /> | Re-assess after correction | Previous case invalidated, new case | <Msg system="example-system-a" name="RiskAssessmentCompleted" /> |
+| <Msg system="example-system-a" name="RecalculateRisk" /> | Manual re-assessment | New decision on the same revision, new decision id | <Msg system="example-system-a" name="RiskAssessmentCompleted" /> |
+| Rule set / model activation | Publish version | Caches refreshed | <Msg system="example-system-a" name="RiskModelDeployed" /> |
 
 </Diagram>
 
@@ -136,7 +136,7 @@ The operational scenario for publishing rules and models is a separate custom pa
 <RelatedDocs
   items={[
     {to: '/systems/example-system-a/components/example-component-b/runtime-view/rule-set-rollout/', label: 'Rule Set Rollout', note: 'Custom operational scenario below this arc42 section.', status: 'custom'},
-    {to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', note: 'Contracts for every message above.', status: 'generated'},
+    {to: '/systems/example-system-a/building-block-view/', label: 'Events and Commands', note: 'Contracts for every message above.', status: 'generated'},
     {to: '/systems/example-system-a/components/example-component-a/runtime-view/', label: 'Example Component A — 6. Runtime View', note: 'The other half of the conversation.', status: 'generated'},
     {to: '/systems/example-system-a/runtime-view/', label: 'Example System A — 6. Runtime View', note: 'The same flows at system level.', status: 'custom'},
   ]}

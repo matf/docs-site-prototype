@@ -22,8 +22,8 @@ doc_status: generated
 
 :::info[Fully generated page]
 
-Derived from the component descriptors of the system. Why the system is cut this way, and why the
-decomposition stops where it does, is written by hand in
+Derived from the component descriptors and the contract definitions of the system. Why the system
+is cut this way, and why the decomposition stops where it does, is written by hand in
 [Decomposition Rationale](/systems/example-system-a/building-block-view/decomposition-rationale/).
 
 :::
@@ -93,6 +93,15 @@ arc42 sections each.
 
 </Diagram>
 
+## Events and commands
+
+Message contracts are defined by the **system**, not by a single component: several components
+produce and consume the same contract, and its lifecycle is longer than any one of them. They are
+therefore documented here, where the building blocks and the flows between them are described —
+one page per contract, directly below this section.
+
+<MessagingCatalogue system="example-system-a" />
+
 ## Level 2
 
 The internal structure of each component is documented in the component's own building block
@@ -117,14 +126,14 @@ generated internal decomposition:
       status: 'custom',
     },
     {
-      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
-      label: 'Example Component A — Messaging Events and Commands',
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Events and Commands',
       note: 'The contracts on the arrows above.',
       status: 'generated',
     },
     {
-      to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/',
-      label: 'Example Component B — Messaging Events and Commands',
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Events and Commands',
       note: 'The contracts on the arrows above.',
       status: 'generated',
     },

@@ -57,8 +57,8 @@ flowchart TB
 
 | Trigger | Use case | Publishes |
 | --- | --- | --- |
-| <Msg system="example-system-b" component="example-component-c" name="NotificationRequested" /> | Deliver to matching subscriptions | <Msg system="example-system-b" component="example-component-c" name="NotificationDelivered" /> or <Msg system="example-system-b" component="example-component-c" name="NotificationFailed" /> |
-| <Msg system="example-system-b" component="example-component-c" name="SendOperationalBroadcast" /> | Deliver to all subscriptions of the affected region | same |
+| <Msg system="example-system-b" name="NotificationRequested" /> | Deliver to matching subscriptions | <Msg system="example-system-b" name="NotificationDelivered" /> or <Msg system="example-system-b" name="NotificationFailed" /> |
+| <Msg system="example-system-b" name="SendOperationalBroadcast" /> | Deliver to all subscriptions of the affected region | same |
 
 ## Scenario — a closure broadcast to 40 000 subscribers
 
@@ -85,6 +85,6 @@ sequenceDiagram
 ```
 
 <RelatedDocs items={[
-  {to: '/systems/example-system-b/components/example-component-c/crosscutting-concerns/messaging-events-and-commands/', label: 'Messaging Events and Commands', status: 'generated'},
+  {to: '/systems/example-system-b/building-block-view/', label: 'Events and Commands', status: 'generated'},
   {to: '/systems/example-system-b/runtime-view/', label: 'Example System B — 6. Runtime View', status: 'custom'},
 ]} />

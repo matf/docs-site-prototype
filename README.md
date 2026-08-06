@@ -116,7 +116,11 @@ Systems
 │   ├── 2. Architecture Constraints
 │   ├── 3. Context and Scope
 │   ├── 4. Solution Strategy
-│   ├── 5. Building Block View                    ← links to the components
+│   ├── 5. Building Block View                    ← components + the contract catalogue
+│   │   ├── Decomposition Rationale               ← custom
+│   │   ├── SubmitDeclaration                     ← one generated page per command …
+│   │   ├── DeclarationAccepted                   ← … and per event
+│   │   └── …
 │   ├── 6. Runtime View
 │   │   └── Peak Load and Degradation             ← custom operational scenario
 │   ├── 7. Deployment View
@@ -136,8 +140,7 @@ Systems
 │       │   ├── 1. Introduction and Goals
 │       │   ├── … (all twelve arc42 sections)
 │       │   ├── 8. Crosscutting Concerns
-│       │   │   ├── Messaging Events and Commands   (generated)
-│       │   │   ├── Integration Conventions         (custom, between generated pages)
+│       │   │   ├── Integration Conventions         (custom)
 │       │   │   ├── Observability                   (generated)
 │       │   │   └── Security                        (custom)
 │       │   └── 12. Glossary
@@ -169,6 +172,11 @@ Three rules matter:
 - **Custom documentation is filed under the arc42 section it belongs to.** There is no generic
   catch-all category. In most cases the right home is `8. Crosscutting Concerns`; an operational
   scenario belongs under `6. Runtime View`, an ADR under `9. Architecture Decisions`.
+- **Events and commands are documented per system, not per component.** A contract is shared by
+  several components and outlives all of them, so each event and each command gets its own
+  generated page directly below the system's `5. Building Block View` — the section that describes
+  how the building blocks fit together and therefore what flows between them. A component page
+  shows only *which* messages it consumes and publishes, linking to the system's contract pages.
 - **A section exists only if it has content.** The twelve arc42 sections are a checklist, not a
   quota. A component always has `3. Context and Scope`, `5. Building Block View` and
   `6. Runtime View` — those three say what it is and what it does, and all three are generated.
@@ -303,14 +311,16 @@ Registered globally in `src/theme/MDXComponents.tsx`, so no MDX file needs an im
 | `<Arc42SectionNav system="…" component="…" />` | Links to the arc42 sections that exist, with a coverage line |
 | `<DocMix system="…" component="…" />` | Generated/custom page counts for a system or component |
 | `<Diagram title="…" status="…" source="…">` | Framed, scrollable diagram/table container |
-| `<MessagingCatalogue system="…" component="…" />` | Generated message catalogue |
-| `<Msg system="…" component="…" name="…" />` | Inline link to one catalogue entry |
+| `<MessagingCatalogue system="…" />` | Generated catalogue of a system's events and commands |
+| `<ComponentMessages system="…" component="…" />` | The subset one component consumes and publishes |
+| `<MessageDetail system="…" name="…" />` | The full contract page for one event or command |
+| `<Msg system="…" name="…" />` | Inline link to one contract |
 | `<RelatedDocs items={[…]} />` | Related-document links |
 | `<ContentLegend />`, `<StatsRow />` | Landing-page legend and counts |
 | `<PrototypeNotice />` | Standing "this content is fictional" notice |
 
 The data behind them lives in `src/data/`: `catalog.ts` (systems and components), `arc42.ts` (the
-twelve canonical sections), `messaging.ts` (message catalogues). Which sections actually exist and
+twelve canonical sections), `messaging.ts` (the per-system contract catalogues). Which sections actually exist and
 what each page's origin is comes from `src/data/useDocsStatus.ts`, which reads the global data
 produced by `plugins/doc-status/` — so section lists, badges and counts stay correct as
 documentation is added or removed, with nothing to maintain by hand.
@@ -338,10 +348,42 @@ Nothing else — the sidebar picks it up automatically.
 1. Create `docs/systems/<system-id>/components/<component-id>/`.
 2. Add `_category_.json` with the label and position.
 3. Add `index.mdx` and the twelve arc42 section files, exactly as for a system.
-4. Add the component to the owning system's `components` array in `src/data/catalog.ts`, and — if it
-   publishes messages — a catalogue entry in `src/data/messaging.ts`.
+4. Add the component to the owning system's `components` array in `src/data/catalog.ts`. If it
+   publishes or consumes messages, name it as producer or consumer on the relevant contracts in
+   `src/data/messaging.ts` — the contracts themselves belong to the system, not to the component.
 5. Link it from the system's `05-building-block-view.mdx` (a `<ComponentCard>` and a row in the
    component table).
+
+## How to add an event or a command
+
+Contracts are per system. Add the entry to the system's catalogue in `src/data/messaging.ts`
+(name, `slug`, kind, channel, schema, version, producer, consumers, ordering key, retention,
+payload fields, example, optional version history), then add the page:
+
+```text
+docs/systems/example-system-a/05-building-block-view/<slug>.mdx
+```
+
+```mdx
+---
+title: DeclarationAccepted
+sidebar_label: DeclarationAccepted
+sidebar_position: 6
+doc_status: generated
+---
+
+# DeclarationAccepted
+
+<DocHeader system="example-system-a" section="building-block-view" generated={{…}} />
+
+<MessageDetail system="example-system-a" name="DeclarationAccepted" />
+
+<MessageRelated system="example-system-a" name="DeclarationAccepted" />
+```
+
+The page is three components long because it is entirely generated output; everything it shows
+comes from the catalogue entry. The catalogue table on the section index, the per-component
+message lists and every inline `<Msg …/>` pick the new contract up automatically.
 
 ## How to add custom documentation beneath a specific arc42 section
 

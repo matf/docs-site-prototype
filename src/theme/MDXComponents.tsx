@@ -3,7 +3,9 @@ import Arc42SectionNav from '@site/src/components/Arc42SectionNav';
 import Diagram from '@site/src/components/Diagram';
 import DocMix from '@site/src/components/DocMix';
 import DocHeader from '@site/src/components/DocHeader';
-import MessagingCatalogue, {Msg} from '@site/src/components/MessagingCatalogue';
+import MessageDetail from '@site/src/components/MessageDetail';
+import MessageRelated from '@site/src/components/MessageDetail/MessageRelated';
+import MessagingCatalogue, {ComponentMessages, Msg} from '@site/src/components/MessagingCatalogue';
 import PrototypeNotice from '@site/src/components/PrototypeNotice';
 import RelatedDocs from '@site/src/components/RelatedDocs';
 import StatusBadge from '@site/src/components/StatusBadge';
@@ -28,6 +30,9 @@ export default {
   DocHeader,
   DocMix,
   GeneratedMeta,
+  ComponentMessages,
+  MessageDetail,
+  MessageRelated,
   MessagingCatalogue,
   Msg,
   PrototypeNotice,

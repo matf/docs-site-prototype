@@ -82,9 +82,9 @@ flowchart LR
 
 | From | What | Transport | Contract |
 | --- | --- | --- | --- |
-| Example Component A | <Msg system="example-system-a" component="example-component-b" name="DeclarationAccepted" /> | Broker | `declaration/DeclarationAccepted.avsc` 2.0.0 |
-| Example Component A | <Msg system="example-system-a" component="example-component-b" name="DeclarationAmended" /> | Broker | `declaration/DeclarationAmended.avsc` 1.2.0 |
-| Risk Operations Console | <Msg system="example-system-a" component="example-component-b" name="RecalculateRisk" /> | Broker | `risk/RecalculateRisk.avsc` 1.0.0 |
+| Example Component A | <Msg system="example-system-a" name="DeclarationAccepted" /> | Broker | `declaration/DeclarationAccepted.avsc` 2.0.0 |
+| Example Component A | <Msg system="example-system-a" name="DeclarationAmended" /> | Broker | `declaration/DeclarationAmended.avsc` 1.2.0 |
+| Risk Operations Console | <Msg system="example-system-a" name="RecalculateRisk" /> | Broker | `risk/RecalculateRisk.avsc` 1.0.0 |
 
 </Diagram>
 
@@ -97,9 +97,9 @@ flowchart LR
 
 | To | What | Transport | Contract |
 | --- | --- | --- | --- |
-| Example Component A, Audit | <Msg system="example-system-a" component="example-component-b" name="RiskAssessmentCompleted" /> | Broker | `risk/RiskAssessmentCompleted.avsc` 1.4.0 |
-| Inspection Planning | <Msg system="example-system-a" component="example-component-b" name="OrderInspection" /> | Broker | `inspection/OrderInspection.avsc` 2.1.0 |
-| Model Registry, Audit | <Msg system="example-system-a" component="example-component-b" name="RiskModelDeployed" /> | Broker | `risk/RiskModelDeployed.avsc` 1.0.0 |
+| Example Component A, Audit | <Msg system="example-system-a" name="RiskAssessmentCompleted" /> | Broker | `risk/RiskAssessmentCompleted.avsc` 1.4.0 |
+| Inspection Planning | <Msg system="example-system-a" name="OrderInspection" /> | Broker | `inspection/OrderInspection.avsc` 2.1.0 |
+| Model Registry, Audit | <Msg system="example-system-a" name="RiskModelDeployed" /> | Broker | `risk/RiskModelDeployed.avsc` 1.0.0 |
 | Model Registry | Rule set and model retrieval | HTTPS | `registry-api 2.0`, read-only |
 | Declarant History Store | Aggregated history features | HTTPS | `history-api 1.4`, read-only |
 
@@ -114,8 +114,8 @@ flowchart LR
       status: 'custom',
     },
     {
-      to: '/systems/example-system-a/components/example-component-b/crosscutting-concerns/messaging-events-and-commands/',
-      label: 'Messaging Events and Commands',
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Events and Commands',
       note: 'Full contract details for every message above.',
       status: 'generated',
     },

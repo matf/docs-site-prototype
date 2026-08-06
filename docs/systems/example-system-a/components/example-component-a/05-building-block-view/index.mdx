@@ -104,10 +104,19 @@ flowchart TB
 
 </Diagram>
 
+## Messages this component handles
+
+The contracts themselves belong to the system — several components share them — so each one has
+its own page under
+[Example System A — 5. Building Block View](/systems/example-system-a/building-block-view/). What is
+specific to this component is *which* of them it consumes and publishes:
+
+<ComponentMessages system="example-system-a" component="example-component-a" />
+
 ## Messaging and runtime behaviour
 
 The building blocks above exchange the messages catalogued in
-[Messaging Events and Commands](/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/).
+[Events and Commands](/systems/example-system-a/building-block-view/).
 How they interact over time — command in, event out — is documented in
 [6. Runtime View](/systems/example-system-a/components/example-component-a/runtime-view/).
 
@@ -120,8 +129,8 @@ How they interact over time — command in, event out — is documented in
       status: 'custom',
     },
     {
-      to: '/systems/example-system-a/components/example-component-a/crosscutting-concerns/messaging-events-and-commands/',
-      label: 'Messaging Events and Commands',
+      to: '/systems/example-system-a/building-block-view/',
+      label: 'Events and Commands',
       note: 'The contracts these blocks produce and consume.',
       status: 'generated',
     },
