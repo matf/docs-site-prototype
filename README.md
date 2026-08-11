@@ -1,6 +1,6 @@
-# BAZG System Documentation — website prototype
+# Acme System Documentation — website prototype
 
-A working prototype of the **BAZG system documentation portal**: one documentation tree for every
+A working prototype of the **Acme system documentation portal**: one documentation tree for every
 system and every component, structured directly according to **arc42**, with generated and
 manually maintained documentation shown side by side.
 
@@ -9,7 +9,7 @@ switcher in the header for DEV, REF and ABN)
 
 > **Prototype content.** All systems, components, teams, decisions, message contracts, metrics and
 > metadata in this repository are fictional. They exist to demonstrate the navigation model and are
-> **not** BAZG architecture information. No official BAZG branding assets are used — the mark in the
+> **not** the architecture information of any real organisation. No official branding assets are used — the mark in the
 > navbar is a neutral placeholder.
 
 **Full specification:** [`docs/spec.md`](docs/spec.md) — the information architecture, the content
@@ -365,8 +365,8 @@ value fails the build.
   component="example-component-a"
   section="building-block-view"
   generated={{
-    generator: 'bazg-archdoc 0.7.2',
-    sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
+    generator: 'acme-archdoc 0.7.2',
+    sourceRepo: 'git.example.com/acme-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
     scope: 'Whole page — internal component view and the building block table',

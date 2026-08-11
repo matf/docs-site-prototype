@@ -1,6 +1,6 @@
 .summary {
   font-size: 0.875rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   margin-bottom: 1.25rem;
 }
 
@@ -14,13 +14,13 @@
 }
 
 .count {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-weight: 400;
 }
 
 .scroller {
   overflow-x: auto;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
 }
 
@@ -37,16 +37,16 @@
   padding: 0.5rem 0.7rem;
   text-align: left;
   vertical-align: top;
-  border-bottom: 1px solid var(--bazg-border);
+  border-bottom: 1px solid var(--acme-border);
 }
 
 .table thead th {
   position: sticky;
   top: 0;
-  background: var(--bazg-surface);
+  background: var(--acme-surface);
   font-size: 0.75rem;
   letter-spacing: 0.02em;
-  border-bottom: 2px solid var(--bazg-border-strong);
+  border-bottom: 2px solid var(--acme-border-strong);
   white-space: nowrap;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .row:target {
-  background: var(--bazg-accent-soft);
+  background: var(--acme-accent-soft);
   outline: 2px solid var(--ifm-color-primary);
   outline-offset: -2px;
 }
@@ -80,7 +80,7 @@
 
 .permalink {
   margin-left: 0.35rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   opacity: 0;
   text-decoration: none;
 }
@@ -110,8 +110,8 @@
 
 .event {
   color: #0a5c8a;
-  background: var(--bazg-generated-bg);
-  border-color: var(--bazg-generated-border);
+  background: var(--acme-generated-bg);
+  border-color: var(--acme-generated-border);
 }
 
 [data-theme='dark'] .command {
@@ -121,16 +121,16 @@
 }
 
 [data-theme='dark'] .event {
-  color: var(--bazg-generated);
-  background: var(--bazg-generated-bg);
-  border-color: var(--bazg-generated-border);
+  color: var(--acme-generated);
+  background: var(--acme-generated-bg);
+  border-color: var(--acme-generated-border);
 }
 
 .inbound,
 .outbound {
   border: none;
   background: transparent;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   padding-left: 0;
   font-weight: 600;
 }
@@ -146,7 +146,7 @@
 
 .version {
   display: block;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-size: 0.75rem;
 }
 
@@ -161,9 +161,9 @@
   align-items: baseline;
   gap: 0.35em;
   padding: 0.05em 0.45em 0.1em;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: 4px;
-  background: var(--bazg-surface-alt);
+  background: var(--acme-surface-alt);
   text-decoration: none;
   white-space: nowrap;
   line-height: 1.6;
@@ -197,7 +197,7 @@
 }
 
 .ref_event .refKind {
-  color: var(--bazg-generated);
+  color: var(--acme-generated);
 }
 
 [data-theme='dark'] .ref_command .refKind {

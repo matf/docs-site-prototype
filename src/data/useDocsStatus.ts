@@ -37,7 +37,7 @@ export type DocsStatusIndex = {
 };
 
 /**
- * Documentation origin per published route, read from the `bazg-doc-status`
+ * Documentation origin per published route, read from the `acme-doc-status`
  * plugin's global data.
  *
  * Everything here is derived from what was actually published, so a structure
@@ -48,7 +48,7 @@ export function useDocsStatus(): DocsStatusIndex {
   const {
     siteConfig: {baseUrl},
   } = useDocusaurusContext();
-  const {byPermalink} = usePluginData('bazg-doc-status') as DocStatusGlobalData;
+  const {byPermalink} = usePluginData('acme-doc-status') as DocStatusGlobalData;
   const environment = useEnvironment();
 
   // Keyed environment-relative and restricted to the current environment, so

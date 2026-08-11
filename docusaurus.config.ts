@@ -46,8 +46,8 @@ function docsOptions(environment: EnvironmentConfig) {
 }
 
 const config: Config = {
-  title: 'BAZG System Documentation',
-  tagline: 'Architecture documentation for BAZG systems and components (arc42) — prototype',
+  title: 'Acme System Documentation',
+  tagline: 'Architecture documentation for Acme systems and components (arc42) — prototype',
   favicon: 'img/favicon.svg',
 
   // GitHub Pages project site: https://matf.github.io/docs-site-prototype/
@@ -126,7 +126,7 @@ const config: Config = {
       {
         name: 'description',
         content:
-          'Prototype of the BAZG system documentation portal: one arc42-structured documentation tree for systems and components, with generated and manually maintained pages side by side.',
+          'Prototype of the Acme system documentation portal: one arc42-structured documentation tree for systems and components, with generated and manually maintained pages side by side.',
       },
     ],
     colorMode: {
@@ -140,9 +140,9 @@ const config: Config = {
       },
     },
     navbar: {
-      title: 'BAZG System Documentation',
+      title: 'Acme System Documentation',
       logo: {
-        alt: 'BAZG System Documentation (prototype)',
+        alt: 'Acme System Documentation (prototype)',
         src: 'img/logo.svg',
         width: 28,
         height: 28,
@@ -190,7 +190,7 @@ const config: Config = {
         },
       ],
       copyright:
-        'Prototype only. All systems, components, teams and architecture data on this site are fictional and are not BAZG architecture information.',
+        'Prototype only. All systems, components, teams and architecture data on this site are fictional and are not the architecture information of any real organisation.',
     },
     prism: {
       theme: prismThemes.github,

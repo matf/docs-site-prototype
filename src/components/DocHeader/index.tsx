@@ -46,7 +46,7 @@ export type DocHeaderProps = {
  *
  * The origin is read from the page's own `doc_status` frontmatter rather than
  * passed in, so there is exactly one place per page that declares it — the same
- * place the build-time `bazg-doc-status` plugin reads.
+ * place the build-time `acme-doc-status` plugin reads.
  */
 export default function DocHeader({
   system,

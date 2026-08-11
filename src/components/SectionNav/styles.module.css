@@ -9,7 +9,7 @@
   display: flex;
   gap: 0.75rem;
   padding: 0.65rem 0.8rem;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
   color: var(--ifm-color-content);
   text-decoration: none;
@@ -20,7 +20,7 @@
 
 .item:hover {
   border-color: var(--ifm-color-primary);
-  background: var(--bazg-surface-alt);
+  background: var(--acme-surface-alt);
   text-decoration: none;
   color: var(--ifm-color-content);
 }
@@ -32,12 +32,12 @@
   display: grid;
   place-items: center;
   border-radius: 4px;
-  background: var(--bazg-surface);
-  border: 1px solid var(--bazg-border);
+  background: var(--acme-surface);
+  border: 1px solid var(--acme-border);
   font-size: 0.75rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .item:hover .num {
@@ -62,7 +62,7 @@
 .purpose {
   font-size: 0.8125rem;
   line-height: 1.45;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .badge {
@@ -72,5 +72,5 @@
 .coverage {
   margin: -1.25rem 0 2rem;
   font-size: 0.8125rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }

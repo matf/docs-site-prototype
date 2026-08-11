@@ -7,7 +7,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.25rem 0.6rem;
-  border: 1px solid var(--bazg-border-strong);
+  border: 1px solid var(--acme-border-strong);
   border-radius: 999px;
   background: var(--ifm-background-color);
   font-size: 0.8125rem;
@@ -21,7 +21,7 @@
 }
 
 .triggerLabel {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-weight: 500;
 }
 
@@ -36,21 +36,21 @@
 }
 
 .code_prod {
-  color: var(--bazg-custom);
-  background: var(--bazg-custom-bg);
-  border-color: var(--bazg-custom-border);
+  color: var(--acme-custom);
+  background: var(--acme-custom-bg);
+  border-color: var(--acme-custom-border);
 }
 
 .code_abn,
 .code_ref {
-  color: var(--bazg-generated);
-  background: var(--bazg-generated-bg);
-  border-color: var(--bazg-generated-border);
+  color: var(--acme-generated);
+  background: var(--acme-generated-bg);
+  border-color: var(--acme-generated-border);
 }
 
 .code_dev {
   color: var(--ifm-color-primary-darkest);
-  background: var(--bazg-accent-soft);
+  background: var(--acme-accent-soft);
   border-color: var(--ifm-color-primary-lightest);
 }
 
@@ -80,6 +80,6 @@
 .optionNote {
   font-size: 0.75rem;
   line-height: 1.4;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   max-width: 22rem;
 }

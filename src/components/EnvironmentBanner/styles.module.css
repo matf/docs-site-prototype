@@ -5,15 +5,15 @@
   gap: 0.6rem;
   flex-wrap: wrap;
   padding: 0.4rem 1rem 0.45rem;
-  border-bottom: 1px solid var(--bazg-border);
-  background: var(--bazg-surface);
+  border-bottom: 1px solid var(--acme-border);
+  background: var(--acme-surface);
   font-size: 0.8125rem;
   line-height: 1.5;
   text-align: center;
 }
 
 .dev {
-  background: var(--bazg-accent-soft);
+  background: var(--acme-accent-soft);
   border-bottom-color: var(--ifm-color-primary-lightest);
 }
 
@@ -21,7 +21,7 @@
   flex: none;
   padding: 0.05em 0.5em 0.1em;
   border-radius: 3px;
-  border: 1px solid var(--bazg-border-strong);
+  border: 1px solid var(--acme-border-strong);
   background: var(--ifm-background-color);
   font-size: 0.6875rem;
   font-weight: 800;
@@ -29,7 +29,7 @@
 }
 
 .text {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   max-width: 80ch;
 }
 

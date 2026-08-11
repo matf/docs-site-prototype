@@ -1,4 +1,4 @@
-# BAZG System Documentation — specification
+# Acme System Documentation — specification
 
 Specification of the documentation site: what it is for, how it is organised, and the rules that
 keep it consistent. Written to be shared with the team and adapted.
@@ -12,7 +12,7 @@ All sample content in the repository is fictional.
 
 ### 1.1 What this site is
 
-A single portal for the architecture and specification documentation of BAZG systems and their
+A single portal for the architecture and specification documentation of Acme systems and their
 components. It brings together documentation that is **generated** from source artefacts and
 documentation that is **written by hand**, presents both in one navigable tree, and always says
 which is which.
@@ -400,7 +400,7 @@ accent inspired by Swiss federal visual language, subtle borders rather than sha
 layout, accessible contrast. Dark mode is supported. Responsive down to 390 px with no horizontal
 page scroll; wide tables and diagrams scroll inside their own container.
 
-No official BAZG branding assets are used — the navbar mark is a neutral placeholder.
+No official branding assets are used — the navbar mark is a neutral placeholder.
 
 ### 6.1 Reusable components
 

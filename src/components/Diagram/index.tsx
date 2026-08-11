@@ -10,7 +10,7 @@ export type DiagramProps = {
   status?: DocStatus;
   /** Short caption placed under the figure. */
   caption?: ReactNode;
-  /** e.g. `bazg-archdoc 0.7.2 · declaration-intake-service@9c1e40d`. */
+  /** e.g. `acme-archdoc 0.7.2 · declaration-intake-service@9c1e40d`. */
   source?: string;
   children: ReactNode;
   className?: string;

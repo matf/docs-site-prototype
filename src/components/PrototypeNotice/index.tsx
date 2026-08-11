@@ -6,7 +6,7 @@ import styles from './styles.module.css';
  *
  * Used on the start page and on the system and component landing pages so a
  * reader who deep-links into the tree cannot mistake the sample architecture
- * for real BAZG information.
+ * for real architecture information.
  */
 export default function PrototypeNotice({children}: {children?: ReactNode}): ReactNode {
   return (
@@ -14,7 +14,7 @@ export default function PrototypeNotice({children}: {children?: ReactNode}): Rea
       <strong className={styles.label}>Prototype content</strong>
       <span>
         {children ??
-          'All systems, components, teams, decisions, message contracts and metadata on this site are fictional. They illustrate the navigation model only and are not BAZG architecture information.'}
+          'All systems, components, teams, decisions, message contracts and metadata on this site are fictional. They illustrate the navigation model only and are not the architecture information of any real organisation.'}
       </span>
     </aside>
   );

@@ -32,14 +32,14 @@
 }
 
 .generated {
-  color: var(--bazg-generated);
-  background: var(--bazg-generated-bg);
-  border-color: var(--bazg-generated-border);
+  color: var(--acme-generated);
+  background: var(--acme-generated-bg);
+  border-color: var(--acme-generated-border);
 }
 
 .custom {
-  color: var(--bazg-custom);
-  background: var(--bazg-custom-bg);
-  border-color: var(--bazg-custom-border);
+  color: var(--acme-custom);
+  background: var(--acme-custom-bg);
+  border-color: var(--acme-custom-border);
 }
 

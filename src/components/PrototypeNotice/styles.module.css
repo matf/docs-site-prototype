@@ -5,10 +5,10 @@
   gap: 0.35rem 0.6rem;
   margin: 1.25rem 0 1.75rem;
   padding: 0.6rem 0.9rem 0.7rem;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-left: 3px solid var(--ifm-color-primary);
   border-radius: var(--ifm-global-radius);
-  background: var(--bazg-accent-soft);
+  background: var(--acme-accent-soft);
   font-size: 0.8125rem;
   line-height: 1.55;
 }

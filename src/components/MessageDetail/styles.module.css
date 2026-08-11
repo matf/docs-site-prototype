@@ -10,10 +10,10 @@
   gap: 0.3rem 2rem;
   margin: 0 0 2rem;
   padding: 0.9rem 1.1rem 1rem;
-  border: 1px solid var(--bazg-border);
-  border-left: 3px solid var(--bazg-generated);
+  border: 1px solid var(--acme-border);
+  border-left: 3px solid var(--acme-generated);
   border-radius: var(--ifm-global-radius);
-  background: var(--bazg-surface-alt);
+  background: var(--acme-surface-alt);
   font-size: 0.8125rem;
 }
 
@@ -22,14 +22,14 @@
   gap: 0.6rem;
   align-items: baseline;
   padding-bottom: 0.3rem;
-  border-bottom: 1px dotted var(--bazg-border);
+  border-bottom: 1px dotted var(--acme-border);
 }
 
 .prop dt {
   flex: none;
   width: 8.5rem;
   margin: 0;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-weight: 500;
 }
 
@@ -47,7 +47,7 @@
 
 .scroller {
   overflow-x: auto;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
   margin: 1rem 0 1.25rem;
 }
@@ -65,13 +65,13 @@
   padding: 0.5rem 0.7rem;
   text-align: left;
   vertical-align: top;
-  border-bottom: 1px solid var(--bazg-border);
+  border-bottom: 1px solid var(--acme-border);
 }
 
 .table thead th {
-  background: var(--bazg-surface);
+  background: var(--acme-surface);
   font-size: 0.75rem;
-  border-bottom: 2px solid var(--bazg-border-strong);
+  border-bottom: 2px solid var(--acme-border-strong);
   white-space: nowrap;
 }
 
@@ -88,17 +88,17 @@
 }
 
 .flag {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .required {
-  color: var(--bazg-custom);
+  color: var(--acme-custom);
   font-weight: 650;
 }
 
 .envelopeNote {
   font-size: 0.8125rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   margin-bottom: 1.5rem;
 }
 

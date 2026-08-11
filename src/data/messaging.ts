@@ -70,16 +70,16 @@ export type SystemCatalogue = {
 };
 
 const EXAMPLE_SYSTEM_A: SystemCatalogue = {
-  generator: 'bazg-msgdoc 0.4.1',
+  generator: 'acme-msgdoc 0.4.1',
   generatedAt: '2026-08-04 03:12 UTC',
-  sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a-contracts',
+  sourceRepo: 'git.example.com/acme-proto/example-system-a-contracts',
   revision: 'b7e4102',
   messages: [
     {
       kind: 'command',
       name: 'SubmitDeclaration',
       slug: 'submit-declaration',
-      channel: 'bazg.proto.declaration.commands.v1',
+      channel: 'acme.proto.declaration.commands.v1',
       schema: 'declaration/SubmitDeclaration.avsc',
       version: '1.3.0',
       description:
@@ -119,7 +119,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'command',
       name: 'CorrectDeclaration',
       slug: 'correct-declaration',
-      channel: 'bazg.proto.declaration.commands.v1',
+      channel: 'acme.proto.declaration.commands.v1',
       schema: 'declaration/CorrectDeclaration.avsc',
       version: '1.1.0',
       description:
@@ -147,7 +147,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'command',
       name: 'RecalculateRisk',
       slug: 'recalculate-risk',
-      channel: 'bazg.proto.risk.commands.v1',
+      channel: 'acme.proto.risk.commands.v1',
       schema: 'risk/RecalculateRisk.avsc',
       version: '1.0.0',
       description:
@@ -173,7 +173,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'command',
       name: 'OrderInspection',
       slug: 'order-inspection',
-      channel: 'bazg.proto.inspection.commands.v1',
+      channel: 'acme.proto.inspection.commands.v1',
       schema: 'inspection/OrderInspection.avsc',
       version: '2.1.0',
       description:
@@ -201,7 +201,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'DeclarationAccepted',
       slug: 'declaration-accepted',
-      channel: 'bazg.proto.declaration.events.v1',
+      channel: 'acme.proto.declaration.events.v1',
       schema: 'declaration/DeclarationAccepted.avsc',
       version: '2.0.0',
       description:
@@ -238,7 +238,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'DeclarationRejected',
       slug: 'declaration-rejected',
-      channel: 'bazg.proto.declaration.events.v1',
+      channel: 'acme.proto.declaration.events.v1',
       schema: 'declaration/DeclarationRejected.avsc',
       version: '2.0.0',
       description:
@@ -268,7 +268,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'DeclarationAmended',
       slug: 'declaration-amended',
-      channel: 'bazg.proto.declaration.events.v1',
+      channel: 'acme.proto.declaration.events.v1',
       schema: 'declaration/DeclarationAmended.avsc',
       version: '1.2.0',
       description:
@@ -297,7 +297,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'RiskAssessmentCompleted',
       slug: 'risk-assessment-completed',
-      channel: 'bazg.proto.risk.events.v1',
+      channel: 'acme.proto.risk.events.v1',
       schema: 'risk/RiskAssessmentCompleted.avsc',
       version: '1.4.0',
       description:
@@ -338,7 +338,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'DeclarationCleared',
       slug: 'declaration-cleared',
-      channel: 'bazg.proto.declaration.events.v1',
+      channel: 'acme.proto.declaration.events.v1',
       schema: 'declaration/DeclarationCleared.avsc',
       version: '1.2.0',
       description:
@@ -369,7 +369,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'DeclarationHeld',
       slug: 'declaration-held',
-      channel: 'bazg.proto.declaration.events.v1',
+      channel: 'acme.proto.declaration.events.v1',
       schema: 'declaration/DeclarationHeld.avsc',
       version: '1.2.0',
       description:
@@ -402,7 +402,7 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
       kind: 'event',
       name: 'RiskModelDeployed',
       slug: 'risk-model-deployed',
-      channel: 'bazg.proto.risk.events.v1',
+      channel: 'acme.proto.risk.events.v1',
       schema: 'risk/RiskModelDeployed.avsc',
       version: '1.0.0',
       description:
@@ -431,16 +431,16 @@ const EXAMPLE_SYSTEM_A: SystemCatalogue = {
 };
 
 const EXAMPLE_SYSTEM_B: SystemCatalogue = {
-  generator: 'bazg-msgdoc 0.4.1',
+  generator: 'acme-msgdoc 0.4.1',
   generatedAt: '2026-08-03 03:10 UTC',
-  sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-b-contracts',
+  sourceRepo: 'git.example.com/acme-proto/example-system-b-contracts',
   revision: 'a90f331',
   messages: [
     {
       kind: 'command',
       name: 'SendOperationalBroadcast',
       slug: 'send-operational-broadcast',
-      channel: 'bazg.proto.notification.commands.v1',
+      channel: 'acme.proto.notification.commands.v1',
       schema: 'notification/SendOperationalBroadcast.avsc',
       version: '1.0.0',
       description:
@@ -466,7 +466,7 @@ const EXAMPLE_SYSTEM_B: SystemCatalogue = {
       kind: 'event',
       name: 'NotificationRequested',
       slug: 'notification-requested',
-      channel: 'bazg.proto.notification.events.v1',
+      channel: 'acme.proto.notification.events.v1',
       schema: 'notification/NotificationRequested.avsc',
       version: '1.1.0',
       description:
@@ -492,7 +492,7 @@ const EXAMPLE_SYSTEM_B: SystemCatalogue = {
       kind: 'event',
       name: 'NotificationDelivered',
       slug: 'notification-delivered',
-      channel: 'bazg.proto.notification.events.v1',
+      channel: 'acme.proto.notification.events.v1',
       schema: 'notification/NotificationDelivered.avsc',
       version: '1.1.0',
       description:
@@ -518,7 +518,7 @@ const EXAMPLE_SYSTEM_B: SystemCatalogue = {
       kind: 'event',
       name: 'NotificationFailed',
       slug: 'notification-failed',
-      channel: 'bazg.proto.notification.events.v1',
+      channel: 'acme.proto.notification.events.v1',
       schema: 'notification/NotificationFailed.avsc',
       version: '1.1.0',
       description:

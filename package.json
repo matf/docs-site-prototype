@@ -1,5 +1,5 @@
 {
-  "name": "bazg-docs-site-prototype",
+  "name": "acme-docs-site-prototype",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -51,5 +51,5 @@
   "engines": {
     "node": ">=20.0"
   },
-  "description": "BAZG System Documentation \u2014 navigation prototype (Docusaurus)"
+  "description": "Acme System Documentation \u2014 navigation prototype (Docusaurus)"
 }

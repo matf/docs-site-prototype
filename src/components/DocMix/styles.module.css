@@ -8,18 +8,18 @@
 }
 
 .generated {
-  color: var(--bazg-generated);
+  color: var(--acme-generated);
 }
 
 .custom {
-  color: var(--bazg-custom);
+  color: var(--acme-custom);
 }
 
 .sep {
-  color: var(--bazg-border-strong);
+  color: var(--acme-border-strong);
 }
 
 .suffix {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-weight: 400;
 }

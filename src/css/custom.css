@@ -1,9 +1,9 @@
 /**
- * BAZG System Documentation — prototype theme.
+ * Acme System Documentation — prototype theme.
  *
  * Restrained federal-administration look: light surfaces, dark neutral type,
  * a single red accent, subtle borders instead of shadows.
- * No official BAZG branding assets are used.
+ * No official branding assets are used.
  */
 
 :root {
@@ -38,28 +38,28 @@
   --ifm-navbar-background-color: #ffffff;
   --ifm-navbar-shadow: none;
 
-  --ifm-toc-border-color: var(--bazg-border);
+  --ifm-toc-border-color: var(--acme-border);
   --ifm-global-radius: 6px;
 
   --docusaurus-highlighted-code-line-bg: rgba(200, 16, 46, 0.1);
 
   /* Prototype design tokens */
-  --bazg-border: #dde1e6;
-  --bazg-border-strong: #c3c9d0;
-  --bazg-surface: #f6f7f9;
-  --bazg-surface-alt: #fbfbfc;
-  --bazg-muted: #55606c;
+  --acme-border: #dde1e6;
+  --acme-border-strong: #c3c9d0;
+  --acme-surface: #f6f7f9;
+  --acme-surface-alt: #fbfbfc;
+  --acme-muted: #55606c;
 
-  --bazg-generated: #0a5c8a;
-  --bazg-generated-bg: #eaf3f9;
-  --bazg-generated-border: #b9d6e8;
+  --acme-generated: #0a5c8a;
+  --acme-generated-bg: #eaf3f9;
+  --acme-generated-border: #b9d6e8;
 
-  --bazg-custom: #1f6f43;
-  --bazg-custom-bg: #ecf5f0;
-  --bazg-custom-border: #bcdcca;
+  --acme-custom: #1f6f43;
+  --acme-custom-bg: #ecf5f0;
+  --acme-custom-border: #bcdcca;
 
 
-  --bazg-accent-soft: #fbeef0;
+  --acme-accent-soft: #fbeef0;
 }
 
 [data-theme='dark'] {
@@ -81,22 +81,22 @@
 
   --docusaurus-highlighted-code-line-bg: rgba(255, 97, 120, 0.16);
 
-  --bazg-border: #2c3238;
-  --bazg-border-strong: #3d454d;
-  --bazg-surface: #1c2025;
-  --bazg-surface-alt: #191d21;
-  --bazg-muted: #a4aeb9;
+  --acme-border: #2c3238;
+  --acme-border-strong: #3d454d;
+  --acme-surface: #1c2025;
+  --acme-surface-alt: #191d21;
+  --acme-muted: #a4aeb9;
 
-  --bazg-generated: #7ec2e8;
-  --bazg-generated-bg: #14252f;
-  --bazg-generated-border: #2b4a5e;
+  --acme-generated: #7ec2e8;
+  --acme-generated-bg: #14252f;
+  --acme-generated-border: #2b4a5e;
 
-  --bazg-custom: #86cea5;
-  --bazg-custom-bg: #16261d;
-  --bazg-custom-border: #2c4d39;
+  --acme-custom: #86cea5;
+  --acme-custom-bg: #16261d;
+  --acme-custom-border: #2c4d39;
 
 
-  --bazg-accent-soft: #2a1a1e;
+  --acme-accent-soft: #2a1a1e;
 }
 
 html {
@@ -106,7 +106,7 @@ html {
 /* --- Navbar / footer ---------------------------------------------------- */
 
 .navbar {
-  border-bottom: 1px solid var(--bazg-border);
+  border-bottom: 1px solid var(--acme-border);
 }
 
 .navbar__title {
@@ -120,10 +120,10 @@ html {
 }
 
 .footer {
-  border-top: 1px solid var(--bazg-border);
-  background-color: var(--bazg-surface-alt);
-  --ifm-footer-background-color: var(--bazg-surface-alt);
-  --ifm-footer-color: var(--bazg-muted);
+  border-top: 1px solid var(--acme-border);
+  background-color: var(--acme-surface-alt);
+  --ifm-footer-background-color: var(--acme-surface-alt);
+  --ifm-footer-color: var(--acme-muted);
   --ifm-footer-link-color: var(--ifm-color-content);
   --ifm-footer-title-color: var(--ifm-heading-color);
 }
@@ -131,7 +131,7 @@ html {
 .footer__copyright {
   margin-top: 1.5rem;
   font-size: 0.8125rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   max-width: 70ch;
   margin-inline: auto;
   text-align: center;
@@ -140,7 +140,7 @@ html {
 /* --- Sidebar ------------------------------------------------------------ */
 
 .theme-doc-sidebar-container {
-  border-right: 1px solid var(--bazg-border) !important;
+  border-right: 1px solid var(--acme-border) !important;
 }
 
 .menu {
@@ -154,13 +154,13 @@ html {
 }
 
 .menu__link--active:not(.menu__link--sublist) {
-  background-color: var(--bazg-accent-soft);
+  background-color: var(--acme-accent-soft);
   font-weight: 600;
 }
 
 .menu__list-item-collapsible:hover,
 .menu__link:hover {
-  background-color: var(--bazg-surface);
+  background-color: var(--acme-surface);
 }
 
 /* The root "Systems" node reads as a section title, not a clickable row. */
@@ -170,11 +170,11 @@ html {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .menu__list .menu__list {
-  border-left: 1px solid var(--bazg-border);
+  border-left: 1px solid var(--acme-border);
   margin-left: 0.6rem;
   padding-left: 0.35rem;
 }
@@ -189,7 +189,7 @@ html {
 .markdown > h2 {
   margin-top: 2.5rem;
   padding-top: 0.6rem;
-  border-top: 1px solid var(--bazg-border);
+  border-top: 1px solid var(--acme-border);
   font-size: 1.4rem;
 }
 
@@ -206,24 +206,24 @@ html {
 }
 
 .markdown table thead tr {
-  border-bottom: 2px solid var(--bazg-border-strong);
+  border-bottom: 2px solid var(--acme-border-strong);
 }
 
 .markdown table th,
 .markdown table td {
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   padding: 0.5rem 0.7rem;
 }
 
 .markdown table thead th {
-  background-color: var(--bazg-surface);
+  background-color: var(--acme-surface);
   text-align: left;
 }
 
 .markdown blockquote {
-  border-left: 3px solid var(--bazg-border-strong);
-  background: var(--bazg-surface-alt);
-  color: var(--bazg-muted);
+  border-left: 3px solid var(--acme-border-strong);
+  background: var(--acme-surface-alt);
+  color: var(--acme-muted);
   padding: 0.75rem 1rem;
   border-radius: 0 4px 4px 0;
 }
@@ -246,14 +246,14 @@ html {
 }
 
 .breadcrumbs__item--active .breadcrumbs__link {
-  background: var(--bazg-surface);
+  background: var(--acme-surface);
   font-weight: 600;
 }
 
 /* Pagination (previous / next) */
 
 .pagination-nav__link {
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
   transition: border-color 150ms ease;
 }
@@ -263,7 +263,7 @@ html {
 }
 
 .pagination-nav__sublabel {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 /* Mermaid diagrams sit inside <Diagram>, which owns the frame. */

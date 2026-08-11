@@ -1,9 +1,9 @@
 .box {
   margin: 1.75rem 0;
   padding: 0.9rem 1.1rem 1rem;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
-  background: var(--bazg-surface-alt);
+  background: var(--acme-surface-alt);
 }
 
 .title {
@@ -12,7 +12,7 @@
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .list {
@@ -32,7 +32,7 @@
 
 .item::before {
   content: '→';
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   flex: none;
 }
 
@@ -41,6 +41,6 @@
 }
 
 .note {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-size: 0.8125rem;
 }

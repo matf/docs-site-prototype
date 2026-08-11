@@ -13,8 +13,8 @@ doc_status: generated
   system="example-system-a"
   section="context-and-scope"
   generated={{
-    generator: 'bazg-archdoc 0.7.2',
-    sourceRepo: 'git.example.admin.ch/bazg-proto/example-system-a',
+    generator: 'acme-archdoc 0.7.2',
+    sourceRepo: 'git.example.com/acme-proto/example-system-a',
     revision: 'a41f7c9',
     generatedAt: '2026-08-04 03:12 UTC',
     scope: 'Whole page — system context diagram and external interface table',
@@ -34,7 +34,7 @@ sits and what was deliberately left outside — is written by hand next to this 
 <Diagram
   title="System context — Example System A"
   status="generated"
-  source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
+  source="acme-archdoc 0.7.2 · example-system-a@a41f7c9"
   caption="External parties and neighbouring systems, with the direction of the business interaction.">
 
 ```mermaid
@@ -76,18 +76,18 @@ flowchart LR
 <Diagram
   title="External interfaces"
   status="generated"
-  source="bazg-archdoc 0.7.2 · example-system-a@a41f7c9"
+  source="acme-archdoc 0.7.2 · example-system-a@a41f7c9"
   caption="Extracted from the interface descriptors in the system repository.">
 
 | Neighbour | Direction | Transport | Contract | Notes |
 | --- | --- | --- | --- | --- |
-| Trade Portal | inbound | Message broker | `bazg.proto.declaration.commands.v1` | Externally versioned national message specification. |
-| Trade Portal | outbound | Message broker | `bazg.proto.declaration.events.v1` | Acceptance, rejection and clearance notices. |
+| Trade Portal | inbound | Message broker | `acme.proto.declaration.commands.v1` | Externally versioned national message specification. |
+| Trade Portal | outbound | Message broker | `acme.proto.declaration.events.v1` | Acceptance, rejection and clearance notices. |
 | Federal Identity Provider | inbound | HTTPS / OIDC | Discovery document | Token validation only; no user store in the system. |
 | Tariff and Rules Service | outbound | HTTPS / REST | `tariff-api 3.2` | Read-only, cached for 24 h, degrades to the cache on failure. |
-| Inspection Planning | outbound | Message broker | `bazg.proto.inspection.commands.v1` | Inspection orders for high-risk consignments. |
-| Border Control Operations | outbound | Message broker | `bazg.proto.declaration.events.v1` | Clearance notifications. |
-| Audit Trail Service | outbound | Message broker | `bazg.proto.declaration.events.v1` | Append-only decision record, ten-year retention. |
+| Inspection Planning | outbound | Message broker | `acme.proto.inspection.commands.v1` | Inspection orders for high-risk consignments. |
+| Border Control Operations | outbound | Message broker | `acme.proto.declaration.events.v1` | Clearance notifications. |
+| Audit Trail Service | outbound | Message broker | `acme.proto.declaration.events.v1` | Append-only decision record, ten-year retention. |
 
 </Diagram>
 

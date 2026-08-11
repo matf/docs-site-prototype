@@ -6,9 +6,9 @@
   gap: 0.75rem 1rem;
   padding: 0.6rem 0.9rem;
   margin: 0 0 1.5rem;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
-  background: var(--bazg-surface);
+  background: var(--acme-surface);
 }
 
 .trail {
@@ -34,7 +34,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .name {
@@ -67,25 +67,25 @@ a.name:hover {
 
 .environment {
   padding: 0.15em 0.55em 0.2em;
-  border: 1px solid var(--bazg-border-strong);
+  border: 1px solid var(--acme-border-strong);
   border-radius: 999px;
   background: var(--ifm-background-color);
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.06em;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .env_prod {
-  color: var(--bazg-custom);
-  border-color: var(--bazg-custom-border);
-  background: var(--bazg-custom-bg);
+  color: var(--acme-custom);
+  border-color: var(--acme-custom-border);
+  background: var(--acme-custom-bg);
 }
 
 .env_dev {
   color: var(--ifm-color-primary-darkest);
   border-color: var(--ifm-color-primary-lightest);
-  background: var(--bazg-accent-soft);
+  background: var(--acme-accent-soft);
 }
 
 [data-theme='dark'] .env_dev {

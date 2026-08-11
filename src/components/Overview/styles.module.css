@@ -6,10 +6,10 @@
 }
 
 .stat {
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
   padding: 0.85rem 1rem 0.9rem;
-  background: var(--bazg-surface-alt);
+  background: var(--acme-surface-alt);
 }
 
 .statValue {
@@ -24,7 +24,7 @@
 .statLabel {
   margin: 0.25rem 0 0;
   font-size: 0.8125rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .legend {
@@ -41,7 +41,7 @@
   align-items: start;
   gap: 0.75rem;
   padding: 0.65rem 0.9rem;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
 }
 

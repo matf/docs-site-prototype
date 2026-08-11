@@ -4,7 +4,7 @@ id: conventions
 title: Documentation conventions
 sidebar_label: Documentation conventions
 displayed_sidebar: docsSidebar
-description: Folder layout, arc42 placement rules and the Generated / Custom convention used across the BAZG system documentation.
+description: Folder layout, arc42 placement rules and the Generated / Custom convention used across the Acme system documentation.
 doc_status: custom
 ---
 
@@ -179,7 +179,7 @@ where the reader is:
 ```
 
 `doc_status` is the single source of truth. `<DocHeader>` reads it to render the badge, and the
-build-time `bazg-doc-status` plugin reads it to build the navigation — which is why the sidebar,
+build-time `acme-doc-status` plugin reads it to build the navigation — which is why the sidebar,
 the section lists and the page counts can never disagree with the page itself.
 
 ```mdx
@@ -188,8 +188,8 @@ the section lists and the page counts can never disagree with the page itself.
   component="example-component-a"
   section="runtime-view"
   generated={{
-    generator: 'bazg-archdoc 0.7.2',
-    sourceRepo: 'git.example.admin.ch/bazg-proto/declaration-intake-service',
+    generator: 'acme-archdoc 0.7.2',
+    sourceRepo: 'git.example.com/acme-proto/declaration-intake-service',
     revision: '9c1e40d',
     generatedAt: '2026-08-04 03:12 UTC',
     scope: 'Whole page — reaction graph and reaction table',

@@ -15,7 +15,7 @@
   container-type: inline-size;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--bazg-border);
+  border: 1px solid var(--acme-border);
   border-radius: var(--ifm-global-radius);
   padding: 1.1rem 1.2rem 1.2rem;
   background: var(--ifm-background-color);
@@ -23,7 +23,7 @@
 }
 
 .card:hover {
-  border-color: var(--bazg-border-strong);
+  border-color: var(--acme-border-strong);
 }
 
 .head {
@@ -53,7 +53,7 @@
 .subtitle {
   margin: 0.15rem 0 0;
   font-size: 0.8125rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
 }
 
 .summary {
@@ -65,7 +65,7 @@
 .facts {
   margin: 0 0 0.9rem;
   padding: 0.7rem 0 0;
-  border-top: 1px solid var(--bazg-border);
+  border-top: 1px solid var(--acme-border);
   font-size: 0.8125rem;
 }
 
@@ -78,7 +78,7 @@
 .fact dt {
   flex: none;
   width: 10.5rem;
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-weight: 500;
 }
 
@@ -90,7 +90,7 @@
   list-style: none;
   margin: 0 0 1rem;
   padding: 0.7rem 0 0;
-  border-top: 1px solid var(--bazg-border);
+  border-top: 1px solid var(--acme-border);
   font-size: 0.8125rem;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .linkNote {
-  color: var(--bazg-muted);
+  color: var(--acme-muted);
   font-size: 0.75rem;
 }
 

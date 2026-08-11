@@ -24,7 +24,7 @@ const VALID = ['generated', 'custom'];
 /** @returns {import('@docusaurus/types').Plugin} */
 module.exports = function docStatusPlugin() {
   return {
-    name: 'bazg-doc-status',
+    name: 'acme-doc-status',
 
     async allContentLoaded({allContent, actions}) {
       const byPermalink = {};
